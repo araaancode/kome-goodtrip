@@ -122,7 +122,7 @@ const Drivers = () => {
         <>
 
             <TitleCard title="راننده ها" topMargin="mt-2" TopSideButtons={<TopSideButtons />}>
-                {drivers.length > 0 ? (<div className="overflow-x-auto w-full">
+                {drivers && drivers.length > 0 ? (<div className="overflow-x-auto w-full">
                     <table className="table w-full">
                         <thead>
                             <tr>

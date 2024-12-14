@@ -127,7 +127,7 @@ function Register() {
                             <div className="hero-content py-8">
                                 <div className="max-w-md">
                                     <h1 className="mb-10 text-center font-bold text-lg"> ثبت نام در پنل مدیریت</h1>
-                                    <div className="text-center mt-0 mb-35"><img src="../intro.jpeg" alt="اقامتگاه" className="w-full rounded rounded-lg inline-block shadow-md"></img></div>
+                                    <div className="text-center mt-0 mb-35"><img width={500} height={400} src="https://img.freepik.com/premium-photo/log-cabin-mountains-with-sunset-background_865967-19459.jpg?ga=GA1.1.183878651.1734187720&semt=ais_hybrid" alt="اقامتگاه" className="w-full rounded rounded-lg inline-block shadow-md"></img></div>
                                 </div>
                             </div>
                         </div>

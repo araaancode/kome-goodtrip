@@ -167,12 +167,12 @@ function Login() {
         <div className="min-h-screen bg-gray-50 flex items-center text-right">
             <div className="card mx-auto w-full max-w-5xl shadow-2xl">
                 <div className="grid md:grid-cols-2 grid-cols-1 bg-base-100 rounded-xl">
-                    <div className=''>
+                    <div className='w-50'>
                         <div className="hero min-h-full rounded-l-xl bg-base-200">
                             <div className="hero-content py-8">
-                                <div className="max-w-md">
-                                    <h1 className="mb-10 text-center font-bold text-lg"> ورود به پنل مدیریت</h1>
-                                    <div className="text-center mt-0 mb-35"><img src="../intro.jpeg" alt="اقامتگاه" className="w-full rounded rounded-lg inline-block shadow-md"></img></div>
+                                <div className="w-50">
+                                    <h1 className="mb-5 text-center font-bold text-lg"> ورود به پنل مدیریت</h1>
+                                    <div className="text-center mt-0 mb-35"><img src="https://img.freepik.com/premium-photo/log-cabin-mountains-with-sunset-background_865967-19459.jpg?ga=GA1.1.183878651.1734187720&semt=ais_hybrid" alt="اقامتگاه" className="w-full rounded rounded-lg inline-block shadow-md"></img></div>
                                 </div>
                             </div>
                         </div>
