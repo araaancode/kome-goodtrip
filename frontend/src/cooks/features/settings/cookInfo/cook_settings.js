@@ -37,7 +37,6 @@ function CookSettings() {
     const [errorPasswordMessage, setErrorPasswordMessage] = useState("")
 
     const [name, setName] = useState("")
-    const [phone, setPhone] = useState("")
     const [email, setEmail] = useState("")
     const [role, setRole] = useState("")
     const [province, setProvince] = useState("")
@@ -52,13 +51,40 @@ function CookSettings() {
 
 
     const dispatch = useDispatch()
+    
+    let token = localStorage.getItem("userToken")
+
+
+    // get cook info
+    axios.get('/api/cooks/me', {
+        headers: {
+            authorization: `Bearer ${token}`, // Include token in the Authorization header
+        },
+    })
+        .then((response) => {
+            console.log('Response Data:', response.data.cook);
+            setHousePhone(response.data.cook.housePhone)
+            setCity(response.data.cook.city)
+            setProvince(response.data.cook.province)
+            setProvince(response.data.cook.address)
+            setProvince(response.data.cook.foodItems)
+            setProvince(response.data.cook.count)
+            setProvince(response.data.cook.cookDate)
+            setProvince(response.data.cook.cookHour)
+        })
+        .catch((error) => {
+            console.error('Error:', error.response ? error.response.data : error.message);
+        });
+
 
     // Call API to update profile settings changes
     const updateProfile = () => {
         // dispatch(showNotification({ message: "اطلاعات غذادار ویرایش شد", status: 1 }))
-        let token = localStorage.getItem("userToken")
 
-        axios.put(`/api/cooks/update-profile`, { name, housePhone, province, city, address, foodItems, count, cookDate, cookHour, housePhone, foodImage }, {
+
+
+        // change cook info
+        axios.put(`/api/cooks/update-profile`, { name, housePhone, province, city, address, foodItems, count, cookDate, cookHour, foodImage }, {
             headers: {
                 'Content-Type': 'application/json',
                 'authorization': 'Bearer ' + token
@@ -90,8 +116,8 @@ function CookSettings() {
     }
 
 
-    const handlePhoneChange = (e) => {
-        setPhone(e.target.value)
+    const handleHousePhoneChange = (e) => {
+        setHousePhone(e.target.value)
     }
 
     const handleProvinceChange = (e) => {
@@ -150,15 +176,15 @@ function CookSettings() {
                     <InputText labelTitle="نام آشپز" placeholder="نام سرآشپز" updateFormValue={updateFormValue} />
                     <InputText labelTitle="عکس غذا" placeholder="عکس غذا" updateFormValue={updateFormValue} /> */}
 
-                    {/* phone */}
+                    {/* housePhone */}
                     <div className="flex flex-col mb-6">
-                        <label htmlFor="phone" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">تلفن ثابت</label>
+                        <label htmlFor="housePhone" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">تلفن ثابت</label>
                         <div className="relative">
                             <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
                                 <FiPhone className="w-6 h-6 text-gray-400" />
                             </div>
-                            <input style={{ borderRadius: '5px' }} type="text" value={phone}
-                                onChange={handlePhoneChange} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="تلفن ثابت" />
+                            <input style={{ borderRadius: '5px' }} type="text" value={housePhone}
+                                onChange={handleHousePhoneChange} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="تلفن ثابت" />
                         </div>
                         <span className='text-red-500 relative text-sm'>{errorPhoneMessage ? errorPhoneMessage : ""}</span>
                     </div>
