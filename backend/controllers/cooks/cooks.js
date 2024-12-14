@@ -925,11 +925,14 @@ exports.updateMap = async (req, res) => {
 }
 
 // # description -> HTTP VERB -> Accesss -> Access Type
-// # cook update house map -> PUT -> Cook -> PRIVATE
+// # get orders -> GET -> Cook -> PRIVATE
 // @route = /api/cooks/foods/order-foods
 exports.orderFoods = async (req, res) => {
+
     try {
-        let orders = await OrderFood.find({}).populate('user')
+        let orders = await OrderFood.find({ cook: req.cook._id }).populate('user')
+
+
         if (orders && orders.length > 0) {
             return res.status(StatusCodes.OK).json({
                 status: 'success',
@@ -943,6 +946,66 @@ exports.orderFoods = async (req, res) => {
                 msg: "سفارش های غذا پیدا نشدند"
             })
         }
+    } catch (error) {
+        console.error(error.message);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            status: 'failure',
+            msg: "خطای داخلی سرور",
+            error
+        });
+    }
+}
+
+// # description -> HTTP VERB -> Accesss -> Access Type
+// # cook update house map -> GET -> Cook -> PRIVATE
+// @route = /api/cooks/foods/order-foods/:orderId
+exports.orderFood = async (req, res) => {
+    try {
+        let order = await OrderFood.find({ cook: req.cook._id, _id: req.params.orderId }).populate('user')
+        if (order) {
+            return res.status(StatusCodes.OK).json({
+                status: 'success',
+                msg: "سفارش غذا پیدا شد",
+                order
+            })
+        } else {
+            return res.status(StatusCodes.NOT_FOUND).json({
+                status: 'failure',
+                msg: "سفارش غذا پیدا نشد"
+            })
+        }
+    } catch (error) {
+        console.error(error.message);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            status: 'failure',
+            msg: "خطای داخلی سرور",
+            error
+        });
+    }
+}
+
+
+// # description -> HTTP VERB -> Accesss -> Access Type
+// # change order status -> PUT -> Cook -> PRIVATE
+// @route = /api/cooks/foods/order-foods/:orderId/change-status
+exports.changeOrderStatus = async (req, res) => {
+    try {
+        await OrderFood.findByIdAndUpdate(req.params.orderId, {
+            orderStatus: req.body.orderStatus
+        }, { new: true }).then((order) => {
+            if (order) {
+                return res.status(StatusCodes.OK).json({
+                    status: 'success',
+                    msg: "وضعیت سفارش تغییر کرد",
+                    order
+                })
+            } else {
+                return res.status(StatusCodes.NOT_FOUND).json({
+                    status: 'failure',
+                    msg: "وضعیت سفارش تغییر نکرد"
+                })
+            }
+        })  
     } catch (error) {
         console.error(error.message);
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({

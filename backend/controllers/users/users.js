@@ -775,7 +775,7 @@ exports.orderFood = async (req, res) => {
         }
 
         let newOrderFood = await OrderFood.create({
-            chef:req.body.chef,
+            cook:req.body.cook,
             user: req.user._id,
             address: req.body.address,
             foodItems,
@@ -796,6 +796,8 @@ exports.orderFood = async (req, res) => {
                 msg: "سفارش غذا ثبت نشد",
             });
         }
+
+       
 
 
     } catch (error) {

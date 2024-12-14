@@ -50,6 +50,8 @@ router.put('/support-tickets/:stId/add-comment', authCook, cookCtrls.addComments
 
 // foods
 router.get('/foods/order-foods', authCook, cookCtrls.orderFoods)
+router.get('/foods/order-foods/:orderId', authCook, cookCtrls.orderFoods)
+router.put('/foods/order-foods/:orderId/change-status', authCook, cookCtrls.changeOrderStatus)
 
 router.get('/foods', authCook, cookCtrls.getFoods)
 router.get('/foods/:foodId', authCook, cookCtrls.getFood)
