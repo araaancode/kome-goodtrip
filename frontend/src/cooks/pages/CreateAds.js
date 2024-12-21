@@ -1,23 +1,23 @@
 import moment from "moment"
 import { useEffect, useState } from "react"
-import TitleCard from "../../../components/Cards/TitleCard"
-
-import DatePicker from "react-multi-date-picker";
-import DatePanel from "react-multi-date-picker/plugins/date_panel";
-import persian from "react-date-object/calendars/persian";
-import persian_fa from "react-date-object/locales/persian_fa";
-
-import Select from "react-tailwindcss-select";
-import 'react-tailwindcss-select/dist/index.css'
-
-import Swal from 'sweetalert2'
-import axios from "axios"
+import { useDispatch, useSelector } from "react-redux"
+import TitleCard from "../components/Cards/TitleCard"
+// import { showNotification } from '../common/headerSlice'
+// import InputText from '../../../components/Input/InputText'
+// import TextAreaInput from '../../../components/Input/TextAreaInput'
+// import ToogleInput from '../../../components/Input/ToogleInput'
 
 
+
+import { RiEye2Line, RiEyeCloseLine, RiPhoneLine } from "@remixicon/react"
+import { CiUser } from "react-icons/ci";
+import { TfiEmail } from "react-icons/tfi";
+import { LiaUserSecretSolid } from "react-icons/lia";
 import { FaMountainCity } from "react-icons/fa6";
 
 import { FiPhone } from "react-icons/fi";
 import { FaTreeCity } from "react-icons/fa6";
+import { HiOutlineLocationMarker } from "react-icons/hi";
 
 import { IoFastFoodOutline } from "react-icons/io5";
 import { GoNumber } from "react-icons/go";
@@ -26,63 +26,10 @@ import { TbClockHour12 } from "react-icons/tb";
 import { PiChefHatLight } from "react-icons/pi";
 import { PiBowlFood } from "react-icons/pi";
 
+import Swal from 'sweetalert2'
+import axios from "axios"
 
-
-
-const options = [
-    {
-        label: "غذاهای ایرانی",
-        options: [
-            { value: "kebab", label: "کباب" },
-            { value: "ghormeh_sabzi", label: "قرمه سبزی" },
-            { value: "fesenjan", label: "فسنجان" },
-            { value: "tahchin", label: "ته چین" },
-            { value: "ash_reshteh", label: "آش رشته" },
-            { value: "zereshk_polo", label: "زرشک پلو" },
-            { value: "bademjan", label: "بادمجان" },
-            { value: "gheymeh", label: "قیمه" },
-            { value: "kashke_bademjan", label: "کشک بادمجان" },
-            { value: "dizi", label: "دیزی" },
-            { value: "baghali_polo", label: "باقالی پلو" },
-            { value: "sabzi_polo", label: "سبزی پلو" },
-            { value: "shirin_polo", label: "شیرین پلو" },
-            { value: "khoreshte_bamieh", label: "خورشت بامیه" },
-            { value: "adas_polo", label: "عدس پلو" },
-            { value: "abgoosht", label: "آبگوشت" },
-            { value: "tahdig", label: "ته دیگ" },
-            { value: "loobia_polo", label: "لوبیا پلو" },
-
-        ]
-    },
-
-];
-
-const weekDays = [
-    {
-        label: "روزهای هفته",
-        options: [
-            { value: "sat", label: "شنبه" },
-            { value: "sun", label: "یکشنبه" },
-            { value: "mon", label: "دوشنبه" },
-            { value: "thu", label: "سه شنبه" },
-            { value: "wed", label: "چهارشنبه" },
-            { value: "thur", label: "پنج شنبه" },
-            { value: "fri", label: "جمعه" },
-        ]
-    },
-
-];
-
-
-const hourOptions = [
-    { value: "morning", label: "صبح تا ظهر (7 تا 12)" },
-    { value: "noon", label: "صبح تا شب (7 تا 0)" },
-    { value: "night", label: "ظهر تا شب (12 تا 0)" },
-    { value: "none", label: "هیچکدام" }
-];
-
-
-function CookSettings() {
+function CreateAds() {
 
     const [errorMessage, setErrorMessage] = useState("")
 
@@ -90,97 +37,51 @@ function CookSettings() {
     const [errorPasswordMessage, setErrorPasswordMessage] = useState("")
 
     const [name, setName] = useState("")
-    const [city, setCity] = useState("")
+    const [email, setEmail] = useState("")
+    const [role, setRole] = useState("")
     const [province, setProvince] = useState("")
+    const [city, setCity] = useState("")
     const [address, setAddress] = useState("")
-    const [foodItems, setFoodItems] = useState(null)
+    const [foodItems, setFoodItems] = useState("")
     const [count, setCount] = useState(0)
-    const [cookDate, setCookDate] = useState(null)
-    const [cookHour, setCookHour] = useState(null)
+    const [cookDate, setCookDate] = useState("")
+    const [cookHour, setCookHour] = useState("")
     const [housePhone, setHousePhone] = useState("")
-    const [foodImage, setFoodImage] = useState()
+    const [foodImage, setFoodImage] = useState("")
 
-    const [animal, setAnimal] = useState(null);
 
-    const handleChange = value => {
-        console.log("value:", value);
-        setAnimal(value);
-    };
-
+    const dispatch = useDispatch()
+    
     let token = localStorage.getItem("userToken")
-
-    const updateFormValue = ({ updateType, value }) => {
-        console.log(updateType)
-    }
-
-    const handleHousePhoneChange = (e) => {
-        setHousePhone(e.target.value)
-    }
-
-    const handleProvinceChange = (e) => {
-        setProvince(e.target.value)
-    }
-
-    const handleCityChange = (e) => {
-        setCity(e.target.value)
-    }
-
-    const handleAddressChange = (e) => {
-        setAddress(e.target.value)
-    }
-
-
-    const handleFoodItemsChange = value => {
-        console.log(value);
-        
-        setFoodItems(value)
-    }
-
-    const handleCountChange = (e) => {
-        setCount(e.target.value)
-    }
-
-    const handleCookDateChange = (value) => {
-        setCookDate(value)
-    }
-
-    const handleCookHourChange = (value) => {
-        setCookHour(value)
-    }
-
-    const handleNameChange = (e) => {
-        setName(e.target.value)
-    }
-
-
-    const handleFoodImageChange = (e) => {
-        setFoodImage(e.target.files[0])
-    }
-
 
 
     // get cook info
-    // axios.get('/api/cooks/me', {
-    //     headers: {
-    //         authorization: `Bearer ${token}`, // Include token in the Authorization header
-    //     },
-    // })
-    //     .then((response) => {
-    //         setHousePhone(response.data.cook.housePhone)
-    //         setCity(response.data.cook.city)
-    //         setProvince(response.data.cook.province)
-    //         setProvince(response.data.cook.address)
-    //         setProvince(response.data.cook.count)
-    //         setProvince(response.data.cook.cookDate)
-    //         setProvince(response.data.cook.cookHour)
-    //     })
-    //     .catch((error) => {
-    //         console.error('Error:', error.response ? error.response.data : error.message);
-    //     });
+    axios.get('/api/cooks/me', {
+        headers: {
+            authorization: `Bearer ${token}`, // Include token in the Authorization header
+        },
+    })
+        .then((response) => {
+            console.log('Response Data:', response.data.cook);
+            setHousePhone(response.data.cook.housePhone)
+            setCity(response.data.cook.city)
+            setProvince(response.data.cook.province)
+            setProvince(response.data.cook.address)
+            setProvince(response.data.cook.foodItems)
+            setProvince(response.data.cook.count)
+            setProvince(response.data.cook.cookDate)
+            setProvince(response.data.cook.cookHour)
+        })
+        .catch((error) => {
+            console.error('Error:', error.response ? error.response.data : error.message);
+        });
 
 
     // Call API to update profile settings changes
-    const updateCookInfo = () => {
+    const updateProfile = () => {
+        // dispatch(showNotification({ message: "اطلاعات غذادار ویرایش شد", status: 1 }))
+
+
 
         // change cook info
         axios.put(`/api/cooks/update-profile`, { name, housePhone, province, city, address, foodItems, count, cookDate, cookHour, foodImage }, {
@@ -190,6 +91,7 @@ function CookSettings() {
             },
         })
             .then((response) => {
+                console.log('response', response.data)
                 Swal.fire({
                     title: "<small>آیا از ویرایش پروفایل اطمینان دارید؟</small>",
                     showDenyButton: true,
@@ -209,12 +111,57 @@ function CookSettings() {
             })
     }
 
+    const updateFormValue = ({ updateType, value }) => {
+        console.log(updateType)
+    }
 
+
+    const handleHousePhoneChange = (e) => {
+        setHousePhone(e.target.value)
+    }
+
+    const handleProvinceChange = (e) => {
+        setProvince(e.target.value)
+    }
+
+    const handleCityChange = (e) => {
+        setCity(e.target.value)
+    }
+
+    const handleAddressChange = (e) => {
+        setAddress(e.target.value)
+    }
+
+
+    const handleFoodItemsChange = (e) => {
+        setFoodItems(e.target.value)
+    }
+
+    const handleCountChange = (e) => {
+        setCount(e.target.value)
+    }
+
+    const handleCookDateChange = (e) => {
+        setCookDate(e.target.value)
+    }
+
+    const handleCookHourChange = (e) => {
+        setCookHour(e.target.value)
+    }
+
+    const handleNameChange = (e) => {
+        setName(e.target.value)
+    }
+
+
+    const handleFoodImageChange = (e) => {
+        setFoodImage(e.target.value)
+    }
 
     return (
         <>
 
-            <TitleCard title="ثبت اطلاعات غذادار" topMargin="mt-2">
+            <TitleCard title="ایجاد آگهی" topMargin="mt-2">
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {/* <InputText labelTitle="تلفن ثابت" placeholder="تلفن ثابت" updateFormValue={updateFormValue} />
@@ -269,6 +216,33 @@ function CookSettings() {
                     </div>
 
 
+                    {/*  address */}
+                    <div className="flex flex-col mb-6">
+                        <label htmlFor="phone" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">آدرس </label>
+                        <div className="relative">
+                            <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
+                                <HiOutlineLocationMarker className="w-6 h-6 text-gray-400" />
+                            </div>
+                            <input style={{ borderRadius: '5px' }} type="text" value={address}
+                                onChange={handleAddressChange} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="آدرس " />
+                        </div>
+                        <span className='text-red-500 relative text-sm'>{errorPhoneMessage ? errorPhoneMessage : ""}</span>
+                    </div>
+
+                    {/*  food type */}
+                    <div className="flex flex-col mb-6">
+                        <label htmlFor="phone" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">نام غذاها  </label>
+                        <div className="relative">
+                            <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
+                                <IoFastFoodOutline className="w-6 h-6 text-gray-400" />
+                            </div>
+                            <input style={{ borderRadius: '5px' }} type="text" value={foodItems}
+                                onChange={handleFoodItemsChange} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="نام غذاها " />
+                        </div>
+                        <span className='text-red-500 relative text-sm'>{errorPhoneMessage ? errorPhoneMessage : ""}</span>
+                    </div>
+
+
                     {/*  food count  */}
                     <div className="flex flex-col mb-6">
                         <label htmlFor="phone" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">تعداد غذاها  </label>
@@ -289,24 +263,8 @@ function CookSettings() {
                             <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
                                 <SlCalender className="w-6 h-6 text-gray-400" />
                             </div>
-                            {/* <input style={{ borderRadius: '5px' }} type="datepicker" value={cookDate}
-                                onChange={handleCookDateChange} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" placeholder=" تاریخ پخت " /> */}
-
-                            <Select
-                                value={cookDate}
-                                onChange={handleCookDateChange}
-                                options={weekDays}
-                                isMultiple={true}
-                                formatGroupLabel={data => (
-                                    <div className={`py-2 text-xs flex items-center justify-between`}>
-                                        <span className="font-bold">{data.label}</span>
-                                        <span className="bg-gray-200 h-5 h-5 p-1.5 flex items-center justify-center rounded-full">
-                                            {data.options.length}
-                                        </span>
-                                    </div>
-                                )}
-                            />
-
+                            <input style={{ borderRadius: '5px' }} type="datepicker" value={cookDate}
+                                onChange={handleCookDateChange} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" placeholder=" تاریخ پخت " />
                         </div>
                         <span className='text-red-500 relative text-sm'>{errorPhoneMessage ? errorPhoneMessage : ""}</span>
                     </div>
@@ -319,14 +277,8 @@ function CookSettings() {
                             <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
                                 <TbClockHour12 className="w-6 h-6 text-gray-400" />
                             </div>
-                            {/* <input style={{ borderRadius: '5px' }} type="datepicker" value={cookHour}
-                                onChange={handleCookHourChange} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" placeholder=" ساعت پخت " /> */}
-
-                            <Select
-                                value={cookHour}
-                                onChange={handleCookHourChange}
-                                options={hourOptions}
-                            />
+                            <input style={{ borderRadius: '5px' }} type="datepicker" value={cookHour}
+                                onChange={handleCookHourChange} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" placeholder=" ساعت پخت " />
                         </div>
                         <span className='text-red-500 relative text-sm'>{errorPhoneMessage ? errorPhoneMessage : ""}</span>
                     </div>
@@ -352,60 +304,21 @@ function CookSettings() {
                             <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
                                 <PiBowlFood className="w-6 h-6 text-gray-400" />
                             </div>
-                            {/* <input style={{ borderRadius: '5px' }} type="file" value={foodImage} accept="image/*"
-                                onChange={() => handleFoodImageChange()} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="عکس غذا" /> */}
-
-                            <input type="file" onChange={handleFoodImageChange} name="foodImage" id="foodImage" className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" />
+                            <input style={{ borderRadius: '5px' }} type="text" value={foodImage}
+                                onChange={handleFoodImageChange} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="عکس غذا" />
                         </div>
                         <span className='text-red-500 relative text-sm'>{errorPhoneMessage ? errorPhoneMessage : ""}</span>
                     </div>
 
 
+
                 </div>
 
-                {/*  food type */}
-                <div className="flex flex-col mb-6">
-                    <label htmlFor="phone" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">نام غذاها  </label>
-                    <div className="relative">
-                        <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
-                            <IoFastFoodOutline className="w-6 h-6 text-gray-400" />
-                        </div>
-                        {/* <input style={{ borderRadius: '5px' }} type="text" value={foodItems}
-                                onChange={handleFoodItemsChange} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="نام غذاها " /> */}
-                        <Select
-                            value={foodItems}
-                            onChange={handleFoodItemsChange}
-                            options={options}
-                            isMultiple={true}
-                            formatGroupLabel={data => (
-                                <div className={`py-2 text-xs flex items-center justify-between`}>
-                                    <span className="font-bold">{data.label}</span>
-                                    <span className="bg-gray-200 h-5 h-5 p-1.5 flex items-center justify-center rounded-full">
-                                        {data.options.length}
-                                    </span>
-                                </div>
-                            )}
-                        />
-                    </div>
-                    <span className='text-red-500 relative text-sm'>{errorPhoneMessage ? errorPhoneMessage : ""}</span>
-                </div>
-
-                {/*  address */}
-                <div className="flex flex-col mb-6">
-                    <label htmlFor="phone" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">آدرس </label>
-                    <div className="relative">
-                        <textarea style={{ borderRadius: '5px', resize: 'none' }} type="text" value={address}
-                            onChange={handleAddressChange} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="آدرس "></textarea>
-                    </div>
-                    <span className='text-red-500 relative text-sm'>{errorPhoneMessage ? errorPhoneMessage : ""}</span>
-                </div>
-
-
-                <div className="mt-4"><button className="btn btn-primary float-right" onClick={() => updateCookInfo()}>ثبت اطلاعات غذادار</button></div>
+                <div className="mt-4"><button className="btn btn-primary float-right" onClick={() => updateProfile()}>ایجاد آگهی </button></div>
             </TitleCard>
         </>
     )
 }
 
 
-export default CookSettings
+export default CreateAds

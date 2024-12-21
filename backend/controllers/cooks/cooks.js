@@ -40,36 +40,46 @@ exports.getMe = async (req, res) => {
 // @route = /api/cooks/update-profile
 exports.updateProfile = async (req, res) => {
     try {
-        let cook = await Cook.findByIdAndUpdate(req.cook._id, {
-            name: req.body.name,
-            phone: req.body.phone,
-            email: req.body.email,
-            username: req.body.username,
-            nationalCode: req.body.nationalCode,
-            province: req.body.province,
-            city: req.body.city,
-            gender: req.body.gender,
-        }, { new: true })
 
-        if (cook) {
-            res.status(StatusCodes.OK).json({
-                status: 'success',
-                msg: 'اطلاعات غذادار ویرایش شد',
-                name: cook.name,
-                phone: cook.phone,
-                email: cook.email,
-                username: cook.username,
-                nationalCode: cook.nationalCode,
-                province: cook.province,
-                city: cook.city,
-                gender: cook.gender,
-            })
-        } else {
-            res.status(StatusCodes.BAD_REQUEST).json({
-                status: 'failure',
-                msg: 'اطلاعات غذادار ویرایش نشد',
-            })
-        }
+        res.json({
+            msg: "dasda"
+        })
+
+        // let cook = await Cook.findByIdAndUpdate(req.cook._id, {
+        //     name: req.body.name,
+        //     phone: req.body.phone,
+        //     email: req.body.email,
+        //     username: req.body.username,
+        //     nationalCode: req.body.nationalCode,
+        //     province: req.body.province,
+        //     city: req.body.city,
+        //     gender: req.body.gender,
+        //     housePhone: req.body.housePhone,
+        //     foodItems: req.body.foodItems,
+        //     count: req.body.count,
+        //     cookDate: req.body.cookDate,
+        //     cookHour: req.body.cookHour,
+        // }, { new: true })
+
+        // if (cook) {
+        //     res.status(StatusCodes.OK).json({
+        //         status: 'success',
+        //         msg: 'اطلاعات غذادار ویرایش شد',
+        //         name: cook.name,
+        //         phone: cook.phone,
+        //         email: cook.email,
+        //         username: cook.username,
+        //         nationalCode: cook.nationalCode,
+        //         province: cook.province,
+        //         city: cook.city,
+        //         gender: cook.gender,
+        //     })
+        // } else {
+        //     res.status(StatusCodes.BAD_REQUEST).json({
+        //         status: 'failure',
+        //         msg: 'اطلاعات غذادار ویرایش نشد',
+        //     })
+        // }
     } catch (error) {
         console.error(error.message);
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
@@ -313,7 +323,7 @@ exports.singleAds = async (req, res) => {
 // # get create cook ads -> POST -> Cook -> PRIVATE
 // @route = /api/cooks/ads
 exports.createAds = async (req, res) => {
-    var photos = [];
+    let photos = [];
     if (req.files.photos) {
         req.files.photos.forEach((element) => {
             photos.push(element.filename);
@@ -323,7 +333,7 @@ exports.createAds = async (req, res) => {
     try {
         await CookAds.create({
             cook: req.cook._id,
-            company: "6702a7927bfdbe2dde087edd",
+            company: req.body.company,
             title: req.body.title,
             description: req.body.description,
             price: req.body.price,
@@ -1005,7 +1015,7 @@ exports.changeOrderStatus = async (req, res) => {
                     msg: "وضعیت سفارش تغییر نکرد"
                 })
             }
-        })  
+        })
     } catch (error) {
         console.error(error.message);
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({

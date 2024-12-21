@@ -78,8 +78,8 @@ const cookSchema = new mongoose.Schema({
     default: true,
   },
 
-  housePhone:{
-    type:String
+  housePhone: {
+    type: String
   },
 
   favorites: [
@@ -88,6 +88,39 @@ const cookSchema = new mongoose.Schema({
       ref: 'House',
     }
   ],
+
+  foodItems: [
+    {
+      type: String,
+    }
+  ],
+
+  // food count in day
+  count: {
+    type: Number,
+    default: 0
+  },
+
+  // food image
+  foodImage: {
+    type: String,
+  },
+
+  // cook date
+  cookDate: [{
+    type: String,
+  }],
+
+  // cook hour
+  cookHour: {
+    type: String,
+  },
+
+  // address
+  address: {
+    type: String,
+  },
+
 }, { timestamps: true });
 
 cookSchema.pre('save', async function (next) {

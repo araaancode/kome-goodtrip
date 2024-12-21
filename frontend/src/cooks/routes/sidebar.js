@@ -32,6 +32,7 @@ import { BiListUl } from "react-icons/bi";
 import { BiSupport } from "react-icons/bi";
 import { PiChefHat,PiBowlFoodLight,PiCoins } from "react-icons/pi";
 import { VscVerified } from "react-icons/vsc";
+import { TbNewSection } from "react-icons/tb";
 
 
 const iconClasses = `h-8 w-8 text-gray-800`
@@ -46,39 +47,45 @@ const routes = [
   },
   {
     path: '/cooks/cook-info', // url
-    icon: <PiChefHat className={iconClasses}/>, // icon component
-    name: 'ثبت اطلاعات غذادار', // name that appear in Sidebar
+    icon: <PiChefHat className={iconClasses}/>, 
+    name: 'ثبت اطلاعات غذادار', 
   },
 
   {
     path: '/cooks/comments', // url
-    icon: <ChatIcon size="140" className={iconClasses} />, // icon component
-    name: ' نظرات کاربران ', // name that appear in Sidebar
+    icon: <ChatIcon size="140" className={iconClasses} />, 
+    name: ' نظرات کاربران ', 
+  },
+
+  {
+    path: '/cooks/create-advertisment', // url
+    icon: <TbNewSection className={iconClasses}/>, 
+    name: 'ایجاد آگهی', 
   },
 
   {
     path: '/cooks/advertisments', // url
-    icon: <NewsPaperIcon className={iconClasses}/>, // icon component
-    name: ' آگهی ها', // name that appear in Sidebar
+    icon: <NewsPaperIcon className={iconClasses}/>, 
+    name: ' آگهی ها', 
   },
 
-  
+
   {
     path: '/cooks/rates', // url
-    icon: <StarIcon className={iconClasses}/>, // icon component
+    icon: <StarIcon className={iconClasses}/>, 
     name: 'امتیاز',
   },
 
   {
     path: '/cooks/support', // url
-    icon: <BiSupport className={iconClasses}/>, // icon component
-    name: 'پشتیبانی', // name that appear in Sidebar
+    icon: <BiSupport className={iconClasses}/>, 
+    name: 'پشتیبانی', 
   },
 
   {
     path: '/cooks/bank', // url
-    icon: <BankIcon className={iconClasses}/>, // icon component
-    name: 'حساب بانکی', // name that appear in Sidebar
+    icon: <BankIcon className={iconClasses}/>, 
+    name: 'حساب بانکی', 
   },
   
 
