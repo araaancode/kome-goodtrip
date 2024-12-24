@@ -1,320 +1,533 @@
-import moment from "moment"
-import { useEffect, useState } from "react"
-import { useDispatch, useSelector } from "react-redux"
+import { useEffect, useState, useRef } from "react"
 import TitleCard from "../components/Cards/TitleCard"
-// import { showNotification } from '../common/headerSlice'
-// import InputText from '../../../components/Input/InputText'
-// import TextAreaInput from '../../../components/Input/TextAreaInput'
-// import ToogleInput from '../../../components/Input/ToogleInput'
 
+import { FiFileText, FiPhone, FiUser } from "react-icons/fi";
 
-
-import { RiEye2Line, RiEyeCloseLine, RiPhoneLine } from "@remixicon/react"
-import { CiUser } from "react-icons/ci";
-import { TfiEmail } from "react-icons/tfi";
-import { LiaUserSecretSolid } from "react-icons/lia";
-import { FaMountainCity } from "react-icons/fa6";
-
-import { FiPhone } from "react-icons/fi";
-import { FaTreeCity } from "react-icons/fa6";
-import { HiOutlineLocationMarker } from "react-icons/hi";
-
-import { IoFastFoodOutline } from "react-icons/io5";
-import { GoNumber } from "react-icons/go";
-import { SlCalender } from "react-icons/sl";
-import { TbClockHour12 } from "react-icons/tb";
-import { PiChefHatLight } from "react-icons/pi";
-import { PiBowlFood } from "react-icons/pi";
+import { PiMoney, PiMapPinLight } from "react-icons/pi";
+import { IoIosInformationCircleOutline } from "react-icons/io";
 
 import Swal from 'sweetalert2'
 import axios from "axios"
 
 function CreateAds() {
 
-    const [errorMessage, setErrorMessage] = useState("")
-
-    const [errorPhoneMessage, setErrorPhoneMessage] = useState("")
-    const [errorPasswordMessage, setErrorPasswordMessage] = useState("")
-
+    const [title, setTitle] = useState("")
+    const [description, setDescription] = useState("")
+    const [price, setPrice] = useState("")
+    const [photo, setPhoto] = useState(null)
+    const [photos, setPhotos] = useState([])
     const [name, setName] = useState("")
-    const [email, setEmail] = useState("")
-    const [role, setRole] = useState("")
-    const [province, setProvince] = useState("")
-    const [city, setCity] = useState("")
     const [address, setAddress] = useState("")
-    const [foodItems, setFoodItems] = useState("")
-    const [count, setCount] = useState(0)
-    const [cookDate, setCookDate] = useState("")
-    const [cookHour, setCookHour] = useState("")
-    const [housePhone, setHousePhone] = useState("")
-    const [foodImage, setFoodImage] = useState("")
+    const [phone, setPhone] = useState("")
 
 
-    const dispatch = useDispatch()
-    
     let token = localStorage.getItem("userToken")
 
 
-    // get cook info
-    axios.get('/api/cooks/me', {
-        headers: {
-            authorization: `Bearer ${token}`, // Include token in the Authorization header
-        },
-    })
-        .then((response) => {
-            console.log('Response Data:', response.data.cook);
-            setHousePhone(response.data.cook.housePhone)
-            setCity(response.data.cook.city)
-            setProvince(response.data.cook.province)
-            setProvince(response.data.cook.address)
-            setProvince(response.data.cook.foodItems)
-            setProvince(response.data.cook.count)
-            setProvince(response.data.cook.cookDate)
-            setProvince(response.data.cook.cookHour)
-        })
-        .catch((error) => {
-            console.error('Error:', error.response ? error.response.data : error.message);
+    // error variables
+    const [nameError, setNameError] = useState(false)
+    const [nameErrorMsg, setNameErrorMsg] = useState("")
+
+    const [titleError, setTitleError] = useState(false)
+    const [titleErrorMsg, setTitleErrorMsg] = useState("")
+
+    const [phoneError, setPhoneError] = useState(false)
+    const [phoneErrorMsg, setPhoneErrorMsg] = useState("")
+
+    const [priceError, setPriceError] = useState(false)
+    const [priceErrorMsg, setPriceErrorMsg] = useState("")
+
+    const [photoError, setPhotoError] = useState(false)
+    const [photoErrorMsg, setPhotoErrorMsg] = useState("")
+
+    const [photosError, setPhotosError] = useState(false)
+    const [photosErrorMsg, setPhotosErrorMsg] = useState("")
+
+    const [descriptionError, setDescriptionError] = useState(false)
+    const [descriptionErrorMsg, setDescriptionErrorMsg] = useState("")
+
+    const [addressError, setAddressError] = useState(false)
+    const [addressErrorMsg, setAddressErrorMsg] = useState("")
+
+
+    // photo vars
+    const [selectedFiles, setSelectedFiles] = useState([]);
+
+
+    const fileInputRef = useRef(null);
+    const acceptedFileExtensions = ["jpg", "png", "jpeg"];
+
+    const acceptedFileTypesString = acceptedFileExtensions
+        .map((ext) => `.${ext}`)
+        .join(",");
+
+
+
+    const handleFileChange = (event) => {
+        const newFilesArray = Array.from(event.target.files);
+        processFiles(newFilesArray);
+    };
+
+
+    const processFiles = (filesArray) => {
+        const newSelectedFiles = [...selectedFiles];
+        let hasError = false;
+        const fileTypeRegex = new RegExp(acceptedFileExtensions.join("|"), "i");
+        filesArray.forEach((file) => {
+            console.log(file);
+
+            if (newSelectedFiles.some((f) => f.name === file.name)) {
+                alert("File names must be unique", "error");
+                hasError = true;
+            } else if (!fileTypeRegex.test(file.name.split(".").pop())) {
+                alert(`Only ${acceptedFileExtensions.join(", ")} files are allowed`, "error");
+                hasError = true;
+            } else {
+                newSelectedFiles.push(file);
+            }
         });
 
+        if (!hasError) {
+            setSelectedFiles(newSelectedFiles);
+        }
+    };
 
-    // Call API to update profile settings changes
-    const updateProfile = () => {
-        // dispatch(showNotification({ message: "اطلاعات غذادار ویرایش شد", status: 1 }))
+    const handleCustomButtonClick = () => {
+        fileInputRef.current.click();
+    };
+
+    const handleFileDelete = (index) => {
+        const updatedFiles = [...selectedFiles];
+        updatedFiles.splice(index, 1);
+        setSelectedFiles(updatedFiles);
+    };
+
+    // photos vars
+    const [selectedFiles2, setSelectedFiles2] = useState([]);
+
+    const fileInputRef2 = useRef(null);
+    const acceptedFileExtensions2 = ["jpg", "png", "jpeg"];
+
+    const acceptedFileTypesString2 = acceptedFileExtensions2
+        .map((ext) => `.${ext}`)
+        .join(",");
 
 
 
-        // change cook info
-        axios.put(`/api/cooks/update-profile`, { name, housePhone, province, city, address, foodItems, count, cookDate, cookHour, foodImage }, {
-            headers: {
-                'Content-Type': 'application/json',
-                'authorization': 'Bearer ' + token
-            },
-        })
-            .then((response) => {
-                console.log('response', response.data)
+    const handleFileChange2 = (event) => {
+        const newFilesArray = Array.from(event.target.files);
+        processFiles2(newFilesArray);
+    };
+
+
+    const processFiles2 = (filesArray) => {
+        const newSelectedFiles2 = [...selectedFiles2];
+        let hasError = false;
+        const fileTypeRegex = new RegExp(acceptedFileExtensions2.join("|"), "i");
+        filesArray.forEach((file) => {
+            if (newSelectedFiles2.some((f) => f.name === file.name)) {
+                alert("File names must be unique", "error");
+                hasError = true;
+            } else if (!fileTypeRegex.test(file.name.split(".").pop())) {
+                alert(`Only ${acceptedFileExtensions2.join(", ")} files are allowed`, "error");
+                hasError = true;
+            } else {
+                newSelectedFiles2.push(file);
+            }
+        });
+
+        if (!hasError) {
+            setSelectedFiles2(newSelectedFiles2);
+        }
+    };
+
+    const handleCustomButtonClick2 = () => {
+        fileInputRef2.current.click();
+    };
+
+    const handleFileDelete2 = (index) => {
+        const updatedFiles = [...selectedFiles2];
+        updatedFiles.splice(index, 1);
+        setSelectedFiles2(updatedFiles);
+    };
+
+
+
+    // get cook info
+    // axios.get('/api/cooks/me', {
+    //     headers: {
+    //         authorization: `Bearer ${token}`, // Include token in the Authorization header
+    //     },
+    // })
+    //     .then((response) => {
+    //         console.log('Response Data:', response.data.cook);
+    //         setHousePhone(response.data.cook.housePhone)
+    //         setCity(response.data.cook.city)
+    //         setProvince(response.data.cook.province)
+    //         setProvince(response.data.cook.address)
+    //         setProvince(response.data.cook.foodItems)
+    //         setProvince(response.data.cook.count)
+    //         setProvince(response.data.cook.cookDate)
+    //         setProvince(response.data.cook.cookHour)
+    //     })
+    //     .catch((error) => {
+    //         console.error('Error:', error.response ? error.response.data : error.message);
+    //     });
+
+
+
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        // name error
+        if (!name || name === "" || name === undefined || name === null) {
+            setNameError(true)
+            setNameErrorMsg("* نام مشتری باید وارد شود")
+        }
+        if (!title || title === "" || title === undefined || title === null) {
+            setTitleError(true)
+            setTitleErrorMsg("* عنوان آگهی باید وارد شود")
+        }
+        if (!phone || phone === "" || phone === undefined || phone === null) {
+            setPhoneError(true)
+            setPhoneErrorMsg("* شماره همراه مشتری باید وارد شود")
+        }
+        if (!price || price === "" || price === undefined || price === null) {
+            setPriceError(true)
+            setPriceErrorMsg("* قیمت باید وارد شود")
+        }
+        if (!selectedFiles || selectedFiles === "" || selectedFiles === undefined || selectedFiles === null) {
+            setPhotoError(true)
+            setPhotoErrorMsg("* تصویر اصلی آگهی باید وارد شود")
+        }
+        if (!selectedFiles2 || selectedFiles2 === "" || selectedFiles2 === undefined || selectedFiles2 === null) {
+            setPhotosError(true)
+            setPhotosErrorMsg("* تصاویر آگهی باید وارد شوند")
+        }
+        if (!description || description === "" || description === undefined || description === null) {
+            setDescriptionError(true)
+            setDescriptionErrorMsg("* توضیح آگهی باید وارد شود")
+        }
+        if (!address || address === "" || address === undefined || address === null) {
+            setAddressError(true)
+            setAddressErrorMsg("* آدرس باید وارد شود")
+        }
+        else {
+            const formData = new FormData();
+            formData.append('title', title);
+            formData.append('description', description);
+            formData.append('price', price);
+            formData.append('name', name);
+            formData.append('address', address);
+            formData.append('phone', phone);
+            formData.append('photo', selectedFiles[0]);
+            selectedFiles2.forEach(image => formData.append('photos', image));
+            // formData.append('photos', selectedFiles2)
+
+
+
+            try {
+                const response = await axios.post('/api/cooks/ads', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        'authorization': 'Bearer ' + token
+                    },
+                });
                 Swal.fire({
-                    title: "<small>آیا از ویرایش پروفایل اطمینان دارید؟</small>",
+                    title: "<small>آیا از ایجاد آگهی اطمینان دارید؟</small>",
                     showDenyButton: true,
                     confirmButtonText: "بله",
                     denyButtonText: `خیر`
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        Swal.fire("<small>پروفایل ویرایش شد!</small>", "", "success");
+                        Swal.fire("<small>آگهی ایجاد شد!</small>", "", "success");
+                        setTitle("");
+                        setDescription("");
+                        setPrice("");
+                        setName("");
+                        setAddress("");
+                        setPhone("");
+                        setPhoto(null);
+                        setPhotos([])
+                        setSelectedFiles([])
+                        setSelectedFiles2([])
+
                     } else if (result.isDenied) {
                         Swal.fire("<small>تغییرات ذخیره نشد</small>", "", "info");
                     }
                 });
-            })
-            .catch((error) => {
+                console.log(response.data);
+            } catch (error) {
                 console.log('error', error)
                 Swal.fire("<small>تغییرات ذخیره نشد</small>", "", "error");
-            })
-    }
+                Swal.fire(`${error.response.data.msg}`, "", "error");
+            }
+        }
 
-    const updateFormValue = ({ updateType, value }) => {
-        console.log(updateType)
-    }
-
-
-    const handleHousePhoneChange = (e) => {
-        setHousePhone(e.target.value)
-    }
-
-    const handleProvinceChange = (e) => {
-        setProvince(e.target.value)
-    }
-
-    const handleCityChange = (e) => {
-        setCity(e.target.value)
-    }
-
-    const handleAddressChange = (e) => {
-        setAddress(e.target.value)
-    }
+    };
 
 
-    const handleFoodItemsChange = (e) => {
-        setFoodItems(e.target.value)
-    }
-
-    const handleCountChange = (e) => {
-        setCount(e.target.value)
-    }
-
-    const handleCookDateChange = (e) => {
-        setCookDate(e.target.value)
-    }
-
-    const handleCookHourChange = (e) => {
-        setCookHour(e.target.value)
-    }
-
-    const handleNameChange = (e) => {
-        setName(e.target.value)
-    }
-
-
-    const handleFoodImageChange = (e) => {
-        setFoodImage(e.target.value)
-    }
 
     return (
         <>
 
             <TitleCard title="ایجاد آگهی" topMargin="mt-2">
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {/* <InputText labelTitle="تلفن ثابت" placeholder="تلفن ثابت" updateFormValue={updateFormValue} />
-                    <InputText labelTitle="استان-شهر" placeholder="استان-شهر" updateFormValue={updateFormValue} />
-                    <InputText labelTitle="آدرس" placeholder="آدرس" updateFormValue={updateFormValue} />
-                    <InputText labelTitle="توانایی پخت چند پرس غذا در روز" placeholder="توانایی پخت چند پرس غذا در روز" updateFormValue={updateFormValue} />
-                    <InputText labelTitle="چه غذاهایی می توانید درست کنید" placeholder="چه غذاهایی می توانید درست کنید" updateFormValue={updateFormValue} />
-                    <InputText labelTitle="تعداد" placeholder="تعداد" updateFormValue={updateFormValue} />
-                    <InputText labelTitle="تاریخ روزهایی که می توانید غذا درست کنید" placeholder="تاریخ روزهایی که می توانید غذا درست کنید" updateFormValue={updateFormValue} />
-                    <InputText labelTitle="ساعت هایی روزهایی که می توانید غذا درست کنید" placeholder="تاریخ روزهایی که می توانید غذا درست کنید" updateFormValue={updateFormValue} />
-                    <InputText labelTitle="نام سرآشپز" placeholder="نام سرآشپز" updateFormValue={updateFormValue} />
-                    <InputText labelTitle="نام آشپز" placeholder="نام سرآشپز" updateFormValue={updateFormValue} />
-                    <InputText labelTitle="عکس غذا" placeholder="عکس غذا" updateFormValue={updateFormValue} /> */}
 
-                    {/* housePhone */}
-                    <div className="flex flex-col mb-6">
-                        <label htmlFor="housePhone" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">تلفن ثابت</label>
-                        <div className="relative">
-                            <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
-                                <FiPhone className="w-6 h-6 text-gray-400" />
+                <form onSubmit={handleSubmit}>
+                    <div className="">
+
+                        {/* name */}
+                        <div className="flex flex-col mb-6">
+                            <label htmlFor="name" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">نام و نام خانوادگی مشتری</label>
+                            <div className="relative">
+                                <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
+                                    <FiUser className="w-6 h-6 text-gray-400" />
+                                </div>
+                                <input style={{ borderRadius: '5px' }} type="text" value={name}
+                                    onChange={(e) => setName(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="نام و نام خانوادگی مشتری" />
                             </div>
-                            <input style={{ borderRadius: '5px' }} type="text" value={housePhone}
-                                onChange={handleHousePhoneChange} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="تلفن ثابت" />
+                            <span className='text-red-500 relative text-sm'>{nameError ? nameErrorMsg : ""}</span>
                         </div>
-                        <span className='text-red-500 relative text-sm'>{errorPhoneMessage ? errorPhoneMessage : ""}</span>
-                    </div>
 
-                    {/* province */}
-                    <div className="flex flex-col mb-6">
-                        <label htmlFor="phone" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">استان </label>
-                        <div className="relative">
-                            <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
-                                <FaMountainCity className="w-6 h-6 text-gray-400" />
+                        {/* phone */}
+                        <div className="flex flex-col mb-6">
+                            <label htmlFor="phone" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">شماره همراه مخاطب</label>
+                            <div className="relative">
+                                <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
+                                    <FiPhone className="w-6 h-6 text-gray-400" />
+                                </div>
+                                <input style={{ borderRadius: '5px' }} type="text" value={phone}
+                                    onChange={(e) => setPhone(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="شماره همراه مخاطب" />
                             </div>
-                            <input style={{ borderRadius: '5px' }} type="text" value={province}
-                                onChange={handleProvinceChange} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="استان " />
+                            <span className='text-red-500 relative text-sm'>{phoneError ? phoneErrorMsg : ""}</span>
                         </div>
-                        <span className='text-red-500 relative text-sm'>{errorPhoneMessage ? errorPhoneMessage : ""}</span>
-                    </div>
 
-                    {/* city */}
-                    <div className="flex flex-col mb-6">
-                        <label htmlFor="phone" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">شهر </label>
-                        <div className="relative">
-                            <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
-                                <FaTreeCity className="w-6 h-6 text-gray-400" />
+                        {/* ads title */}
+                        <div className="flex flex-col mb-6">
+                            <label htmlFor="title" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">عنوان</label>
+                            <div className="relative">
+                                <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
+                                    <FiFileText className="w-6 h-6 text-gray-400" />
+                                </div>
+                                <input style={{ borderRadius: '5px' }} type="text" value={title}
+                                    onChange={(e) => setTitle(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="عنوان" />
                             </div>
-                            <input style={{ borderRadius: '5px' }} type="text" value={city}
-                                onChange={handleCityChange} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="شهر " />
+                            <span className='text-red-500 relative text-sm'>{titleError ? titleErrorMsg : ""}</span>
                         </div>
-                        <span className='text-red-500 relative text-sm'>{errorPhoneMessage ? errorPhoneMessage : ""}</span>
-                    </div>
 
-
-                    {/*  address */}
-                    <div className="flex flex-col mb-6">
-                        <label htmlFor="phone" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">آدرس </label>
-                        <div className="relative">
-                            <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
-                                <HiOutlineLocationMarker className="w-6 h-6 text-gray-400" />
+                        {/* ads price */}
+                        <div className="flex flex-col mb-6">
+                            <label htmlFor="price" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">قیمت</label>
+                            <div className="relative">
+                                <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
+                                    <PiMoney className="w-6 h-6 text-gray-400" />
+                                </div>
+                                <input style={{ borderRadius: '5px' }} type="text" value={price}
+                                    onChange={(e) => setPrice(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="شماره همراه مخاطب" />
                             </div>
-                            <input style={{ borderRadius: '5px' }} type="text" value={address}
-                                onChange={handleAddressChange} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="آدرس " />
+                            <span className='text-red-500 relative text-sm'>{priceError ? priceErrorMsg : ""}</span>
                         </div>
-                        <span className='text-red-500 relative text-sm'>{errorPhoneMessage ? errorPhoneMessage : ""}</span>
-                    </div>
 
-                    {/*  food type */}
-                    <div className="flex flex-col mb-6">
-                        <label htmlFor="phone" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">نام غذاها  </label>
-                        <div className="relative">
-                            <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
-                                <IoFastFoodOutline className="w-6 h-6 text-gray-400" />
+                        {/*  ads photo  */}
+                        <div className="flex flex-col mb-6">
+                            <label htmlFor="photo" className="mb-2 text-xs sm:text-sm tracking-wide text-gray-600">تصویر اصلی آگهی </label>
+
+                            {/* <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
+                                    <PiImage className="w-6 h-6 text-gray-400" />
+                                </div> */}
+                            {/* <input type="file" onChange={(e) => setPhoto(e.target.files[0])} name="photo" id="photo" className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" /> */}
+                            <div className="grid grid-cols-1 md:grid-cols-3 border border-gray-400 rounded-md py-2 focus:outline-none focus:border-blue-800">
+                                <div className="flex items-center">
+                                    <button
+                                        type="button"
+                                        onClick={handleCustomButtonClick}
+                                        className="px-6 py-2 mx-4 bg-blue-800 text-white rounded-lg hover:bg-blue-900 focus:outline-none focus:bg-blue-900"
+                                    >
+                                        انتخاب تصویر اصلی
+                                    </button>
+                                    <input
+                                        type="file"
+                                        id="photo"
+                                        name="photo"
+                                        accept={acceptedFileTypesString}
+                                        ref={fileInputRef}
+                                        className="hidden"
+                                        onChange={handleFileChange}
+                                        onClick={(event) => {
+                                            event.target.value = null;
+                                        }}
+                                    />
+                                </div>
+
+                                <div className="rounded-3xl py-4 max-h-[23rem] overflow-auto">
+                                    {selectedFiles.length > 0 ? (
+                                        <ul className="px-4">
+                                            {selectedFiles.map((file, index) => (
+
+                                                <li
+                                                    key={file.name}
+                                                    className="flex justify-between items-center border-b py-2"
+                                                >
+                                                    <div className="flex items-center">
+                                                        {/* <img
+                                                            src={window.location.origin + file.name}
+                                                            alt="File"
+                                                            className="w-10 h-10 mr-2"
+                                                        /> */}
+                                                        <span className="text-base mx-2">{file.name}</span>
+                                                    </div>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => handleFileDelete(index)}
+                                                        className="text-red-500 hover:text-red-700 focus:outline-none"
+                                                    >
+                                                        <svg
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                            viewBox="0 0 20 20"
+                                                            fill="none"
+                                                            className="w-6 h-6"
+                                                        >
+                                                            <path
+                                                                stroke="currentColor"
+                                                                strokeWidth="2"
+                                                                d="M6 4l8 8M14 4l-8 8"
+                                                            />
+                                                        </svg>
+                                                    </button>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    ) : (
+                                        <div className="h-full flex justify-center items-center">
+                                            <p className="text-center text-gray-500 text-sm">
+                                                هنوز تصویری آپلود نشده است...
+                                            </p>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
-                            <input style={{ borderRadius: '5px' }} type="text" value={foodItems}
-                                onChange={handleFoodItemsChange} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="نام غذاها " />
+
+                            <span className='text-red-500 relative text-sm'>{photoError ? photoErrorMsg : ""}</span>
                         </div>
-                        <span className='text-red-500 relative text-sm'>{errorPhoneMessage ? errorPhoneMessage : ""}</span>
-                    </div>
 
 
-                    {/*  food count  */}
-                    <div className="flex flex-col mb-6">
-                        <label htmlFor="phone" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">تعداد غذاها  </label>
-                        <div className="relative">
-                            <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
-                                <GoNumber className="w-6 h-6 text-gray-400" />
+                        {/* ads photos */}
+                        <div className="flex flex-col mb-6">
+                            <label htmlFor="photo" className="mb-2 text-xs sm:text-sm tracking-wide text-gray-600">تصاویر آگهی </label>
+
+                            {/* <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
+                                    <PiImage className="w-6 h-6 text-gray-400" />
+                                </div> */}
+                            {/* <input type="file" onChange={(e) => setPhoto(e.target.files[0])} name="photo" id="photo" className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" /> */}
+                            <div className="grid grid-cols-1 md:grid-cols-3 border border-gray-400 rounded-md py-2 focus:outline-none focus:border-blue-800">
+                                <div className="flex items-center">
+                                    <button
+                                        type="button"
+                                        onClick={handleCustomButtonClick2}
+                                        className="px-6 py-2 mx-4 bg-blue-800 text-white rounded-lg hover:bg-blue-900 focus:outline-none focus:bg-blue-900"
+                                    >
+                                        انتخاب تصاویر آگهی
+                                    </button>
+                                    <input
+                                        type="file"
+                                        id="photos"
+                                        name="photos"
+                                        multiple
+                                        accept={acceptedFileTypesString2}
+                                        ref={fileInputRef2}
+                                        className="hidden"
+                                        onChange={handleFileChange2}
+                                        onClick={(event) => {
+                                            event.target.value = null;
+                                        }}
+                                    />
+                                </div>
+
+                                <div className="rounded-3xl py-4 max-h-[23rem] overflow-auto">
+                                    {selectedFiles2.length > 0 ? (
+                                        <ul className="px-4">
+                                            {selectedFiles2.map((file, index) => (
+
+                                                <li
+                                                    key={file.name}
+                                                    className="flex justify-between items-center border-b py-2"
+                                                >
+                                                    <div className="flex items-center">
+                                                        {/* <img
+                                                            src={window.location.origin + file.name}
+                                                            alt="File"
+                                                            className="w-10 h-10 mr-2"
+                                                        /> */}
+                                                        <span className="text-base mx-2">{file.name}</span>
+                                                    </div>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => handleFileDelete2(index)}
+                                                        className="text-red-500 hover:text-red-700 focus:outline-none"
+                                                    >
+                                                        <svg
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                            viewBox="0 0 20 20"
+                                                            fill="none"
+                                                            className="w-6 h-6"
+                                                        >
+                                                            <path
+                                                                stroke="currentColor"
+                                                                strokeWidth="2"
+                                                                d="M6 4l8 8M14 4l-8 8"
+                                                            />
+                                                        </svg>
+                                                    </button>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    ) : (
+                                        <div className="h-full flex justify-center items-center">
+                                            <p className="text-center text-gray-500 text-sm">
+                                                هنوز تصویری آپلود نشده است...
+                                            </p>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
-                            <input style={{ borderRadius: '5px' }} type="text" value={count}
-                                onChange={handleCountChange} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="تعداد غذاها " />
-                        </div>
-                        <span className='text-red-500 relative text-sm'>{errorPhoneMessage ? errorPhoneMessage : ""}</span>
-                    </div>
 
-                    {/*  food date  */}
-                    <div className="flex flex-col mb-6">
-                        <label htmlFor="phone" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600"> تاریخ پخت  </label>
-                        <div className="relative">
-                            <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
-                                <SlCalender className="w-6 h-6 text-gray-400" />
+                            <span className='text-red-500 relative text-sm'>{photosError ? photosErrorMsg : ""}</span>
+                        </div>
+
+
+                        {/*  description */}
+                        <div className="flex flex-col mb-4">
+                            <label htmlFor="description" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">توضیحات </label>
+                            <div className="relative">
+                                <div className="inline-flex items-center justify-center absolute left-0 h-full w-10 text-gray-400" style={{ bottom: "52px" }}>
+                                    <IoIosInformationCircleOutline className="w-6 h-6 text-gray-400" />
+                                </div>
+                                <textarea style={{ borderRadius: '5px', resize: 'none' }} type="text" value={description}
+                                    onChange={(e) => setDescription(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="توضیحات "></textarea>
                             </div>
-                            <input style={{ borderRadius: '5px' }} type="datepicker" value={cookDate}
-                                onChange={handleCookDateChange} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" placeholder=" تاریخ پخت " />
+                            <span className='text-red-500 relative text-sm'>{descriptionError ? descriptionErrorMsg : ""}</span>
                         </div>
-                        <span className='text-red-500 relative text-sm'>{errorPhoneMessage ? errorPhoneMessage : ""}</span>
-                    </div>
 
-
-                    {/*  food hour  */}
-                    <div className="flex flex-col mb-6">
-                        <label htmlFor="phone" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600"> ساعت پخت  </label>
-                        <div className="relative">
-                            <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
-                                <TbClockHour12 className="w-6 h-6 text-gray-400" />
+                        {/*  address */}
+                        <div className="flex flex-col mb-4">
+                            <label htmlFor="address" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">آدرس </label>
+                            <div className="relative">
+                                <div className="inline-flex items-center justify-center absolute left-0 h-full w-10 text-gray-400" style={{ bottom: "52px" }}>
+                                    <PiMapPinLight className="w-6 h-6 text-gray-400" />
+                                </div>
+                                <textarea style={{ borderRadius: '5px', resize: 'none' }} type="text" value={address}
+                                    onChange={(e) => setAddress(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="آدرس "></textarea>
                             </div>
-                            <input style={{ borderRadius: '5px' }} type="datepicker" value={cookHour}
-                                onChange={handleCookHourChange} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" placeholder=" ساعت پخت " />
+                            <span className='text-red-500 relative text-sm'>{addressError ? addressErrorMsg : ""}</span>
+
                         </div>
-                        <span className='text-red-500 relative text-sm'>{errorPhoneMessage ? errorPhoneMessage : ""}</span>
                     </div>
-
-                    {/*  cook name  */}
-                    <div className="flex flex-col mb-6">
-                        <label htmlFor="phone" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600"> نام آشپز   </label>
-                        <div className="relative">
-                            <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
-                                <PiChefHatLight className="w-6 h-6 text-gray-400" />
-                            </div>
-                            <input style={{ borderRadius: '5px' }} type="text" value={name}
-                                onChange={handleNameChange} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" placeholder=" نام آشپز  " />
-                        </div>
-                        <span className='text-red-500 relative text-sm'>{errorPhoneMessage ? errorPhoneMessage : ""}</span>
-                    </div>
+                    <div className="mt-2"><button type="submit" className="btn bg-blue-800 hover:bg-blue-900 text-white float-right px-8">ایجاد آگهی </button></div>
+                </form>
 
 
-                    {/*  food image  */}
-                    <div className="flex flex-col mb-6">
-                        <label htmlFor="phone" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">عکس غذا </label>
-                        <div className="relative">
-                            <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
-                                <PiBowlFood className="w-6 h-6 text-gray-400" />
-                            </div>
-                            <input style={{ borderRadius: '5px' }} type="text" value={foodImage}
-                                onChange={handleFoodImageChange} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="عکس غذا" />
-                        </div>
-                        <span className='text-red-500 relative text-sm'>{errorPhoneMessage ? errorPhoneMessage : ""}</span>
-                    </div>
-
-
-
-                </div>
-
-                <div className="mt-4"><button className="btn btn-primary float-right" onClick={() => updateProfile()}>ایجاد آگهی </button></div>
             </TitleCard>
         </>
     )

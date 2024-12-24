@@ -323,6 +323,7 @@ exports.singleAds = async (req, res) => {
 // # get create cook ads -> POST -> Cook -> PRIVATE
 // @route = /api/cooks/ads
 exports.createAds = async (req, res) => {
+
     let photos = [];
     if (req.files.photos) {
         req.files.photos.forEach((element) => {
@@ -330,10 +331,18 @@ exports.createAds = async (req, res) => {
         });
     }
 
+
+    let company = {}
+
+    company.name = req.body.name
+    company.phone = req.body.phone
+    company.address = req.body.address
+
+
     try {
         await CookAds.create({
             cook: req.cook._id,
-            company: req.body.company,
+            company: company,
             title: req.body.title,
             description: req.body.description,
             price: req.body.price,
