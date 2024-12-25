@@ -412,7 +412,7 @@ exports.updateAds = async (req, res) => {
 exports.updateAdsPhoto = async (req, res) => {
     try {
         await CookAds.findByIdAndUpdate(req.params.adsId, {
-            photo: req.file.filename,
+            photo: req.file ? req.file.filename : null,
         }).then((ads) => {
             if (ads) {
                 return res.status(StatusCodes.OK).json({
@@ -442,8 +442,14 @@ exports.updateAdsPhoto = async (req, res) => {
 // @route = /api/cooks/ads/:adsId/update-photos
 exports.updateAdsPhotos = async (req, res) => {
     try {
+        const imagePaths = req.files.map((file) => file.filename);
+
+        if (imagePaths.length === 0) {
+            return res.status(400).json({ error: "حداقل یک تصویر باید وارد کنید..!" });
+        }
+
         await CookAds.findByIdAndUpdate(req.params.adsId, {
-            photos: req.file.filename,
+            photos: imagePaths
         }).then((ads) => {
             if (ads) {
                 return res.status(StatusCodes.OK).json({
@@ -458,6 +464,7 @@ exports.updateAdsPhotos = async (req, res) => {
                 })
             }
         });
+
     } catch (error) {
         console.error(error.message);
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({

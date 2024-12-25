@@ -31,13 +31,13 @@ router.post('/ads', authCook, upload.cookAdsPhotosUpload.fields([
     },
     {
         name: "photos",
-        maxCount: 6,
+        maxCount: 4,
     },
 ]), cookCtrls.createAds)
 
 router.put('/ads/:adsId/update-ads', authCook, cookCtrls.updateAds)
 router.put('/ads/:adsId/update-photo', authCook, upload.cookAdsPhotosUpload.single("photo"), cookCtrls.updateAdsPhoto)
-router.put('/ads/:adsId/update-photos', authCook, upload.cookAdsPhotosUpload.single("photos"), cookCtrls.updateAdsPhotos)
+router.put('/ads/:adsId/update-photos', authCook, upload.cookAdsPhotosUpload.array("photos", 4), cookCtrls.updateAdsPhotos)
 router.delete('/ads/:adsId', authCook, cookCtrls.deleteAds)
 
 
