@@ -13,6 +13,17 @@ const cookAvatarDir = path.join(__dirname, '../uploads/cookAvatarDir/');
 const cookAdsDir = path.join(__dirname, '../uploads/cookAdsDir/');
 const foodPhotosDir = path.join(__dirname, '../uploads/foodPhotosDir/');
 
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const cloudinary = require('./cloudinary');
+
+const storage = new CloudinaryStorage({
+    cloudinary,
+    params: {
+        folder: 'mern_uploads', // Folder in Cloudinary
+        allowed_formats: ['jpg', 'png', 'jpeg'], // Allowed file types
+    },
+});
+
 module.exports = {
 
     // ******************** owenr ********************
@@ -46,7 +57,7 @@ module.exports = {
     houseUpload: multer({
         storage: multer.diskStorage({
             destination: function (req, file, cb) {
-                
+
                 const made = mkdirp.sync(houseCoverImagesDir);
                 cb(null, houseCoverImagesDir)
             },
@@ -145,18 +156,10 @@ module.exports = {
         })
     }),
 
-    cookAdsPhotosUpload: multer({
-        storage: multer.diskStorage({
-            destination: function (req, file, cb) {
-                const made = mkdirp.sync(cookAdsDir);
-                cb(null, cookAdsDir)
-            },
-            filename: function (req, file, cb) {
-                cb(null, Date.now() + path.extname(file.originalname));
-            }
-        })
-    }),
+    // cook ads
+    cookAdsPhotosUpload: multer({ storage }),
 
+    // foods uploads
     foodPhotosUpload: multer({
         storage: multer.diskStorage({
             destination: function (req, file, cb) {

@@ -371,10 +371,16 @@ exports.createAds = async (req, res) => {
 // @route = /api/cooks/ads/:adsId/update-ads
 exports.updateAds = async (req, res) => {
     try {
+        let company = {
+            name: req.body.name,
+            phone: req.body.phone,
+            address: req.body.address,
+        }
         await CookAds.findByIdAndUpdate(req.params.adsId, {
             title: req.body.title,
             description: req.body.description,
             price: req.body.price,
+            company,
         }, { new: true }).then((ads) => {
             if (ads) {
                 return res.status(StatusCodes.OK).json({
