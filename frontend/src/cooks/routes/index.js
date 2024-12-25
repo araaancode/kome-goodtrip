@@ -22,6 +22,7 @@ const Profile = lazy(() => import('../pages/Profile'))
 const CookInfo = lazy(() => import('../pages/CookInfo'))
 const Orders = lazy(() => import('../pages/Orders'))
 const CreateAds = lazy(() => import('../pages/CreateAds'))
+const UpdateAds = lazy(() => import('../pages/UpdateAds'))
 
 
 const routes = [
@@ -89,6 +90,11 @@ const routes = [
   {
     path: '/create-advertisment',
     component: CreateAds,
+  },
+  
+  {
+    path: '/advertisments/:adsId/update',
+    component: UpdateAds,
   },
   
 ]

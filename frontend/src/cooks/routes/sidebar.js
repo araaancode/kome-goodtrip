@@ -69,7 +69,6 @@ const routes = [
     name: ' آگهی ها', 
   },
 
-
   {
     path: '/cooks/rates', // url
     icon: <StarIcon className={iconClasses}/>, 

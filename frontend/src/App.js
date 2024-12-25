@@ -85,7 +85,6 @@ axios.defaults.withCredentials = true;
 function App() {
 
   useEffect(() => {
-    // 👆 daisy UI themes initialization
     themeChange(false)
   }, [])
 
