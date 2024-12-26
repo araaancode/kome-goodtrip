@@ -13,7 +13,7 @@ export default function Header() {
 
   return (
     <div style={{
-      backgroundImage: "url(" + "https://wallpapercave.com/wp/wp2065959.jpg" + ")",
+      backgroundImage: "url(" + "https://lh3.googleusercontent.com/p/AF1QipM06RUIck2mMdPVm3nBnFEdb4mVs1FaymY2Whxt=s680-w680-h510" + ")",
       backgroundPosition: 'center',
       backgroundSize: 'cover',
       backgroundRepeat: 'no-repeat',

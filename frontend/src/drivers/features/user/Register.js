@@ -7,7 +7,7 @@ import InputText from '../../components/Input/InputText'
 import { RiEye2Line, RiEyeCloseLine, RiPhoneLine } from "@remixicon/react"
 
 function Register() {
-   
+
     const [loading, setLoading] = useState(false)
     const [errorMessage, setErrorMessage] = useState("")
 
@@ -15,7 +15,7 @@ function Register() {
     const [phone, setPhone] = useState("");
     const [password, setPassword] = useState("");
     const [passwordVisible, setPasswordVisible] = useState(false);
- 
+
     const [errorPhoneMessage, setErrorPhoneMessage] = useState("")
     const [errorPasswordMessage, setErrorPasswordMessage] = useState("")
 
@@ -60,7 +60,7 @@ function Register() {
                             <div className="hero-content py-8">
                                 <div className="max-w-md">
                                     <h1 className="mb-10 text-center font-bold text-lg"> ثبت نام در پنل اتوبوس دار</h1>
-                                    <div className="text-center mt-0 mb-35"><img src="https://wallpapercave.com/fuwp/uwp4328554.jpeg" alt="اقامتگاه" className="w-full rounded rounded-lg inline-block shadow-md"></img></div>
+                                    <div className="text-center mt-0 mb-35"><img src="../bus1.jpeg" alt="اقامتگاه" className="w-full rounded rounded-lg inline-block shadow-md"></img></div>
                                 </div>
                             </div>
                         </div>

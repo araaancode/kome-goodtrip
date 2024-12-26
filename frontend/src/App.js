@@ -1,11 +1,9 @@
-import React, { lazy, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import './App.css';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom'
 import { themeChange } from 'theme-change'
-import checkAuth from './admin/app/auth';
-import initializeApp from './admin/app/init';
+// import initializeApp from './admin/app/init';
 import axios from "axios"
-import { data } from "autoprefixer"
 
 // landing pages 
 import IndexLayout from "./landing/components/Layout"
@@ -72,7 +70,7 @@ import CookResetPassword from "./cooks/features/user/ResetPassword"
 
 
 // Initializing different libraries
-initializeApp()
+// initializeApp()
 
 // Check for login and initialize axios
 // const token = checkAuth()
@@ -84,9 +82,9 @@ axios.defaults.withCredentials = true;
 
 function App() {
 
-  useEffect(() => {
-    themeChange(false)
-  }, [])
+  // useEffect(() => {
+  //   themeChange(false)
+  // }, [])
 
 
   return (
