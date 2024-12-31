@@ -570,11 +570,19 @@ exports.supportTicket = async (req, res) => {
 // @route = /api/cooks/support-tickets
 exports.createSupportTicket = async (req, res) => {
     try {
+        let images = [];
+        if (req.files.images) {
+            req.files.images.forEach((e) => {
+                images.push(e.filename);
+            });
+        }
+
         await CookSupportTicket.create({
             title: req.body.title,
             description: req.body.description,
             cook: req.cook._id,
             assignedTo: req.cook._id,
+            images: images,
         }).then((data) => {
             res.status(StatusCodes.CREATED).json({
                 status: 'success',
@@ -582,8 +590,10 @@ exports.createSupportTicket = async (req, res) => {
                 data
             })
         })
+
+
     } catch (error) {
-        console.error(error.message);
+        console.error(error);
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
             status: 'failure',
             msg: "خطای داخلی سرور",

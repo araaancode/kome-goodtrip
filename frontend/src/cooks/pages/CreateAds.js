@@ -343,7 +343,7 @@ function CreateAds() {
                                     <button
                                         type="button"
                                         onClick={handleCustomButtonClick}
-                                        className="px-6 py-2 mx-4 bg-blue-800 text-white rounded-lg hover:bg-blue-900 focus:outline-none focus:bg-blue-900"
+                                        className="px-6 py-2 mx-4 bg-green-800 text-white rounded-lg hover:bg-green-900 focus:outline-none focus:bg-green-900"
                                     >
                                         انتخاب تصویر اصلی
                                     </button>
@@ -426,7 +426,7 @@ function CreateAds() {
                                     <button
                                         type="button"
                                         onClick={handleCustomButtonClick2}
-                                        className="px-6 py-2 mx-4 bg-blue-800 text-white rounded-lg hover:bg-blue-900 focus:outline-none focus:bg-blue-900"
+                                        className="px-6 py-2 mx-4 bg-green-800 text-white rounded-lg hover:bg-green-900 focus:outline-none focus:bg-green-900"
                                     >
                                         انتخاب تصاویر آگهی
                                     </button>

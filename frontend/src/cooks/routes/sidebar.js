@@ -30,7 +30,7 @@ import CircleIcon from '@iconscout/react-unicons/icons/uil-circle-layer'
 import FoodIcon from '@iconscout/react-unicons/icons/uil-pizza-slice'
 import { BiListUl } from "react-icons/bi";
 import { BiSupport } from "react-icons/bi";
-import { PiChefHat,PiBowlFoodLight,PiCoins } from "react-icons/pi";
+import { PiChefHat, PiBowlFoodLight, PiCoins } from "react-icons/pi";
 import { VscVerified } from "react-icons/vsc";
 import { TbNewSection } from "react-icons/tb";
 
@@ -42,51 +42,58 @@ const routes = [
 
   {
     path: '/cooks/orders',
-    icon: <BiListUl size="140" className={iconClasses} />, 
+    icon: <BiListUl size="140" className={iconClasses} />,
     name: 'لیست سفارش ها',
   },
   {
     path: '/cooks/cook-info', // url
-    icon: <PiChefHat className={iconClasses}/>, 
-    name: 'ثبت اطلاعات غذادار', 
+    icon: <PiChefHat className={iconClasses} />,
+    name: 'ثبت اطلاعات غذادار',
   },
 
   {
     path: '/cooks/comments', // url
-    icon: <ChatIcon size="140" className={iconClasses} />, 
-    name: ' نظرات کاربران ', 
+    icon: <ChatIcon size="140" className={iconClasses} />,
+    name: ' نظرات کاربران ',
   },
 
   {
     path: '/cooks/create-advertisment', // url
-    icon: <TbNewSection className={iconClasses}/>, 
-    name: 'ایجاد آگهی', 
+    icon: <TbNewSection className={iconClasses} />,
+    name: 'ایجاد آگهی',
   },
 
   {
     path: '/cooks/advertisments', // url
-    icon: <NewsPaperIcon className={iconClasses}/>, 
-    name: ' آگهی ها', 
+    icon: <NewsPaperIcon className={iconClasses} />,
+    name: ' آگهی ها',
   },
 
   {
     path: '/cooks/rates', // url
-    icon: <StarIcon className={iconClasses}/>, 
+    icon: <StarIcon className={iconClasses} />,
     name: 'امتیاز',
   },
 
   {
-    path: '/cooks/support', // url
-    icon: <BiSupport className={iconClasses}/>, 
-    name: 'پشتیبانی', 
+    path: '/cooks/create-support-ticket', // url
+    icon: <BiSupport className={iconClasses} />,
+    name: 'ایجاد تیکت پشتیبانی',
   },
 
   {
-    path: '/cooks/bank', // url
-    icon: <BankIcon className={iconClasses}/>, 
-    name: 'حساب بانکی', 
+    path: '/cooks/support-tickets', // url
+    icon: <BiSupport className={iconClasses} />,
+    name: 'تیکت های من',
   },
-  
+
+
+  {
+    path: '/cooks/bank', // url
+    icon: <BankIcon className={iconClasses} />,
+    name: 'حساب بانکی',
+  },
+
 
 ]
 

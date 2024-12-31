@@ -70,7 +70,7 @@ const deleteUser = () => {
   });
 }
 
-const Support = () => {
+const SupportTickets = () => {
 
   const dispatch = useDispatch()
   useEffect(() => {
@@ -144,4 +144,4 @@ const Support = () => {
   )
 }
 
-export default Support
+export default SupportTickets

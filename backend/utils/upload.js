@@ -158,6 +158,9 @@ module.exports = {
 
     // cook ads
     cookAdsPhotosUpload: multer({ storage }),
+    
+    // cook support ticket image
+    cookSupportTicketUpload: multer({ storage }),
 
     // foods uploads
     foodPhotosUpload: multer({

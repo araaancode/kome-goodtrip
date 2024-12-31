@@ -33,7 +33,6 @@ const cookSupportTicketSchema = new Schema({
   cook: {
     type: Schema.Types.ObjectId,
     ref: 'Cook',
-    required: true
   },
   assignedTo: {
     type: Schema.Types.ObjectId,
@@ -47,7 +46,6 @@ const cookSupportTicketSchema = new Schema({
     },
     comment: {
       type: String,
-      required: true
     },
     createdAt: {
       type: Date,
@@ -58,7 +56,11 @@ const cookSupportTicketSchema = new Schema({
   isRead: {
     type: Boolean,
     default: false
-  }
+  },
+
+  images:[{
+    String,
+  }]
 });
 
 // Middleware to update the `updatedAt` field on save

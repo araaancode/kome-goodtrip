@@ -15,7 +15,8 @@ const Rates = lazy(() => import('../pages/Rates'))
 const Financials = lazy(() => import('../pages/Financials'))
 const Advertisments = lazy(() => import('../pages/Advertisments'))
 const Prices = lazy(() => import('../pages/Prices'))
-const Support = lazy(() => import('../pages/Support'))
+const SupportTickets = lazy(() => import('../pages/SupportTickets'))
+const CreateSupportTicket = lazy(() => import('../pages/CreateSupportTicket'))
 const Bank = lazy(() => import('../pages/Bank'))
 const Owners = lazy(() => import('../pages/Owners'))
 const Profile = lazy(() => import('../pages/Profile'))
@@ -23,6 +24,9 @@ const CookInfo = lazy(() => import('../pages/CookInfo'))
 const Orders = lazy(() => import('../pages/Orders'))
 const CreateAds = lazy(() => import('../pages/CreateAds'))
 const UpdateAds = lazy(() => import('../pages/UpdateAds'))
+
+
+
 
 
 const routes = [
@@ -71,8 +75,12 @@ const routes = [
     component: Prices,
   },
   {
-    path: '/support',
-    component: Support,
+    path: '/support-tickets',
+    component: SupportTickets,
+  },
+  {
+    path: '/create-support-ticket',
+    component: CreateSupportTicket,
   },
   {
     path: '/bank',
