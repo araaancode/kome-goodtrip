@@ -157,8 +157,18 @@ module.exports = {
     }),
 
     // cook ads
-    cookAdsPhotosUpload: multer({ storage }),
-    
+    cookAdsPhotosUpload: multer({
+        storage: multer.diskStorage({
+            destination: function (req, file, cb) {
+                const made = mkdirp.sync(cookAdsDir);
+                cb(null, cookAdsDir)
+            },
+            filename: function (req, file, cb) {
+                cb(null, Date.now() + path.extname(file.originalname));
+            }
+        })
+    }),
+
     // cook support ticket image
     cookSupportTicketUpload: multer({ storage }),
 

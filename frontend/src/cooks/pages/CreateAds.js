@@ -225,8 +225,6 @@ function CreateAds() {
             selectedFiles2.forEach(image => formData.append('photos', image));
             // formData.append('photos', selectedFiles2)
 
-
-
             try {
                 const response = await axios.post('/api/cooks/ads', formData, {
                     headers: {
@@ -261,7 +259,7 @@ function CreateAds() {
             } catch (error) {
                 console.log('error', error)
                 Swal.fire("<small>تغییرات ذخیره نشد</small>", "", "error");
-                Swal.fire(`${error.response.data.msg}`, "", "error");
+                // Swal.fire(`${error.response.data.msg}`, "", "error");
             }
         }
 
