@@ -33,6 +33,8 @@ import { BiSupport } from "react-icons/bi";
 import { PiChefHat, PiBowlFoodLight, PiCoins } from "react-icons/pi";
 import { VscVerified } from "react-icons/vsc";
 import { TbNewSection } from "react-icons/tb";
+import { IoFastFoodOutline } from "react-icons/io5";
+
 
 
 const iconClasses = `h-8 w-8 text-gray-800`
@@ -67,6 +69,12 @@ const routes = [
     path: '/cooks/advertisments', // url
     icon: <NewsPaperIcon className={iconClasses} />,
     name: ' آگهی ها',
+  },
+
+  {
+    path: '/cooks/add-food', // url
+    icon: <IoFastFoodOutline className={iconClasses} />,
+    name: 'افزودن غذا',
   },
 
   {

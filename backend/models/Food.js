@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 
 // Create a food schema
 const foodSchema = new mongoose.Schema({
-    chef: {
+    cook: {
         type: mongoose.Schema.ObjectId,
         ref: 'Cook',
         required: true,
@@ -14,6 +14,14 @@ const foodSchema = new mongoose.Schema({
         required: true,
         trim: true,
     },
+
+    cookName: {
+        type: String,
+        required: true,
+        trim: true,
+    },
+
+
     price: {
         type: Number,
         required: true,
@@ -40,20 +48,16 @@ const foodSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
-    countInDay: {
+    count: {
         type: Number,
         required: true,
         default: 0
     },
-    days: [{
+    cookDate: [{
         type: String,
         required: true,
     }],
-    startHour: {
-        type: String,
-        required: true,
-    },
-    endHour: {
+    cookHour: {
         type: String,
         required: true,
     },

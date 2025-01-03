@@ -41,45 +41,42 @@ exports.getMe = async (req, res) => {
 exports.updateProfile = async (req, res) => {
     try {
 
-        res.json({
-            msg: "dasda"
-        })
+      
+        let cook = await Cook.findByIdAndUpdate(req.cook._id, {
+            name: req.body.name,
+            phone: req.body.phone,
+            email: req.body.email,
+            username: req.body.username,
+            nationalCode: req.body.nationalCode,
+            province: req.body.province,
+            city: req.body.city,
+            gender: req.body.gender,
+            housePhone: req.body.housePhone,
+            foodItems: req.body.foodItems,
+            count: req.body.count,
+            cookDate: req.body.cookDate,
+            cookHour: req.body.cookHour,
+        }, { new: true })
 
-        // let cook = await Cook.findByIdAndUpdate(req.cook._id, {
-        //     name: req.body.name,
-        //     phone: req.body.phone,
-        //     email: req.body.email,
-        //     username: req.body.username,
-        //     nationalCode: req.body.nationalCode,
-        //     province: req.body.province,
-        //     city: req.body.city,
-        //     gender: req.body.gender,
-        //     housePhone: req.body.housePhone,
-        //     foodItems: req.body.foodItems,
-        //     count: req.body.count,
-        //     cookDate: req.body.cookDate,
-        //     cookHour: req.body.cookHour,
-        // }, { new: true })
-
-        // if (cook) {
-        //     res.status(StatusCodes.OK).json({
-        //         status: 'success',
-        //         msg: 'اطلاعات غذادار ویرایش شد',
-        //         name: cook.name,
-        //         phone: cook.phone,
-        //         email: cook.email,
-        //         username: cook.username,
-        //         nationalCode: cook.nationalCode,
-        //         province: cook.province,
-        //         city: cook.city,
-        //         gender: cook.gender,
-        //     })
-        // } else {
-        //     res.status(StatusCodes.BAD_REQUEST).json({
-        //         status: 'failure',
-        //         msg: 'اطلاعات غذادار ویرایش نشد',
-        //     })
-        // }
+        if (cook) {
+            res.status(StatusCodes.OK).json({
+                status: 'success',
+                msg: 'اطلاعات غذادار ویرایش شد',
+                name: cook.name,
+                phone: cook.phone,
+                email: cook.email,
+                username: cook.username,
+                nationalCode: cook.nationalCode,
+                province: cook.province,
+                city: cook.city,
+                gender: cook.gender,
+            })
+        } else {
+            res.status(StatusCodes.BAD_REQUEST).json({
+                status: 'failure',
+                msg: 'اطلاعات غذادار ویرایش نشد',
+            })
+        }
     } catch (error) {
         console.error(error.message);
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
@@ -754,24 +751,29 @@ exports.getFood = async (req, res) => {
 // @route = /api/foods
 exports.createFood = async (req, res) => {
     try {
+
         let photos = [];
         if (req.files.photos) {
             req.files.photos.forEach((e) => {
-                photos.push(e.filename);
+                photos.push(e.path);
             });
         }
 
+
+        console.log(req.files);
+        
+
         let food = await Food.create({
-            chef: req.cook._id,
+            cook: req.cook._id,
             name: req.body.name,
+            cookName: req.body.cookName,
             price: req.body.price,
             description: req.body.description,
             category: req.body.category,
-            countInDay: req.body.countInDay,
-            days: req.body.days,
-            startHour: req.body.startHour,
-            endHour: req.body.endHour,
-            photo: req.files.photo[0].filename,
+            count: req.body.count,
+            cookDate: req.body.cookDate,
+            cookHour: req.body.cookHour,
+            photo: req.files.photo[0].path,
             photos,
         })
 
@@ -783,7 +785,7 @@ exports.createFood = async (req, res) => {
             });
         }
     } catch (error) {
-        console.error(error.message);
+        console.error(error);
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
             status: 'failure',
             msg: "خطای داخلی سرور",

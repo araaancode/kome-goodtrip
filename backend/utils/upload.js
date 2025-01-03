@@ -173,15 +173,17 @@ module.exports = {
     cookSupportTicketUpload: multer({ storage }),
 
     // foods uploads
-    foodPhotosUpload: multer({
-        storage: multer.diskStorage({
-            destination: function (req, file, cb) {
-                const made = mkdirp.sync(foodPhotosDir);
-                cb(null, foodPhotosDir)
-            },
-            filename: function (req, file, cb) {
-                cb(null, Date.now() + path.extname(file.originalname));
-            }
-        })
-    }),
+    // foodPhotosUpload: multer({
+    //     storage: multer.diskStorage({
+    //         destination: function (req, file, cb) {
+    //             const made = mkdirp.sync(foodPhotosDir);
+    //             cb(null, foodPhotosDir)
+    //         },
+    //         filename: function (req, file, cb) {
+    //             cb(null, Date.now() + path.extname(file.originalname));
+    //         }
+    //     })
+    // }),
+
+    foodPhotosUpload: multer({ storage }),
 }

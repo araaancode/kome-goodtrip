@@ -1,57 +1,48 @@
-import { lazy } from 'react'
+import React from 'react'
 
-
-const Dashboard = lazy(() => import('../pages/protected/Dashboard'))
-const Welcome = lazy(() => import('../pages/protected/Welcome'))
-const Page404 = lazy(() => import('../pages/protected/404'))
-const Blank = lazy(() => import('../pages/protected/Blank'))
-
-
-// routes for drivers
-const Bookings = lazy(() => import('../pages/Bookings'))
-const Cooks = lazy(() => import('../pages/Cooks'))
-const Comments = lazy(() => import('../pages/Comments'))
-const Rates = lazy(() => import('../pages/Rates'))
-const Financials = lazy(() => import('../pages/Financials'))
-const Advertisments = lazy(() => import('../pages/Advertisments'))
-const Prices = lazy(() => import('../pages/Prices'))
-const SupportTickets = lazy(() => import('../pages/SupportTickets'))
-const CreateSupportTicket = lazy(() => import('../pages/CreateSupportTicket'))
-const Bank = lazy(() => import('../pages/Bank'))
-const Owners = lazy(() => import('../pages/Owners'))
-const Profile = lazy(() => import('../pages/Profile'))
-const CookInfo = lazy(() => import('../pages/CookInfo'))
-const Orders = lazy(() => import('../pages/Orders'))
-const CreateAds = lazy(() => import('../pages/CreateAds'))
-const UpdateAds = lazy(() => import('../pages/UpdateAds'))
-
-
-
-
+import AddFood from "../pages/AddFood";
+import Dashboard from "../pages/protected/Dashboard";
+import Welcome from "../pages/protected/Welcome";
+import Page404 from "../pages/protected/404";
+import Blank from "../pages/protected/Blank";
+import Bookings from "../pages/Bookings";
+import Cooks from "../pages/Cooks";
+import Comments from "../pages/Comments";
+import Rates from "../pages/Rates";
+import Financials from "../pages/Financials";
+import Advertisments from "../pages/Advertisments";
+import Prices from "../pages/Prices";
+import SupportTickets from "../pages/SupportTickets";
+import CreateSupportTicket from "../pages/CreateSupportTicket";
+import Bank from "../pages/Bank";
+import Owners from "../pages/Owners";
+import Profile from "../pages/Profile";
+import CookInfo from "../pages/CookInfo";
+import Orders from "../pages/Orders";
+import CreateAds from "../pages/CreateAds";
+import UpdateAds from "../pages/UpdateAds";
 
 const routes = [
-  
- 
   {
-    path: '/orders', // the url
-    component: Orders, // view rendered
+    path: '/orders',
+    component: Orders,
   },
   {
     path: '/financials',
     component: Financials,
   },
   {
-    path: '/cooks', // the url
-    component: Cooks, // view rendered
+    path: '/cooks',
+    component: Cooks,
   },
 
   {
-    path: '/dashboard', // the url
-    component: Dashboard, // view rendered
+    path: '/dashboard',
+    component: Dashboard,
   },
   {
-    path: '/welcome', // the url
-    component: Welcome, // view rendered
+    path: '/welcome',
+    component: Welcome,
   },
   {
     path: '/blank',
@@ -99,12 +90,17 @@ const routes = [
     path: '/create-advertisment',
     component: CreateAds,
   },
-  
+
   {
     path: '/advertisments/:adsId/update',
     component: UpdateAds,
   },
-  
+
+  {
+    path: '/add-food',
+    component: AddFood,
+  },
+
 ]
 
 export default routes

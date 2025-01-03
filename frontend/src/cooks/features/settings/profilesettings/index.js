@@ -10,6 +10,8 @@ import ToogleInput from '../../../components/Input/ToogleInput'
 import { RiEye2Line, RiEyeCloseLine, RiPhoneLine, RiPassPendingLine, RiBuilding2Line, RiTreasureMapLine, RiGenderlessLine } from "@remixicon/react"
 import { CiUser } from "react-icons/ci";
 import { TfiEmail } from "react-icons/tfi";
+import { FiPhone } from "react-icons/fi";
+
 import { LiaUserSecretSolid } from "react-icons/lia";
 
 import Swal from 'sweetalert2'
@@ -30,18 +32,23 @@ function ProfileSettings() {
     const [nationalCode, setNationalCode] = useState("")
     const [gender, setGender] = useState("")
     const [role, setRole] = useState("")
+    const [housePhone, setHousePhone] = useState("")
+    const [address, setAddress] = useState("")
 
-    const dispatch = useDispatch()
+
+    const handleHousePhoneChange = (e) => {
+        setHousePhone(e.target.value)
+    }
 
     useEffect(() => {
         let token = localStorage.getItem("userToken")
 
-        axios.get(`/api/cooks/me`,  {
+        axios.get(`/api/cooks/me`, {
             headers: {
                 'Content-Type': 'application/json',
                 'authorization': 'Bearer ' + token
             },
-        }).then((res)=>{
+        }).then((res) => {
             console.log(res);
             setName(res.data.cook.name)
             setUsername(res.data.cook.username)
@@ -51,7 +58,7 @@ function ProfileSettings() {
             setCity(res.data.cook.city)
             setGender(res.data.cook.gender)
             setNationalCode(res.data.cook.nationalCode)
-        }).catch((err)=>{
+        }).catch((err) => {
             console.log(err);
         })
 
@@ -62,7 +69,7 @@ function ProfileSettings() {
     const updateProfile = () => {
         let token = localStorage.getItem("userToken")
 
-        axios.put(`/api/cooks/update-profile`, { name, phone, email, username,gender, province, city, nationalCode }, {
+        axios.put(`/api/cooks/update-profile`, { name, phone, email, username, gender, province, city, nationalCode }, {
             headers: {
                 'Content-Type': 'application/json',
                 'authorization': 'Bearer ' + token
@@ -135,6 +142,13 @@ function ProfileSettings() {
     };
 
 
+    const handleAddressChange = (e) => {
+        setAddress(e.target.value)
+    }
+
+
+
+
     return (
         <>
 
@@ -173,6 +187,20 @@ function ProfileSettings() {
                             </div>
                             <input style={{ borderRadius: '5px' }} type="text" value={phone}
                                 onChange={handlePhoneChange} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="شماره تلفن" />
+                        </div>
+                        <span className='text-red-500 relative text-sm'>{errorPhoneMessage ? errorPhoneMessage : ""}</span>
+                    </div>
+
+
+                    {/* housePhone */}
+                    <div className="flex flex-col mb-6">
+                        <label htmlFor="housePhone" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">تلفن ثابت</label>
+                        <div className="relative">
+                            <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
+                                <FiPhone className="w-6 h-6 text-gray-400" />
+                            </div>
+                            <input style={{ borderRadius: '5px' }} type="text" value={housePhone}
+                                onChange={handleHousePhoneChange} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="تلفن ثابت" />
                         </div>
                         <span className='text-red-500 relative text-sm'>{errorPhoneMessage ? errorPhoneMessage : ""}</span>
                     </div>
@@ -240,6 +268,19 @@ function ProfileSettings() {
                         </div>
                         <span className='text-red-500 relative text-sm'>{errorPhoneMessage ? errorPhoneMessage : ""}</span>
                     </div>
+
+                    <div className="flex flex-col mb-6">
+                        {/*  address */}
+                        <div className="flex flex-col mb-6">
+                            <label htmlFor="phone" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">آدرس </label>
+                            <div className="relative">
+                                <textarea style={{ borderRadius: '5px', resize: 'none' }} type="text" value={address}
+                                    onChange={handleAddressChange} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="آدرس "></textarea>
+                            </div>
+                            <span className='text-red-500 relative text-sm'>{errorPhoneMessage ? errorPhoneMessage : ""}</span>
+                        </div>
+                    </div>
+
                 </div>
 
                 <div className="mt-2"><button className="btn bg-blue-800 w-50 text-white hover:bg-blue-900 float-right" onClick={() => updateProfile()}>ویرایش</button></div>

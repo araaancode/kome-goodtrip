@@ -45,19 +45,6 @@ function Login() {
 
 
     const submitForm = (e) => {
-        // e.preventDefault()
-        // setErrorMessage("")
-
-        // if (phone.trim() === "") return setErrorPhoneMessage("* شماره تلفن ضروری است")
-        // if (password.trim() === "") return setErrorPasswordMessage("* پسورد ضروری است")
-
-
-        // else {
-        //     setLoading(true)
-        //     localStorage.setItem("token", "DumyTokenHere")
-        //     setLoading(false)
-        //     window.location.href = '/cooks/welcome'
-        // }
 
         e.preventDefault()
 

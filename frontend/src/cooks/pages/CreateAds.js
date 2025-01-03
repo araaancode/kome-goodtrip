@@ -152,31 +152,6 @@ function CreateAds() {
     };
 
 
-
-    // get cook info
-    // axios.get('/api/cooks/me', {
-    //     headers: {
-    //         authorization: `Bearer ${token}`, // Include token in the Authorization header
-    //     },
-    // })
-    //     .then((response) => {
-    //         console.log('Response Data:', response.data.cook);
-    //         setHousePhone(response.data.cook.housePhone)
-    //         setCity(response.data.cook.city)
-    //         setProvince(response.data.cook.province)
-    //         setProvince(response.data.cook.address)
-    //         setProvince(response.data.cook.foodItems)
-    //         setProvince(response.data.cook.count)
-    //         setProvince(response.data.cook.cookDate)
-    //         setProvince(response.data.cook.cookHour)
-    //     })
-    //     .catch((error) => {
-    //         console.error('Error:', error.response ? error.response.data : error.message);
-    //     });
-
-
-
-
     const handleSubmit = async (e) => {
         e.preventDefault();
 

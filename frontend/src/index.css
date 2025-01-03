@@ -47,3 +47,36 @@ button.primary{
     background-color: #4756b3;
     @apply bg-primary p-2 w-full text-white rounded-2xl;
 } */
+
+.app-btn-blue{
+    cursor: pointer;
+    border: 0;
+    border-radius: 5px;
+    padding: 10px;
+    background-color: rgb(30 64 175);
+    color: #fff;
+    width: 180px;
+}
+
+.app-btn-blue:hover{
+    background-color: rgb(30 58 138);
+}
+
+
+.app-btn-gray{
+    cursor: pointer;
+    border: 0;
+    border-radius: 5px;
+    padding: 10px 15px;
+    background-color: #fff;
+    color: rgb(30 58 138);
+    border: 1px solid  rgb(30 58 138);
+    margin: auto 10px;
+    width: 150px;
+    font-size: 14px;
+}
+
+.app-btn-gray:hover{
+    border: 1px dashed rgb(30 58 138);
+}
+
