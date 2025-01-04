@@ -353,7 +353,6 @@ function AddFood() {
                 .catch((error) => {
                     setBtnSpinner(false)
                     console.log('error', error)
-                    // Swal.fire("<small>تغییرات ذخیره نشد</small>", "", "error");
                     toast.error('خطایی وجود دارد. دوباره امتحان کنید !', {
                         position: "top-left",
                         autoClose: 5000,

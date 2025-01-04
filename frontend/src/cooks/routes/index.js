@@ -21,6 +21,7 @@ import CookInfo from "../pages/CookInfo";
 import Orders from "../pages/Orders";
 import CreateAds from "../pages/CreateAds";
 import UpdateAds from "../pages/UpdateAds";
+import Foods from "../pages/Foods";
 
 const routes = [
   {
@@ -99,6 +100,11 @@ const routes = [
   {
     path: '/add-food',
     component: AddFood,
+  },
+
+  {
+    path: '/foods',
+    component: Foods,
   },
 
 ]

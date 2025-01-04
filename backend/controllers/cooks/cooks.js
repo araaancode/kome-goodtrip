@@ -684,15 +684,8 @@ exports.addCommentsToSupportTicket = async (req, res) => {
 // @route = /api/foods
 exports.getFoods = async (req, res) => {
     try {
-        let foods = await Food.find({ chef: req.cook._id })
-
-        // for (let i = 0; i < foods.length; i++) {
-
-        //     if (JSON.stringify(req.cook._id) == JSON.stringify(foods[i].chef)) {
-        //         findFoods.push(foods[i])
-        //     }
-        // }
-
+        let foods = await Food.find({ cook: req.cook._id })
+       
         if (foods && foods.length > 0) {
             return res.status(StatusCodes.OK).json({
                 status: 'success',
