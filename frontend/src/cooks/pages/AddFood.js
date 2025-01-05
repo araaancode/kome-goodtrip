@@ -15,6 +15,7 @@ import { PiChefHatLight } from "react-icons/pi";
 import { PiBowlFood } from "react-icons/pi";
 import { IoPricetagOutline } from "react-icons/io5";
 import { IoIosInformationCircleOutline } from "react-icons/io";
+
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 

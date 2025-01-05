@@ -71,7 +71,7 @@ router.post('/foods', authCook, upload.foodPhotosUpload.fields([
 ]), cookCtrls.createFood)
 router.put('/foods/:foodId/update-food', authCook, cookCtrls.updateFood)
 router.put('/foods/:foodId/update-food-photo', authCook, upload.foodPhotosUpload.single("photo"), cookCtrls.updateFoodPhoto)
-router.put('/foods/:foodId/update-food-photos', authCook, upload.foodPhotosUpload.single("photos"), cookCtrls.updateFoodPhotos)
+router.put('/foods/:foodId/update-food-photos', authCook, upload.foodPhotosUpload.array("photos", 4), cookCtrls.updateFoodPhotos)
 router.delete('/foods/:foodId', authCook, cookCtrls.deleteFood)
 
 

@@ -22,6 +22,7 @@ import Orders from "../pages/Orders";
 import CreateAds from "../pages/CreateAds";
 import UpdateAds from "../pages/UpdateAds";
 import Foods from "../pages/Foods";
+import UpdateFood from "../pages/UpdateFood";
 
 const routes = [
   {
@@ -105,6 +106,11 @@ const routes = [
   {
     path: '/foods',
     component: Foods,
+  },
+
+  {
+    path: '/foods/:foodId/update',
+    component: UpdateFood,
   },
 
 ]

@@ -439,7 +439,7 @@ exports.updateAdsPhoto = async (req, res) => {
 // @route = /api/cooks/ads/:adsId/update-photos
 exports.updateAdsPhotos = async (req, res) => {
     try {
-        const imagePaths = req.files.map((file) => file.filename);
+        const imagePaths = req.files.map((file) => file.path);
 
         if (imagePaths.length === 0) {
             return res.status(400).json({ error: "حداقل یک تصویر باید وارد کنید..!" });
@@ -752,10 +752,6 @@ exports.createFood = async (req, res) => {
             });
         }
 
-
-        console.log(req.files);
-        
-
         let food = await Food.create({
             cook: req.cook._id,
             name: req.body.name,
@@ -793,15 +789,21 @@ exports.createFood = async (req, res) => {
 // @route = /api/foods/:foodId/update-food
 exports.updateFood = async (req, res) => {
     try {
+        let newCookDate=[]
+
+        for (const element of req.body.cookDate) {
+            newCookDate.push(element.label);
+        }
+
         let food = await Food.findByIdAndUpdate(req.params.foodId, {
             name: req.body.name,
+            cookName: req.body.cookName,
             price: req.body.price,
             description: req.body.description,
-            category: req.body.category,
-            countInDay: req.body.countInDay,
-            days: req.body.days,
-            startHour: req.body.startHour,
-            endHour: req.body.endHour,
+            category: req.body.category.label,
+            count: req.body.count,
+            cookDate: newCookDate,
+            cookHour: req.body.cookHour.label,
         }, { new: true })
 
         if (food) {
@@ -816,6 +818,9 @@ exports.updateFood = async (req, res) => {
                 msg: 'غذا ویرایش نشد',
             })
         }
+
+
+        
     } catch (error) {
         console.error(error.message);
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
@@ -834,7 +839,7 @@ exports.updateFoodPhoto = async (req, res) => {
         let foodPhoto = await Food.findById(req.params.foodId)
 
         if (foodPhoto) {
-            foodPhoto.photo = req.file.filename
+            foodPhoto.photo = req.file.path
             await foodPhoto.save().then((data) => {
                 if (data) {
                     res.status(StatusCodes.OK).json({
@@ -873,8 +878,14 @@ exports.updateFoodPhoto = async (req, res) => {
 // @route = /api/foods/:foodId/update-food-photos
 exports.updateFoodPhotos = async (req, res) => {
     try {
+        const imagePaths = req.files.map((file) => file.path);
+
+        if (imagePaths.length === 0) {
+            return res.status(400).json({ error: "حداقل یک تصویر باید وارد کنید..!" });
+        }
+
         await Food.findByIdAndUpdate(req.params.foodId, {
-            photos: req.file.filename,
+            photos: imagePaths
         }).then((food) => {
             if (food) {
                 return res.status(StatusCodes.OK).json({
@@ -889,6 +900,7 @@ exports.updateFoodPhotos = async (req, res) => {
                 })
             }
         });
+
     } catch (error) {
         console.error(error.message);
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
