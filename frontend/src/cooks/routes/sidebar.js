@@ -44,13 +44,13 @@ const routes = [
 
   {
     path: '/cooks/add-food',
-    icon: <IoFastFoodOutline className={iconClasses} />,
+    icon: <TbNewSection className={iconClasses} />,
     name: 'افزودن غذا',
   },
 
   {
     path: '/cooks/foods',
-    icon: <PiBowlFoodLight className={iconClasses} />,
+    icon: <IoFastFoodOutline className={iconClasses} />,
     name: ' غذاها',
   },
 
@@ -62,7 +62,7 @@ const routes = [
 
   {
     path: '/cooks/create-support-ticket',
-    icon: <BiSupport className={iconClasses} />,
+    icon: <TbNewSection className={iconClasses} />,
     name: 'ایجاد تیکت پشتیبانی',
   },
 

@@ -471,7 +471,7 @@ function AddFood() {
 
                     {/*  price  */}
                     <div className="flex flex-col mb-6">
-                        <label htmlFor="title" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">قیمت غذا</label>
+                        <label htmlFor="title" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">قیمت غذا به ازای هر نفر</label>
                         <div className="relative">
                             <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
                                 <IoPricetagOutline className="w-6 h-6 text-gray-400" />

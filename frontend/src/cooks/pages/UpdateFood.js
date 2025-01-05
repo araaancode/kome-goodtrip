@@ -93,7 +93,10 @@ function UpdateFood() {
     const [photos, setPhotos] = useState([])
     const [btnSpinner, setBtnSpinner] = useState(false)
 
+    // 
+    let newCookDate = []
 
+    // 
     let token = localStorage.getItem("userToken")
     let foodId = window.location.href.split('/foods/')[1].split('/update')[0]
 
@@ -340,24 +343,37 @@ function UpdateFood() {
 
     // get single food
     useEffect(() => {
-        axios.get(`/api/cooks/foods/${foodId}`, {
-            headers: {
-                authorization: `Bearer ${token}`,
-            },
-        })
-            .then((response) => {
-                setPhoto(response.data.food.photo)
-                setPhotos(response.data.food.photos)
-                setName(response.data.food.name)
-                setCount(response.data.food.count)
-                setPrice(response.data.food.price)
-                setDescription(response.data.food.description)
-                setCookName(response.data.food.cookName)
-
+        const fetchFood = async () => {
+            await axios.get(`/api/cooks/foods/${foodId}`, {
+                headers: {
+                    authorization: `Bearer ${token}`,
+                },
             })
-            .catch((error) => {
-                console.error(error);
-            });
+                .then((response) => {
+                    setPhoto(response.data.food.photo)
+                    setPhotos(response.data.food.photos)
+                    setName(response.data.food.name)
+                    setCount(response.data.food.count)
+                    setPrice(response.data.food.price)
+                    setDescription(response.data.food.description)
+                    setCookName(response.data.food.cookName)
+                    setCookDate(response.data.food.cookDate)
+                    setCookHour(response.data.food.cookHour)
+                    setCategory(response.data.food.category)
+
+                    // console.log(response.data.food.cookDate);
+                    // console.log(weekDays);
+
+
+
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        }
+
+
+        fetchFood()
     }, [])
 
 
@@ -464,7 +480,6 @@ function UpdateFood() {
             }
         }
     }
-
 
     return (
         <>
@@ -719,7 +734,7 @@ function UpdateFood() {
                                         <SlCalender className="w-6 h-6 text-gray-400" />
                                     </div>
                                     <Select
-                                        value={cookDate}
+                                        value={newCookDate}
                                         onChange={(e) => setCookDate(e)}
                                         options={weekDays}
                                         isMultiple={true}
