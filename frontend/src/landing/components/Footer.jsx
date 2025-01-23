@@ -7,13 +7,12 @@ import { RiTentLine, RiUser3Fill } from "@remixicon/react";
 
 const Footer = () => {
     return (
-        <footer dir='ltr' style={{marginBottom:'0'}} className="text-right bg-gray-200 bottom-0 w-full">
+        <footer dir='ltr' style={{ marginBottom: '0' }} className="text-right bg-gray-200 bottom-0 w-full">
             <hr className="my-2 sm:mx-auto lg:my-2" />
             <div className="mx-auto w-full max-w-screen-xl px-8 p-6">
-                <div className="md:flex md:justify-between ">
-                    <div className="mb-2 md:mb-0 ">
+                <div className="md:flex md:justify-between">
+                    <div className="mb-2 md:mb-0">
                         <a href="/" className="flex items-center">
-                            {/* <img src="https://cdn-icons-png.flaticon.com/128/9299/9299496.png" className="h-16 w-16 " alt="Logo" /> */}
                             <RiTentLine className="w-12 h-12" />
                         </a>
                         <p className='text-gray-800 mt-2 mb-4'>ما را در شبکه های اجتماعی دنبال کنید</p>
@@ -28,10 +27,9 @@ const Footer = () => {
                                 <LinkedinIcon />
                             </div>
                         </div>
-
                     </div>
-                    <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
-                        <div>
+                    <div className="grid grid-cols-3 gap-8 sm:gap-6 sm:grid-cols-3">
+                        {/* <div>
                             <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">نحوه رزرو اقامتگاه</h2>
                             <ul className="text-gray-500 dark:text-gray-400 font-medium">
                                 <li className="mb-4">
@@ -44,7 +42,40 @@ const Footer = () => {
                                     <a href="#" className="hover:underline text-gray-800">لغو رزرو</a>
                                 </li>
                             </ul>
+                        </div> */}
+
+                        <div>
+                            <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">لینک های دیگر</h2>
+                            <ul className="text-gray-500 dark:text-gray-400 font-medium">
+                                <li className="mb-4">
+                                    <a href="/owners/login" className="hover:underline text-gray-800 ">ورود ملک دارها</a>
+                                </li>
+                                <li className="mb-4">
+                                    <a href="/drivers/login" className="hover:underline text-gray-800 ">ورود رانندگان</a>
+                                </li>
+                                <li className="mb-4">
+                                    <a href="/cooks/login" className="hover:underline text-gray-800 ">ورود غذادارها</a>
+                                </li>
+                            </ul>
                         </div>
+
+
+
+                        <div>
+                            <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">راه های ارتباطی</h2>
+                            <ul className="text-gray-500 dark:text-gray-400 font-medium">
+                                <li className="mb-4">
+                                    <a href="#" className="hover:underline text-gray-800">درباره ما</a>
+                                </li>
+                                <li>
+                                    <a href="#" className="hover:underline text-gray-800">تماس با ما</a>
+                                </li>
+                                <li className='mt-2'>
+                                    <a href="#" className="hover:underline text-gray-800">قوانین و مقررات</a>
+                                </li>
+                            </ul>
+                        </div>
+
                         <div>
                             <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">خدمات مشتریان</h2>
                             <ul className="text-gray-500 dark:text-gray-400 font-medium">
@@ -62,20 +93,8 @@ const Footer = () => {
                                 </li>
                             </ul>
                         </div>
-                        <div>
-                            <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">راه های ارتباطی</h2>
-                            <ul className="text-gray-500 dark:text-gray-400 font-medium">
-                                <li className="mb-4">
-                                    <a href="#" className="hover:underline text-gray-800">درباره ما</a>
-                                </li>
-                                <li>
-                                    <a href="#" className="hover:underline text-gray-800">تماس با ما</a>
-                                </li>
-                                <li className='mt-2'>
-                                    <a href="#" className="hover:underline text-gray-800">قوانین و مقررات</a>
-                                </li>
-                            </ul>
-                        </div>
+
+
                     </div>
                 </div>
 
