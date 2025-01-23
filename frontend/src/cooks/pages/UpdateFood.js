@@ -388,6 +388,8 @@ function UpdateFood() {
                 const formData = new FormData();
                 formData.append("photo", selectedFiles[0])
 
+                console.log(selectedFiles[0]);
+                
 
                 Swal.fire({
                     title: "<small>آیا از ویرایش تصویر غذا اطمینان دارید؟</small>",
@@ -487,7 +489,8 @@ function UpdateFood() {
             <TitleCard title="ویرایش غذا" topMargin="mt-2">
                 <div className="">
                     <div>
-                        <div>
+                        <div>     
+                            
                             <h4 className="font-bold text-gray-600">ویرایش عکس اصلی غذا</h4>
                             {/*  food photo  */}
                             <div className="flex flex-col my-6">

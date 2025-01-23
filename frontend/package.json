@@ -66,20 +66,10 @@
   },
   "keywords": [
     "reactjs",
-    "tailwind-css",
-    "starter-kit",
-    "saas-starter-kit",
-    "reduxt-toolkit-dashboard-template",
-    "daisyui-template",
-    "dashboard-template",
-    "react-router",
-    "react-charts"
+    "tailwind-css"
   ],
-  "author": "srobbin01",
+  "author": "araaancode",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/srobbin01/tailwind-dashboard-template-dashwind/issues"
-  },
   "homepage": "",
   "eslintConfig": {
     "extends": [

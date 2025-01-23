@@ -833,10 +833,13 @@ exports.updateFood = async (req, res) => {
 
 // # description -> HTTP VERB -> Accesss -> Access Type
 // # cook update food photo -> PUT -> Cook -> PRIVATE
-// @route = /api/foods/:foodId/update-photo
+// @route = /api/foods/:foodId/update-food-photo
 exports.updateFoodPhoto = async (req, res) => {
     try {
         let foodPhoto = await Food.findById(req.params.foodId)
+
+        console.log(req.file);
+        
 
         if (foodPhoto) {
             foodPhoto.photo = req.file.path
@@ -864,7 +867,7 @@ exports.updateFoodPhoto = async (req, res) => {
         }
 
     } catch (error) {
-        console.error(error.message);
+        console.error(error);
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
             status: 'failure',
             msg: "خطای داخلی سرور",

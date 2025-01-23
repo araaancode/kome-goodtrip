@@ -23,6 +23,9 @@ function CreateAds() {
 
     let token = localStorage.getItem("userToken")
 
+    const [btnSpinner, setBtnSpinner] = useState(false)
+
+
 
     // error variables
     const [nameError, setNameError] = useState(false)
@@ -172,11 +175,11 @@ function CreateAds() {
             setPriceError(true)
             setPriceErrorMsg("* قیمت باید وارد شود")
         }
-        if (!selectedFiles || selectedFiles === "" || selectedFiles === undefined || selectedFiles === null) {
+        if (!selectedFiles || selectedFiles === "" || selectedFiles === undefined || selectedFiles === null || selectedFiles.length === 0) {
             setPhotoError(true)
             setPhotoErrorMsg("* تصویر اصلی آگهی باید وارد شود")
         }
-        if (!selectedFiles2 || selectedFiles2 === "" || selectedFiles2 === undefined || selectedFiles2 === null) {
+        if (!selectedFiles2 || selectedFiles2 === "" || selectedFiles2 === undefined || selectedFiles2 === null || selectedFiles2.length === 0) {
             setPhotosError(true)
             setPhotosErrorMsg("* تصاویر آگهی باید وارد شوند")
         }
@@ -259,7 +262,7 @@ function CreateAds() {
                                     <FiUser className="w-6 h-6 text-gray-400" />
                                 </div>
                                 <input style={{ borderRadius: '5px' }} type="text" value={name}
-                                    onChange={(e) => setName(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="نام و نام خانوادگی مشتری" />
+                                    onChange={(e) => setName(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="نام و نام خانوادگی مشتری" />
                             </div>
                             <span className='text-red-500 relative text-sm'>{nameError ? nameErrorMsg : ""}</span>
                         </div>
@@ -272,7 +275,7 @@ function CreateAds() {
                                     <FiPhone className="w-6 h-6 text-gray-400" />
                                 </div>
                                 <input style={{ borderRadius: '5px' }} type="text" value={phone}
-                                    onChange={(e) => setPhone(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="شماره همراه مخاطب" />
+                                    onChange={(e) => setPhone(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="شماره همراه مخاطب" />
                             </div>
                             <span className='text-red-500 relative text-sm'>{phoneError ? phoneErrorMsg : ""}</span>
                         </div>
@@ -285,7 +288,7 @@ function CreateAds() {
                                     <FiFileText className="w-6 h-6 text-gray-400" />
                                 </div>
                                 <input style={{ borderRadius: '5px' }} type="text" value={title}
-                                    onChange={(e) => setTitle(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="عنوان" />
+                                    onChange={(e) => setTitle(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="عنوان" />
                             </div>
                             <span className='text-red-500 relative text-sm'>{titleError ? titleErrorMsg : ""}</span>
                         </div>
@@ -298,7 +301,7 @@ function CreateAds() {
                                     <PiMoney className="w-6 h-6 text-gray-400" />
                                 </div>
                                 <input style={{ borderRadius: '5px' }} type="text" value={price}
-                                    onChange={(e) => setPrice(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="شماره همراه مخاطب" />
+                                    onChange={(e) => setPrice(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="شماره همراه مخاطب" />
                             </div>
                             <span className='text-red-500 relative text-sm'>{priceError ? priceErrorMsg : ""}</span>
                         </div>
@@ -310,13 +313,13 @@ function CreateAds() {
                             {/* <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
                                     <PiImage className="w-6 h-6 text-gray-400" />
                                 </div> */}
-                            {/* <input type="file" onChange={(e) => setPhoto(e.target.files[0])} name="photo" id="photo" className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" /> */}
-                            <div className="grid grid-cols-1 md:grid-cols-3 border border-gray-400 rounded-md py-2 focus:outline-none focus:border-blue-800">
+                            {/* <input type="file" onChange={(e) => setPhoto(e.target.files[0])} name="photo" id="photo" className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" /> */}
+                            <div className="grid grid-cols-1 md:grid-cols-3 border border-gray-300 rounded-md py-2 focus:outline-none focus:border-blue-800">
                                 <div className="flex items-center">
                                     <button
                                         type="button"
                                         onClick={handleCustomButtonClick}
-                                        className="px-6 py-2 mx-4 bg-green-800 text-white rounded-lg hover:bg-green-900 focus:outline-none focus:bg-green-900"
+                                        className="app-btn-gray"
                                     >
                                         انتخاب تصویر اصلی
                                     </button>
@@ -393,13 +396,13 @@ function CreateAds() {
                             {/* <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
                                     <PiImage className="w-6 h-6 text-gray-400" />
                                 </div> */}
-                            {/* <input type="file" onChange={(e) => setPhoto(e.target.files[0])} name="photo" id="photo" className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" /> */}
-                            <div className="grid grid-cols-1 md:grid-cols-3 border border-gray-400 rounded-md py-2 focus:outline-none focus:border-blue-800">
+                            {/* <input type="file" onChange={(e) => setPhoto(e.target.files[0])} name="photo" id="photo" className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" /> */}
+                            <div className="grid grid-cols-1 md:grid-cols-3 border border-gray-300 rounded-md py-2 focus:outline-none focus:border-blue-800">
                                 <div className="flex items-center">
                                     <button
                                         type="button"
                                         onClick={handleCustomButtonClick2}
-                                        className="px-6 py-2 mx-4 bg-green-800 text-white rounded-lg hover:bg-green-900 focus:outline-none focus:bg-green-900"
+                                        className="app-btn-gray"
                                     >
                                         انتخاب تصاویر آگهی
                                     </button>
@@ -478,7 +481,7 @@ function CreateAds() {
                                     <IoIosInformationCircleOutline className="w-6 h-6 text-gray-400" />
                                 </div>
                                 <textarea style={{ borderRadius: '5px', resize: 'none' }} type="text" value={description}
-                                    onChange={(e) => setDescription(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="توضیحات "></textarea>
+                                    onChange={(e) => setDescription(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="توضیحات "></textarea>
                             </div>
                             <span className='text-red-500 relative text-sm'>{descriptionError ? descriptionErrorMsg : ""}</span>
                         </div>
@@ -491,13 +494,21 @@ function CreateAds() {
                                     <PiMapPinLight className="w-6 h-6 text-gray-400" />
                                 </div>
                                 <textarea style={{ borderRadius: '5px', resize: 'none' }} type="text" value={address}
-                                    onChange={(e) => setAddress(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="آدرس "></textarea>
+                                    onChange={(e) => setAddress(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="آدرس "></textarea>
                             </div>
                             <span className='text-red-500 relative text-sm'>{addressError ? addressErrorMsg : ""}</span>
 
                         </div>
                     </div>
-                    <div className="mt-2"><button type="submit" className="btn bg-blue-800 hover:bg-blue-900 text-white float-right px-8">ایجاد آگهی </button></div>
+                    <button className="app-btn-blue">
+                        {btnSpinner ? (
+                            <div className="px-10 py-1 flex items-center justify-center">
+                                <div className="w-5 h-5 border-2 border-t-transparent border-white rounded-full animate-spin"></div>
+                            </div>
+                        ) : (
+                            <span>اضافه کردن غذا</span>
+                        )}
+                    </button>
                 </form>
 
 
