@@ -1,8 +1,5 @@
-import React, { useEffect } from 'react'
-import './App.css';
+import React from 'react'
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom'
-import { themeChange } from 'theme-change'
-// import initializeApp from './admin/app/init';
 import axios from "axios"
 
 // landing pages 
@@ -23,9 +20,6 @@ import BankPage from './landing/pages/BankPage';
 import NotificationsPage from './landing/pages/NotificationsPage';
 import SupportPage from './landing/pages/SupportPage';
 import ForgotPasswordPage from './landing/pages/ForgotPasswordPage';
-
-
-import { UserContextProvider } from "./landing/components/UserContext";
 
 import PublicRoutes from "./landing/routing/publicRoutes"
 import PrivateRoutes from "./landing/routing/privateRoutes"
@@ -69,10 +63,6 @@ import CooksForgotPassword from "./cooks/pages/ForgotPassword"
 import CookResetPassword from "./cooks/features/user/ResetPassword"
 
 
-// Initializing different libraries
-// initializeApp()
-
-// Check for login and initialize axios
 // const token = checkAuth()
 const token = localStorage.getItem("token")
 
@@ -81,11 +71,6 @@ axios.defaults.withCredentials = true;
 
 
 function App() {
-
-  // useEffect(() => {
-  //   themeChange(false)
-  // }, [])
-
 
   return (
     <>
@@ -127,10 +112,6 @@ function App() {
             <Route path="/admins/*" element={<Layout />} />
           </Route>
 
-          {/* <Route path="/admins" element={<Navigate to={token ? "/admins/welcome" : "/admins/login"} replace />} /> */}
-
-
-
           {/* drivers pages */}
           <Route path="/drivers" element={<Navigate to={token ? "/drivers/welcome" : "/drivers/login"} replace />} />
           <Route path="/drivers/*" element={<DriversLayout />} />
@@ -147,7 +128,6 @@ function App() {
 
           {/* cooks pages */}
           <Route element={<CookPublicRoutes />}>
-            {/* <Route path="/cooks" element={<Navigate to={token ? "/cooks/welcome" : "/cooks/login"} replace />} /> */}
             <Route path="/cooks/login" element={<CooksLogin />} />
             <Route path="/cooks/forgot-password" element={<CooksForgotPassword />} />
             <Route path="/cooks/reset-password" element={<CookResetPassword />} />

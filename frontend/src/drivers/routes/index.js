@@ -1,39 +1,19 @@
-// All components mapping with path for internal routes
-
-import { lazy } from 'react'
-
-
-// const Charts = lazy(() => import('../pages/protected/Charts'))
-// const Leads = lazy(() => import('../pages/protected/Leads'))
-// const Integration = lazy(() => import('../pages/protected/Integration'))
-// const Calendar = lazy(() => import('../pages/protected/Calendar'))
-// const Team = lazy(() => import('../pages/protected/Team'))
-// const Transactions = lazy(() => import('../pages/protected/Transactions'))
-// const Bills = lazy(() => import('../pages/protected/Bills'))
-// const ProfileSettings = lazy(() => import('../pages/protected/ProfileSettings'))
-// const GettingStarted = lazy(() => import('../pages/GettingStarted'))
-// const DocFeatures = lazy(() => import('../pages/DocFeatures'))
-// const DocComponents = lazy(() => import('../pages/DocComponents'))
-
-const Dashboard = lazy(() => import('../pages/protected/Dashboard'))
-const Welcome = lazy(() => import('../pages/protected/Welcome'))
-const Page404 = lazy(() => import('../pages/protected/404'))
-const Blank = lazy(() => import('../pages/protected/Blank'))
-
-
-// routes for drivers
-const Bookings = lazy(() => import('../pages/Bookings'))
-const Buses = lazy(() => import('../pages/Buses'))
-const Comments = lazy(() => import('../pages/Comments'))
-const Rates = lazy(() => import('../pages/Rates'))
-const Financials = lazy(() => import('../pages/Financials'))
-const Advertisments = lazy(() => import('../pages/Advertisments'))
-const Prices = lazy(() => import('../pages/Prices'))
-const Support = lazy(() => import('../pages/Support'))
-const Bank = lazy(() => import('../pages/Bank'))
-const Owners = lazy(() => import('../pages/Owners'))
-const Profile = lazy(() => import('../pages/Profile'))
-const DriverInfo = lazy(() => import('../pages/DriverInfo'))
+import Dashboard from '../pages/protected/Dashboard'
+import Welcome from '../pages/protected/Welcome'
+import Page404 from '../pages/protected/404'
+import Blank from '../pages/protected/Blank'
+import Bookings from '../pages/Bookings'
+import Buses from '../pages/Buses'
+import Comments from '../pages/Comments'
+import Rates from '../pages/Rates'
+import Financials from '../pages/Financials'
+import Advertisments from '../pages/Advertisments'
+import Prices from '../pages/Prices'
+import Support from '../pages/Support'
+import Bank from '../pages/Bank'
+import Owners from '../pages/Owners'
+import Profile from '../pages/Profile'
+import DriverInfo from '../pages/DriverInfo'
 
 
 const routes = [

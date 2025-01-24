@@ -1,45 +1,29 @@
-// All components mapping with path for internal routes
 
-import { lazy } from 'react'
-
-const Dashboard = lazy(() => import('../pages/protected/Dashboard'))
-const Welcome = lazy(() => import('../pages/protected/Welcome'))
-const Page404 = lazy(() => import('../pages/protected/404'))
-const Blank = lazy(() => import('../pages/protected/Blank'))
-const Charts = lazy(() => import('../pages/protected/Charts'))
-const Leads = lazy(() => import('../pages/protected/Leads'))
-const Integration = lazy(() => import('../pages/protected/Integration'))
-const Calendar = lazy(() => import('../pages/protected/Calendar'))
-const Team = lazy(() => import('../pages/protected/Team'))
-const Transactions = lazy(() => import('../pages/protected/Transactions'))
-const Bills = lazy(() => import('../pages/protected/Bills'))
-const ProfileSettings = lazy(() => import('../pages/protected/ProfileSettings'))
-const GettingStarted = lazy(() => import('../pages/GettingStarted'))
-const DocFeatures = lazy(() => import('../pages/DocFeatures'))
-const DocComponents = lazy(() => import('../pages/DocComponents'))
-const Requests = lazy(() => import('../pages/Requests'))
-const Financials = lazy(() => import('../pages/Financials'))
-const Users = lazy(() => import('../pages/Users'))
-const Drivers = lazy(() => import('../pages/Drivers'))
-const Cooks = lazy(() => import('../pages/Cooks'))
-const Rooms = lazy(() => import('../pages/Rooms'))
-const Owners = lazy(() => import('../pages/Owners'))
-const Admins = lazy(() => import('../pages/Admins'))
-const Profile = lazy(() => import('../pages/Profile'))
-const UsersTickets = lazy(() => import('../pages/UsersTickets'))
-const SingleUserTicket = lazy(() => import('../pages/SingleUserTicket'))
-const DriversTickets = lazy(() => import('../pages/DriversTickets'))
-const SingleDriverTicket = lazy(() => import('../pages/SingleDriverTicket'))
-const CooksTickets = lazy(() => import('../pages/CooksTickets'))
-const SingleCookTicket = lazy(() => import('../pages/SingleCookTicket'))
-const OwnersTickets = lazy(() => import('../pages/OwnersTickets'))
-const SingleOwnerTicket = lazy(() => import('../pages/SingleOwnerTicket'))
-const ResetPassword = lazy(() => import('../features/user/ResetPassword'))
+import Dashboard from '../pages/protected/Dashboard'
+import Welcome from '../pages/protected/Welcome'
+import Page404 from '../pages/protected/404'
+import Blank from '../pages/protected/Blank'
+import Requests from '../pages/Requests'
+import Financials from '../pages/Financials'
+import Users from '../pages/Users'
+import Drivers from '../pages/Drivers'
+import Cooks from '../pages/Cooks'
+import Rooms from '../pages/Rooms'
+import Owners from '../pages/Owners'
+import Admins from '../pages/Admins'
+import Profile from '../pages/Profile'
+import UsersTickets from '../pages/UsersTickets'
+import SingleUserTicket from '../pages/SingleUserTicket'
+import DriversTickets from '../pages/DriversTickets'
+import SingleDriverTicket from '../pages/SingleDriverTicket'
+import CooksTickets from '../pages/CooksTickets'
+import SingleCookTicket from '../pages/SingleCookTicket'
+import OwnersTickets from '../pages/OwnersTickets'
+import SingleOwnerTicket from '../pages/SingleOwnerTicket'
+import ResetPassword from '../features/user/ResetPassword'
 
 
 const routes = [
-
-
   {
     path: '/all-admins', // the url
     component: Admins, // view rendered
