@@ -1,20 +1,20 @@
-import { useEffect, useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import TitleCard from "../components/Cards/TitleCard"
 
 import Select from "react-tailwindcss-select";
 import 'react-tailwindcss-select/dist/index.css'
+
+import Swal from 'sweetalert2'
+import axios from "axios"
 
 import { IoFastFoodOutline } from "react-icons/io5";
 import { GoNumber } from "react-icons/go";
 import { SlCalender } from "react-icons/sl";
 import { TbClockHour12 } from "react-icons/tb";
 import { PiChefHatLight } from "react-icons/pi";
+import { PiBowlFood } from "react-icons/pi";
 import { IoPricetagOutline } from "react-icons/io5";
 import { IoIosInformationCircleOutline } from "react-icons/io";
-
-import Swal from 'sweetalert2'
-import axios from "axios"
-
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -80,10 +80,9 @@ const categoryOptions = [
 
 
 function UpdateFood() {
-
     const [name, setName] = useState("")
     const [count, setCount] = useState("")
-    const [cookDate, setCookDate] = useState([])
+    const [cookDate, setCookDate] = useState(null)
     const [cookHour, setCookHour] = useState(null)
     const [price, setPrice] = useState(null)
     const [description, setDescription] = useState(null)
@@ -91,50 +90,11 @@ function UpdateFood() {
     const [cookName, setCookName] = useState("")
     const [photo, setPhoto] = useState(null)
     const [photos, setPhotos] = useState([])
+
     const [btnSpinner, setBtnSpinner] = useState(false)
 
-    // 
-    let newCookDate = []
-
-    // 
     let token = localStorage.getItem("userToken")
     let foodId = window.location.href.split('/foods/')[1].split('/update')[0]
-
-
-    // error variables
-    const [nameError, setNameError] = useState(false)
-    const [nameErrorMsg, setNameErrorMsg] = useState("")
-
-    const [countError, setCountError] = useState(false)
-    const [countErrorMsg, setCountErrorMsg] = useState("")
-
-    const [cookDateError, setCookDateError] = useState(false)
-    const [cookDateErrorMsg, setCookDateErrorMsg] = useState("")
-
-    const [cookHourError, setCookHourError] = useState(false)
-    const [cookHourErrorMsg, setCookHourErrorMsg] = useState("")
-
-    const [priceError, setPriceError] = useState(false)
-    const [priceErrorMsg, setPriceErrorMsg] = useState("")
-
-    const [descriptionError, setDescriptionError] = useState(false)
-    const [descriptionErrorMsg, setDescriptionErrorMsg] = useState("")
-
-    const [categoryError, setCategoryError] = useState(false)
-    const [categoryErrorMsg, setCategoryErrorMsg] = useState("")
-
-    const [cookNameError, setCookNameError] = useState(false)
-    const [cookNameErrorMsg, setCookNameErrorMsg] = useState("")
-
-
-    const [photoError, setPhotoError] = useState(false)
-    const [photoErrorMsg, setPhotoErrorMsg] = useState("")
-
-    const [photosError, setPhotosError] = useState(false)
-    const [photosErrorMsg, setPhotosErrorMsg] = useState("")
-
-
-
 
     // photo vars
     const [selectedFiles, setSelectedFiles] = useState([]);
@@ -147,17 +107,19 @@ function UpdateFood() {
         .map((ext) => `.${ext}`)
         .join(",");
 
+
+
     const handleFileChange = (event) => {
         const newFilesArray = Array.from(event.target.files);
         processFiles(newFilesArray);
     };
+
 
     const processFiles = (filesArray) => {
         const newSelectedFiles = [...selectedFiles];
         let hasError = false;
         const fileTypeRegex = new RegExp(acceptedFileExtensions.join("|"), "i");
         filesArray.forEach((file) => {
-
             if (newSelectedFiles.some((f) => f.name === file.name)) {
                 alert("File names must be unique", "error");
                 hasError = true;
@@ -194,10 +156,13 @@ function UpdateFood() {
         .map((ext) => `.${ext}`)
         .join(",");
 
+
+
     const handleFileChange2 = (event) => {
         const newFilesArray = Array.from(event.target.files);
         processFiles2(newFilesArray);
     };
+
 
     const processFiles2 = (filesArray) => {
         const newSelectedFiles2 = [...selectedFiles2];
@@ -231,7 +196,41 @@ function UpdateFood() {
     };
 
 
-    const UpdateFoodFunction = async (e) => {
+    // error variables
+    const [nameError, setNameError] = useState(false)
+    const [nameErrorMsg, setNameErrorMsg] = useState("")
+
+    const [countError, setCountError] = useState(false)
+    const [countErrorMsg, setCountErrorMsg] = useState("")
+
+    const [cookDateError, setCookDateError] = useState(false)
+    const [cookDateErrorMsg, setCookDateErrorMsg] = useState("")
+
+    const [cookHourError, setCookHourError] = useState(false)
+    const [cookHourErrorMsg, setCookHourErrorMsg] = useState("")
+
+    const [priceError, setPriceError] = useState(false)
+    const [priceErrorMsg, setPriceErrorMsg] = useState("")
+
+    const [descriptionError, setDescriptionError] = useState(false)
+    const [descriptionErrorMsg, setDescriptionErrorMsg] = useState("")
+
+    const [categoryError, setCategoryError] = useState(false)
+    const [categoryErrorMsg, setCategoryErrorMsg] = useState("")
+
+    const [cookNameError, setCookNameError] = useState(false)
+    const [cookNameErrorMsg, setCookNameErrorMsg] = useState("")
+
+
+    const [photoError, setPhotoError] = useState(false)
+    const [photoErrorMsg, setPhotoErrorMsg] = useState("")
+
+    const [photosError, setPhotosError] = useState(false)
+    const [photosErrorMsg, setPhotosErrorMsg] = useState("")
+
+
+
+    const updateFoodHandle = (e) => {
         e.preventDefault();
 
         // name error
@@ -250,7 +249,7 @@ function UpdateFood() {
             setPriceErrorMsg("*  قیمت غذا باید وارد شود")
         }
 
-        if (!cookDate || cookDate === "" || cookDate === undefined || cookDate === null || cookDate.length === 0) {
+        if (!cookDate || cookDate === "" || cookDate === undefined || cookDate === null) {
             setCookDateError(true)
             setCookDateErrorMsg("*  تاریخ پخت غذا باید وارد شود")
         }
@@ -259,7 +258,14 @@ function UpdateFood() {
             setCookHourError(true)
             setCookHourErrorMsg("* ساعت پخت غذا باید وارد شود")
         }
-
+        // if (!selectedFiles || selectedFiles === "" || selectedFiles === undefined || selectedFiles === null || selectedFiles.length === 0) {
+        //     setPhotoError(true)
+        //     setPhotoErrorMsg("* تصویر اصلی غذا باید وارد شود")
+        // }
+        // if (!selectedFiles2 || selectedFiles2 === "" || selectedFiles2 === undefined || selectedFiles2 === null || selectedFiles2.length === 0) {
+        //     setPhotosError(true)
+        //     setPhotosErrorMsg("* تصاویر غذا باید وارد شوند")
+        // }
         if (!description || description === "" || description === undefined || description === null) {
             setDescriptionError(true)
             setDescriptionErrorMsg("* توضیحات غذا باید وارد شود")
@@ -287,7 +293,7 @@ function UpdateFood() {
                 if (result.isConfirmed) {
                     // Swal.fire("<small>غذا ویرایش شد!</small>", "", "success");
                     try {
-                        axios.put(`/api/cooks/foods/${foodId}/update-food`, { name, count, price, cookDate, cookHour, photo: selectedFiles[0], photos: selectedFiles2, description, category, cookName }, {
+                        axios.put(`/api/cooks/foods/${foodId}/update-food`, { name, count, price, cookDate, cookHour, description, category, cookName }, {
                             headers: {
                                 'Content-Type': 'application/json',
                                 'authorization': 'Bearer ' + token
@@ -334,12 +340,8 @@ function UpdateFood() {
                 }
             });
 
-
         }
-
-    };
-
-
+    }
 
     // get single food
     useEffect(() => {
@@ -357,13 +359,9 @@ function UpdateFood() {
                     setPrice(response.data.food.price)
                     setDescription(response.data.food.description)
                     setCookName(response.data.food.cookName)
-                    setCookDate(response.data.food.cookDate)
-                    setCookHour(response.data.food.cookHour)
+                    // setCookDate(response.data.food.cookDate)
+                    // setCookHour(response.data.food.cookHour)
                     setCategory(response.data.food.category)
-
-                    // console.log(response.data.food.cookDate);
-                    // console.log(weekDays);
-
 
 
                 })
@@ -371,492 +369,435 @@ function UpdateFood() {
                     console.error(error);
                 });
         }
-
-
         fetchFood()
     }, [])
 
 
-    // update food main photo 
-    const UpdateFoodMainPhoto = async () => {
+    const updatePhotoFunction = async (e) => {
+        e.preventDefault();
+
         if (!selectedFiles || selectedFiles === "" || selectedFiles === undefined || selectedFiles === null || selectedFiles.length === 0) {
             setPhotoError(true)
             setPhotoErrorMsg("* تصویر اصلی غذا باید وارد شود")
         } else {
+            setBtnSpinner(true)
+
+            const formData = new FormData();
+            formData.append('photo', selectedFiles[0]);
+
             try {
-                setBtnSpinner(true)
-                const formData = new FormData();
-                formData.append("photo", selectedFiles[0])
+                setBtnSpinner(true);
 
-                console.log(selectedFiles[0]);
-                
-
-                Swal.fire({
-                    title: "<small>آیا از ویرایش تصویر غذا اطمینان دارید؟</small>",
-                    showDenyButton: true,
-                    confirmButtonText: "بله",
-                    denyButtonText: `خیر`
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        axios.put(`/api/cooks/foods/${foodId}/update-food-photo`, formData, {
-                            headers: {
-                                "Content-Type": "multipart/form-data",
-                                'authorization': 'Bearer ' + token
-                            },
-                        }).then((res) => {
-                            setBtnSpinner(false)
-                            toast.success('تصویر اصلی غذا ویرایش شد', {
-                                position: "top-left",
-                                autoClose: 5000,
-                                hideProgressBar: false,
-                                closeOnClick: true,
-                                pauseOnHover: true,
-                                draggable: true,
-                                progress: undefined,
-                            })
-                        })
-                    } else if (result.isDenied) {
-                        setBtnSpinner(false)
-                        toast.info('تغییرات ذخیره نشد..!', {
-                            position: "top-left",
-                            autoClose: 5000,
-                            hideProgressBar: false,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: true,
-                            progress: undefined,
-                        })
+                const response = await axios.put(
+                    `/api/cooks/foods/${foodId}/update-food-photo`,
+                    formData,
+                    {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                            authorization: `Bearer ${token}`,
+                        },
                     }
-                });
+                );
+
+                console.log('Response:', response.data.data.photo);
+                setPhoto(response.data.data.photo)
             } catch (error) {
-                console.log('error', error)
-                setBtnSpinner(false)
-                toast.error('خطایی وجود دارد. دوباره امتحان کنید...', {
-                    position: "top-left",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                })
+                console.error('Error updating product image:', error);
+                alert('Failed to update product image.');
+            } finally {
+                setBtnSpinner(false);
             }
         }
     }
 
-    // update food photos
-    const UpdateFoodPhotos = async () => {
+
+    const updatePhotosFunction = async (e) => {
+        e.preventDefault();
+
         if (!selectedFiles2 || selectedFiles2 === "" || selectedFiles2 === undefined || selectedFiles2 === null || selectedFiles2.length === 0) {
             setPhotoError(true)
-            setPhotoErrorMsg("* تصاویر غذا باید وارد شوند")
+            setPhotoErrorMsg("* تصویر اصلی غذا باید وارد شود")
         } else {
+            setBtnSpinner(true)
+
+            const formData = new FormData();
+            
+
+            selectedFiles2.forEach((img)=>{
+                formData.append('photos', img);
+            })
+
+
+
+
             try {
+                setBtnSpinner(true);
 
-                const formData = new FormData();
-                selectedFiles2.forEach(image => formData.append('photos', image));
-
-
-                const response = await axios.put(`/api/cooks/foods/${foodId}/update-food-photos`, formData, {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                        'authorization': 'Bearer ' + token
-                    },
-                });
-                Swal.fire({
-                    title: "<small>آیا از ویرایش تصاویر غذا اطمینان دارید؟</small>",
-                    showDenyButton: true,
-                    confirmButtonText: "بله",
-                    denyButtonText: `خیر`
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        Swal.fire("<small>تصاویر غذا ویرایش شد!</small>", "", "success");
-                    } else if (result.isDenied) {
-                        Swal.fire("<small>تغییرات ذخیره نشد</small>", "", "info");
+                const response = await axios.put(
+                    `/api/cooks/foods/${foodId}/update-food-photos`,
+                    formData,
+                    {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                            authorization: `Bearer ${token}`,
+                        },
                     }
-                });
-                console.log(response);
+                );
+
+                console.log('Response:', response.data);
+                // setPhotos(response.data.data.photos)
             } catch (error) {
-                console.log('error', error)
-                Swal.fire("<small>تغییرات ذخیره نشد</small>", "", "error");
-                Swal.fire(`${error.response.data.msg}`, "", "error");
+                console.error('Error updating product image:', error);
+                alert('Failed to update product image.');
+            } finally {
+                setBtnSpinner(false);
             }
         }
     }
 
     return (
         <>
-
             <TitleCard title="ویرایش غذا" topMargin="mt-2">
-                <div className="">
-                    <div>
-                        <div>     
-                            
-                            <h4 className="font-bold text-gray-600">ویرایش عکس اصلی غذا</h4>
-                            {/*  food photo  */}
-                            <div className="flex flex-col my-6">
 
-                                {/* <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
-                                        <PiImage className="w-6 h-6 text-gray-400" />
-                                    </div> */}
-                                {/* <input type="file" onChange={(e) => setPhoto(e.target.files[0])} name="photo" id="photo" className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" /> */}
-                                <div className="grid grid-cols-1 md:grid-cols-3 border border-gray-400 rounded-md py-2 focus:outline-none focus:border-blue-800">
+                {/* update food main photo */}
+                <div className="mx-auto">
+                    {/*  food photo  */}
+                    <div className="flex flex-col mb-6">
+                        <h4 className="font-bold text-gray-600">ویرایش عکس اصلی غذا</h4>
+                        <label htmlFor="photo" className="mb-2 text-xs sm:text-sm tracking-wide text-gray-600 mt-6">تصویر اصلی غذا </label>
 
-                                    <div className="flex items-center">
-                                        <button
-                                            type="button"
-                                            onClick={handleCustomButtonClick}
-                                            className="app-btn-gray"
-                                        >
-                                            انتخاب تصویر اصلی
-                                        </button>
-                                        <input
-                                            type="file"
-                                            id="photo"
-                                            name="photo"
-                                            accept={acceptedFileTypesString}
-                                            ref={fileInputRef}
-                                            className="hidden"
-                                            onChange={handleFileChange}
-                                            onClick={(event) => {
-                                                event.target.value = null;
-                                            }}
-                                        />
-                                    </div>
-
-                                    <div className="rounded-3xl py-4 max-h-[23rem] overflow-auto">
-                                        {selectedFiles.length > 0 ? (
-                                            <ul className="px-4">
-                                                {selectedFiles.map((file, index) => (
-
-                                                    <li
-                                                        key={file.name}
-                                                        className="flex justify-between items-center border-b py-2"
-                                                    >
-                                                        <div className="flex items-center">
-                                                            {/* <img
-                                                                src={window.location.origin + file.name}
-                                                                alt="File"
-                                                                className="w-10 h-10 mr-2"
-                                                            /> */}
-                                                            <span className="text-base mx-2">{file.name}</span>
-                                                        </div>
-                                                        <button
-                                                            type="button"
-                                                            onClick={() => handleFileDelete(index)}
-                                                            className="text-red-500 hover:text-red-700 focus:outline-none"
-                                                        >
-                                                            <svg
-                                                                xmlns="http://www.w3.org/2000/svg"
-                                                                viewBox="0 0 20 20"
-                                                                fill="none"
-                                                                className="w-6 h-6"
-                                                            >
-                                                                <path
-                                                                    stroke="currentColor"
-                                                                    strokeWidth="2"
-                                                                    d="M6 4l8 8M14 4l-8 8"
-                                                                />
-                                                            </svg>
-                                                        </button>
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        ) : (
-                                            <div className="h-full flex justify-center items-center">
-                                                <p className="text-center text-gray-500 text-sm">
-                                                    هنوز تصویری آپلود نشده است...
-                                                </p>
-                                            </div>
-                                        )}
-                                    </div>
-
-                                </div>
-
-                                <span className='text-red-500 relative text-sm'>{photoError ? photoErrorMsg : ""}</span>
-                            </div>
-
-                            {/* <div className="flex items-center">
-                                <a href={`${photo}`} className="ml-6" target="_blank">
-                                    <img className="w-20 h-20 rounded-md mb-4" src={`${photo}`} />
-                                </a>
-                                <button onClick={UpdateFoodMainPhoto} className="btn bg-blue-800 hover:bg-blue-900 text-white">ویرایش تصویر اصلی</button>
-                            </div> */}
-
-
-                            <div className="flex items-center">
-                                <a href={`${photo}`} className="ml-6" target="_blank">
-                                    <img className="w-20 h-20 rounded-md mb-4" src={`${photo}`} />
-                                </a>
-                                <button className="app-btn-blue mt-2" onClick={UpdateFoodMainPhoto} >
-                                    {btnSpinner ? (
-                                        <div className="px-10 py-1 flex items-center justify-center">
-                                            <div className="w-5 h-5 border-2 border-t-transparent border-white rounded-full animate-spin"></div>
-                                        </div>
-                                    ) : (
-                                        <span> ویرایش تصویر اصلی</span>
-                                    )}
-                                </button>
-
-                            </div>
-                        </div>
-
-
-                        <hr className="my-6" />
-
-                        {/* food photos */}
-                        <div>
-                            <h4 className="font-bold text-gray-600">ویرایش عکس های غذا</h4>
-                            <div className="flex flex-col my-6">
-
-                                {/* <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
+                        {/* <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
                                     <PiImage className="w-6 h-6 text-gray-400" />
                                 </div> */}
-                                {/* <input type="file" onChange={(e) => setPhoto(e.target.files[0])} name="photo" id="photo" className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" /> */}
-                                <div className="grid grid-cols-1 md:grid-cols-3 border border-gray-400 rounded-md py-2 focus:outline-none focus:border-blue-800">
-                                    <div className="flex items-center">
-                                        <button
-                                            type="button"
-                                            onClick={handleCustomButtonClick2}
-                                            className="app-btn-gray"
-                                        >
-                                            انتخاب تصاویر غذا
-                                        </button>
-                                        <input
-                                            type="file"
-                                            id="photos"
-                                            name="photos"
-                                            multiple
-                                            accept={acceptedFileTypesString2}
-                                            ref={fileInputRef2}
-                                            className="hidden"
-                                            onChange={handleFileChange2}
-                                            onClick={(event) => {
-                                                event.target.value = null;
-                                            }}
-                                        />
-                                    </div>
-
-                                    <div className="rounded-3xl py-4 max-h-[23rem] overflow-auto">
-                                        {selectedFiles2.length > 0 ? (
-                                            <ul className="px-4">
-                                                {selectedFiles2.map((file, index) => (
-
-                                                    <li
-                                                        key={file.name}
-                                                        className="flex justify-between items-center border-b py-2"
-                                                    >
-                                                        <div className="flex items-center">
-                                                            {/* <img
-                                                            src={window.location.origin + file.name}
-                                                            alt="File"
-                                                            className="w-10 h-10 mr-2"
-                                                        /> */}
-                                                            <span className="text-base mx-2">{file.name}</span>
-                                                        </div>
-                                                        <button
-                                                            type="button"
-                                                            onClick={() => handleFileDelete2(index)}
-                                                            className="text-red-500 hover:text-red-700 focus:outline-none"
-                                                        >
-                                                            <svg
-                                                                xmlns="http://www.w3.org/2000/svg"
-                                                                viewBox="0 0 20 20"
-                                                                fill="none"
-                                                                className="w-6 h-6"
-                                                            >
-                                                                <path
-                                                                    stroke="currentColor"
-                                                                    strokeWidth="2"
-                                                                    d="M6 4l8 8M14 4l-8 8"
-                                                                />
-                                                            </svg>
-                                                        </button>
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        ) : (
-                                            <div className="h-full flex justify-center items-center">
-                                                <p className="text-center text-gray-500 text-sm">
-                                                    هنوز تصویری آپلود نشده است...
-                                                </p>
-                                            </div>
-                                        )}
-                                    </div>
-                                </div>
-
-                                <span className='text-red-500 relative text-sm'>{photosError ? photosErrorMsg : ""}</span>
-                            </div>
-
+                        {/* <input type="file" onChange={(e) => setPhoto(e.target.files[0])} name="photo" id="photo" className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" /> */}
+                        <div className="grid grid-cols-1 md:grid-cols-3 border border-gray-300 rounded-md py-2 focus:outline-none focus:border-blue-800">
                             <div className="flex items-center">
-                                {photos.map(p => (
-                                    <a key={Math.floor(Math.random() * 10000)} href={`${p}`} target="_blank" className="ml-6">
-                                        <img className="w-20 h-20 rounded-md mb-4" src={`${p}`} />
-                                    </a>
-                                ))}
-                                <button onClick={UpdateFoodPhotos} className="btn bg-blue-800 hover:bg-blue-900 text-white">ویرایش تصاویر</button>
+
+                                <button className="app-btn-gray" onClick={handleCustomButtonClick}>
+                                    انتخاب تصویر اصلی
+                                </button>
+
+                                <input
+                                    type="file"
+                                    id="photo"
+                                    name="photo"
+                                    accept={acceptedFileTypesString}
+                                    ref={fileInputRef}
+                                    className="hidden"
+                                    onChange={handleFileChange}
+                                    onClick={(event) => {
+                                        event.target.value = null;
+                                    }}
+                                />
+                            </div>
+                            <div className="rounded-3xl py-4 max-h-[23rem] overflow-auto">
+                                {selectedFiles.length > 0 ? (
+                                    <ul className="px-4">
+                                        {selectedFiles.map((file, index) => (
+
+                                            <li
+                                                key={file.name}
+                                                className="flex justify-between items-center border-b py-2"
+                                            >
+                                                <div className="flex items-center">
+
+                                                    <span className="text-base mx-2">{file.name}</span>
+                                                </div>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => handleFileDelete(index)}
+                                                    className="text-red-500 hover:text-red-700 focus:outline-none"
+                                                >
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        viewBox="0 0 20 20"
+                                                        fill="none"
+                                                        className="w-6 h-6"
+                                                    >
+                                                        <path
+                                                            stroke="currentColor"
+                                                            strokeWidth="2"
+                                                            d="M6 4l8 8M14 4l-8 8"
+                                                        />
+                                                    </svg>
+                                                </button>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                ) : (
+                                    <div className="h-full flex justify-center items-center">
+                                        <p className="text-center text-gray-500 text-sm">
+                                            هنوز تصویری آپلود نشده است...
+                                        </p>
+                                    </div>
+                                )}
                             </div>
 
                         </div>
-                    </div>
-
-                    <hr className="my-6" />
-                    <h4 className="font-bold text-gray-600 my-6">ویرایش غذا</h4>
-                    <form onSubmit={UpdateFoodFunction}>
-                        <div className="mx-auto">
-                            {/*  food name  */}
-                            <div className="flex flex-col mb-6">
-                                <label htmlFor="title" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">نام غذا</label>
-                                <div className="relative">
-                                    <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
-                                        <IoFastFoodOutline className="w-6 h-6 text-gray-400" />
-                                    </div>
-                                    <input style={{ borderRadius: '5px' }} type="text" value={name}
-                                        onChange={(e) => setName(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="نام غذا" />
-                                </div>
-                                <span className='text-red-500 relative text-sm'>{nameError ? nameErrorMsg : ""}</span>
-                            </div>
-
-                            {/*  food count  */}
-                            <div className="flex flex-col mb-6">
-                                <label htmlFor="count" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">تعداد غذاها  </label>
-                                <div className="relative">
-                                    <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
-                                        <GoNumber className="w-6 h-6 text-gray-400" />
-                                    </div>
-                                    <input style={{ borderRadius: '5px' }} type="number" min={1} value={count}
-                                        onChange={(e) => setCount(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="تعداد غذاها " />
-                                </div>
-                                <span className='text-red-500 relative text-sm'>{countError ? countErrorMsg : ""}</span>
-                            </div>
-
-                            {/*  food date  */}
-                            <div className="flex flex-col mb-6">
-                                <label htmlFor="cookDate" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600"> تاریخ پخت  </label>
-                                <div className="relative">
-                                    <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
-                                        <SlCalender className="w-6 h-6 text-gray-400" />
-                                    </div>
-                                    <Select
-                                        value={newCookDate}
-                                        onChange={(e) => setCookDate(e)}
-                                        options={weekDays}
-                                        isMultiple={true}
-                                        placeholder="انتخاب"
-                                        formatGroupLabel={data => (
-                                            <div className={`py-2 text-xs flex items-center justify-between`}>
-                                                <span className="font-bold">{data.label}</span>
-                                                <span className="bg-gray-200 h-5 h-5 p-1.5 flex items-center justify-center rounded-full">
-                                                    {data.options.length}
-                                                </span>
-                                            </div>
-                                        )}
-                                    />
-
-                                </div>
-                                <span className='text-red-500 relative text-sm'>{cookDateError ? cookDateErrorMsg : ""}</span>
-                            </div>
-
-                            {/*  food hour  */}
-                            <div className="flex flex-col mb-6">
-                                <label htmlFor="cookHour" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600"> ساعت پخت  </label>
-                                <div className="relative">
-                                    <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
-                                        <TbClockHour12 className="w-6 h-6 text-gray-400" />
-                                    </div>
-                                    <Select
-                                        value={cookHour}
-                                        onChange={(e) => setCookHour(e)}
-                                        options={hourOptions}
-                                        placeholder="انتخاب"
-                                        classNames={`placholder-gray-400`}
-                                    />
-                                </div>
-                                <span className='text-red-500 relative text-sm'>{cookHourError ? cookHourErrorMsg : ""}</span>
-
-                            </div>
-
-
-                            {/*  food type  */}
-                            <div className="flex flex-col mb-6">
-                                <label htmlFor="cookHour" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600"> نوع غذا   </label>
-                                <div className="relative">
-                                    <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
-                                        <TbClockHour12 className="w-6 h-6 text-gray-400" />
-                                    </div>
-                                    <Select
-                                        value={category}
-                                        onChange={(e) => setCategory(e)}
-                                        options={categoryOptions}
-                                        placeholder="انتخاب"
-                                        classNames={`placholder-gray-400`}
-                                    />
-                                </div>
-                                <span className='text-red-500 relative text-sm'>{categoryError ? categoryErrorMsg : ""}</span>
-
-                            </div>
-
-
-
-                            {/*  price  */}
-                            <div className="flex flex-col mb-6">
-                                <label htmlFor="title" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">قیمت غذا</label>
-                                <div className="relative">
-                                    <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
-                                        <IoPricetagOutline className="w-6 h-6 text-gray-400" />
-                                    </div>
-                                    <input style={{ borderRadius: '5px' }} type="number" value={price}
-                                        onChange={(e) => setPrice(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="قیمت غذا " />
-                                </div>
-                                {/* <span className='text-red-500 relative text-sm'>{errorPhoneMessage ? errorPhoneMessage : ""}</span> */}
-                                <span className='text-red-500 relative text-sm'>{priceError ? priceErrorMsg : ""}</span>
-
-                            </div>
-
-                            {/*  cook name  */}
-                            <div className="flex flex-col mb-6">
-                                <label htmlFor="cookName" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600"> نام سرآشپز   </label>
-                                <div className="relative">
-                                    <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
-                                        <PiChefHatLight className="w-6 h-6 text-gray-400" />
-                                    </div>
-                                    <input style={{ borderRadius: '5px' }} type="text" value={cookName}
-                                        onChange={(e) => setCookName(e.target.value)}
-                                        className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder=" نام سرآشپز  " />
-                                </div>
-                                <span className='text-red-500 relative text-sm'>{cookNameError ? cookNameErrorMsg : ""}</span>
-
-                            </div>
-
-
-
-                            {/*  description */}
-                            <div className="flex flex-col mb-2">
-                                <label htmlFor="description" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">توضیحات </label>
-                                <div className="relative">
-                                    <div className="inline-flex items-center justify-center absolute left-0 h-full w-10 text-gray-400" style={{ bottom: "52px" }}>
-                                        <IoIosInformationCircleOutline className="w-6 h-6 text-gray-400" />
-                                    </div>
-                                    <textarea style={{ borderRadius: '5px', resize: 'none' }} type="text" value={description}
-                                        onChange={(e) => setDescription(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="توضیحات "></textarea>
-                                </div>
-                                <span className='text-red-500 relative text-sm'>{descriptionError ? descriptionErrorMsg : ""}</span>
-                            </div>
+                        <div className="mt-6">
+                            <img className="rounded-md" src={photo} style={{ width: '50px', height: '50px' }} alt="تصویر اصلی غذا" />
                         </div>
-                        {/* <div className="mt-2"><button type="submit" className="btn bg-blue-800 hover:bg-blue-900 text-white float-right px-8">ویرایش غذا </button></div> */}
-                        <button className="app-btn-blue mt-2">
+                        <button className="app-btn-blue mt-4" onClick={updatePhotoFunction}>
                             {btnSpinner ? (
                                 <div className="px-10 py-1 flex items-center justify-center">
                                     <div className="w-5 h-5 border-2 border-t-transparent border-white rounded-full animate-spin"></div>
                                 </div>
                             ) : (
-                                <span> ویرایش غذا</span>
+                                <span>ویرایش تصویر اصلی</span>
                             )}
                         </button>
-                    </form>
+                        <span className='text-red-500 relative text-sm'>{photoError ? photoErrorMsg : ""}</span>
+                    </div>
+                </div>
+                <hr className="my-4" />
+                {/* update food photos */}
+                <div className="mx-auto">
+                    {/* food photos */}
+                    <div className="flex flex-col mb-6">
+                        <h4 className="font-bold text-gray-600">ویرایش تصاویر غذا</h4>
+
+                        <label htmlFor="photo" className="mb-2 text-xs sm:text-sm text-gray-600 mt-4">تصاویر غذا </label>
+                        <div className="grid grid-cols-1 md:grid-cols-3 border border-gray-300 rounded-md py-2 focus:outline-none focus:border-blue-800">
+                            <div className="flex items-center">
+                                <button
+                                    type="button"
+                                    onClick={handleCustomButtonClick2}
+                                    className="app-btn-gray"
+                                >
+
+                                    انتخاب تصاویر غذا
+                                </button>
+                                <input
+                                    type="file"
+                                    id="photos"
+                                    name="photos"
+                                    multiple
+                                    accept={acceptedFileTypesString2}
+                                    ref={fileInputRef2}
+                                    className="hidden"
+                                    onChange={handleFileChange2}
+                                    onClick={(event) => {
+                                        event.target.value = null;
+                                    }}
+                                />
+                            </div>
+
+                            <div className="rounded-3xl py-4 max-h-[23rem] overflow-auto">
+                                {selectedFiles2.length > 0 ? (
+                                    <ul className="px-4">
+                                        {selectedFiles2.map((file, index) => (
+
+                                            <li
+                                                key={file.name}
+                                                className="flex justify-between items-center border-b py-2"
+                                            >
+                                                <div className="flex items-center">
+                                                    {/* <img
+                                                            src={window.location.origin + file.name}
+                                                            alt="File"
+                                                            className="w-10 h-10 mr-2"
+                                                        /> */}
+                                                    <span className="text-base mx-2">{file.name}</span>
+                                                </div>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => handleFileDelete2(index)}
+                                                    className="text-red-500 hover:text-red-700 focus:outline-none"
+                                                >
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        viewBox="0 0 20 20"
+                                                        fill="none"
+                                                        className="w-6 h-6"
+                                                    >
+                                                        <path
+                                                            stroke="currentColor"
+                                                            strokeWidth="2"
+                                                            d="M6 4l8 8M14 4l-8 8"
+                                                        />
+                                                    </svg>
+                                                </button>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                ) : (
+                                    <div className="h-full flex justify-center items-center">
+                                        <p className="text-center text-gray-500 text-sm">
+                                            هنوز تصویری آپلود نشده است...
+                                        </p>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                        <div className="mt-6 flex justify-start">
+                            {photos.map((file, index) => (
+                                <img className="rounded-md ml-4" key={index + 1} src={file} style={{ width: '50px', height: '50px' }} alt="تصویر اصلی غذا" />
+                            ))}
+                        </div>
+                        <button className="app-btn-blue mt-4" onClick={updatePhotosFunction}>ویرایش تصاویر غذا</button>
+                        <span className='text-red-500 relative text-sm'>{photosError ? photosErrorMsg : ""}</span>
+                    </div>
+                </div>
+                <hr className="my-4" />
+                {/* update food */}
+                <div className="mx-auto">
+                    <h4 className="font-bold text-gray-600 mb-6">ویرایش غذا</h4>
+
+                    {/*  food name  */}
+                    <div className="flex flex-col mb-6">
+                        <label htmlFor="title" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">نام غذا</label>
+                        <div className="relative">
+                            <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
+                                <IoFastFoodOutline className="w-6 h-6 text-gray-400" />
+                            </div>
+                            <input style={{ borderRadius: '5px' }} type="text" value={name}
+                                onChange={(e) => setName(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="نام غذا" />
+                        </div>
+                        <span className='text-red-500 relative text-sm'>{nameError ? nameErrorMsg : ""}</span>
+                    </div>
+
+                    {/*  food count  */}
+                    <div className="flex flex-col mb-6">
+                        <label htmlFor="count" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">تعداد غذاها  </label>
+                        <div className="relative">
+                            <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
+                                <GoNumber className="w-6 h-6 text-gray-400" />
+                            </div>
+                            <input style={{ borderRadius: '5px' }} type="number" min={1} value={count}
+                                onChange={(e) => setCount(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="تعداد غذاها " />
+                        </div>
+                        <span className='text-red-500 relative text-sm'>{countError ? countErrorMsg : ""}</span>
+                    </div>
+
+                    {/*  food date  */}
+                    <div className="flex flex-col mb-6">
+                        <label htmlFor="cookDate" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600"> تاریخ پخت  </label>
+                        <div className="relative">
+                            <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
+                                <SlCalender className="w-6 h-6 text-gray-400" />
+                            </div>
+                            <Select
+                                value={cookDate}
+                                onChange={(e) => setCookDate(e)}
+                                options={weekDays}
+                                isMultiple={true}
+                                placeholder="انتخاب"
+                                formatGroupLabel={data => (
+                                    <div className={`py-2 text-xs flex items-center justify-between`}>
+                                        <span className="font-bold">{data.label}</span>
+                                        <span className="bg-gray-200 h-5 h-5 p-1.5 flex items-center justify-center rounded-full">
+                                            {data.options.length}
+                                        </span>
+                                    </div>
+                                )}
+                            />
+
+                        </div>
+                        <span className='text-red-500 relative text-sm'>{cookDateError ? cookDateErrorMsg : ""}</span>
+                    </div>
+
+                    {/*  food hour  */}
+                    <div className="flex flex-col mb-6">
+                        <label htmlFor="cookHour" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600"> ساعت پخت  </label>
+                        <div className="relative">
+                            <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
+                                <TbClockHour12 className="w-6 h-6 text-gray-400" />
+                            </div>
+                            <Select
+                                value={cookHour}
+                                onChange={(e) => setCookHour(e)}
+                                options={hourOptions}
+                                placeholder="انتخاب"
+                                classNames={`placholder-gray-400`}
+                            />
+                        </div>
+                        <span className='text-red-500 relative text-sm'>{cookHourError ? cookHourErrorMsg : ""}</span>
+
+                    </div>
+
+
+                    {/*  food type  */}
+                    <div className="flex flex-col mb-6">
+                        <label htmlFor="cookHour" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600"> نوع غذا   </label>
+                        <div className="relative">
+                            <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
+                                <TbClockHour12 className="w-6 h-6 text-gray-400" />
+                            </div>
+                            <Select
+                                value={category}
+                                onChange={(e) => setCategory(e)}
+                                options={categoryOptions}
+                                placeholder="انتخاب"
+                                classNames={`placholder-gray-400`}
+                            />
+                        </div>
+                        <span className='text-red-500 relative text-sm'>{categoryError ? categoryErrorMsg : ""}</span>
+
+                    </div>
+
+
+
+                    {/*  price  */}
+                    <div className="flex flex-col mb-6">
+                        <label htmlFor="title" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">قیمت غذا به ازای هر نفر</label>
+                        <div className="relative">
+                            <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
+                                <IoPricetagOutline className="w-6 h-6 text-gray-400" />
+                            </div>
+                            <input style={{ borderRadius: '5px' }} type="number" value={price}
+                                onChange={(e) => setPrice(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="قیمت غذا " />
+                        </div>
+                        {/* <span className='text-red-500 relative text-sm'>{errorPhoneMessage ? errorPhoneMessage : ""}</span> */}
+                        <span className='text-red-500 relative text-sm'>{priceError ? priceErrorMsg : ""}</span>
+
+                    </div>
+
+                    {/*  cook name  */}
+                    <div className="flex flex-col mb-6">
+                        <label htmlFor="cookName" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600"> نام سرآشپز   </label>
+                        <div className="relative">
+                            <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
+                                <PiChefHatLight className="w-6 h-6 text-gray-400" />
+                            </div>
+                            <input style={{ borderRadius: '5px' }} type="text" value={cookName}
+                                onChange={(e) => setCookName(e.target.value)}
+                                className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder=" نام سرآشپز  " />
+                        </div>
+                        <span className='text-red-500 relative text-sm'>{cookNameError ? cookNameErrorMsg : ""}</span>
+
+                    </div>
+
+
+                    {/*  description */}
+                    <div className="flex flex-col mb-2">
+                        <label htmlFor="description" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">توضیحات </label>
+                        <div className="relative">
+                            <div className="inline-flex items-center justify-center absolute left-0 h-full w-10 text-gray-400" style={{ bottom: "52px" }}>
+                                <IoIosInformationCircleOutline className="w-6 h-6 text-gray-400" />
+                            </div>
+                            <textarea style={{ borderRadius: '5px', resize: 'none' }} type="text" value={description}
+                                onChange={(e) => setDescription(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="توضیحات "></textarea>
+                        </div>
+                        <span className='text-red-500 relative text-sm'>{descriptionError ? descriptionErrorMsg : ""}</span>
+                    </div>
+                    <div className="mt-4">
+
+                        <button className="app-btn-blue" onClick={updateFoodHandle}>
+                            {btnSpinner ? (
+                                <div className="px-10 py-1 flex items-center justify-center">
+                                    <div className="w-5 h-5 border-2 border-t-transparent border-white rounded-full animate-spin"></div>
+                                </div>
+                            ) : (
+                                <span>ویرایش غذا</span>
+                            )}
+                        </button>
+
+                    </div>
                 </div>
 
+                <ToastContainer />
 
-            </TitleCard >
+            </TitleCard>
         </>
     )
 }

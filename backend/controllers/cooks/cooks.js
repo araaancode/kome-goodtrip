@@ -41,7 +41,7 @@ exports.getMe = async (req, res) => {
 exports.updateProfile = async (req, res) => {
     try {
 
-      
+
         let cook = await Cook.findByIdAndUpdate(req.cook._id, {
             name: req.body.name,
             phone: req.body.phone,
@@ -685,7 +685,7 @@ exports.addCommentsToSupportTicket = async (req, res) => {
 exports.getFoods = async (req, res) => {
     try {
         let foods = await Food.find({ cook: req.cook._id })
-       
+
         if (foods && foods.length > 0) {
             return res.status(StatusCodes.OK).json({
                 status: 'success',
@@ -789,7 +789,7 @@ exports.createFood = async (req, res) => {
 // @route = /api/foods/:foodId/update-food
 exports.updateFood = async (req, res) => {
     try {
-        let newCookDate=[]
+        let newCookDate = []
 
         for (const element of req.body.cookDate) {
             newCookDate.push(element.label);
@@ -820,7 +820,7 @@ exports.updateFood = async (req, res) => {
         }
 
 
-        
+
     } catch (error) {
         console.error(error.message);
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
@@ -836,35 +836,25 @@ exports.updateFood = async (req, res) => {
 // @route = /api/foods/:foodId/update-food-photo
 exports.updateFoodPhoto = async (req, res) => {
     try {
-        let foodPhoto = await Food.findById(req.params.foodId)
-
-        console.log(req.file);
         
-
-        if (foodPhoto) {
-            foodPhoto.photo = req.file.path
-            await foodPhoto.save().then((data) => {
-                if (data) {
-                    res.status(StatusCodes.OK).json({
-                        status: "success",
-                        msg: "تصویر ویرایش شد",
-                        foodPhoto
-                    })
-                }
-            }).catch((error) => {
-                res.status(StatusCodes.BAD_REQUEST).json({
-                    status: "failure",
-                    msg: "تصویر ویرایش نشد",
-                    error
+        await Food.findByIdAndUpdate(req.params.foodId, { photo: req.file.path }, { new: true }).then((data) => {
+            if (data) {
+                res.status(StatusCodes.OK).json({
+                    status: "success",
+                    msg: "تصویر ویرایش شد",
+                    data
                 })
-            })
+            }
+        }).catch((error) => {
+            console.log(error);
 
-        } else {
-            res.status(StatusCodes.OK).json({
+            res.status(StatusCodes.BAD_REQUEST).json({
                 status: "failure",
-                msg: "تصویر پیدا نشد",
+                msg: "تصویر ویرایش نشد",
+                error
             })
-        }
+        })
+
 
     } catch (error) {
         console.error(error);

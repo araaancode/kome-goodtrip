@@ -35,8 +35,8 @@ router.post('/ads', authCook, upload.cookAdsPhotosUpload.fields([
     },
 ]), cookCtrls.createAds)
 
-router.put('/ads/:adsId/update-ads', authCook, cookCtrls.updateAds)
 router.put('/ads/:adsId/update-photo', authCook, upload.cookAdsPhotosUpload.single("photo"), cookCtrls.updateAdsPhoto)
+router.put('/ads/:adsId/update-ads', authCook, cookCtrls.updateAds)
 router.put('/ads/:adsId/update-photos', authCook, upload.cookAdsPhotosUpload.array("photos", 4), cookCtrls.updateAdsPhotos)
 router.delete('/ads/:adsId', authCook, cookCtrls.deleteAds)
 
@@ -70,7 +70,7 @@ router.post('/foods', authCook, upload.foodPhotosUpload.fields([
     },
 ]), cookCtrls.createFood)
 router.put('/foods/:foodId/update-food', authCook, cookCtrls.updateFood)
-router.put('/foods/:foodId/update-food-photo', authCook, upload.foodPhotosUpload.single("photo"), cookCtrls.updateFoodPhoto)
+router.put('/foods/:foodId/update-food-photo', authCook, upload.foodPhotoUpload.single("photo"), cookCtrls.updateFoodPhoto)
 router.put('/foods/:foodId/update-food-photos', authCook, upload.foodPhotosUpload.array("photos", 4), cookCtrls.updateFoodPhotos)
 router.delete('/foods/:foodId', authCook, cookCtrls.deleteFood)
 

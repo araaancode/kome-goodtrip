@@ -185,5 +185,6 @@ module.exports = {
     //     })
     // }),
 
+    foodPhotoUpload: multer({ storage }),
     foodPhotosUpload: multer({ storage }),
 }
