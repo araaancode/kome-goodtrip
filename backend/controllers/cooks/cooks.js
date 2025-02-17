@@ -570,7 +570,7 @@ exports.createSupportTicket = async (req, res) => {
         let images = [];
         if (req.files.images) {
             req.files.images.forEach((e) => {
-                images.push(e.filename);
+                images.push(e.path);
             });
         }
 
@@ -579,7 +579,7 @@ exports.createSupportTicket = async (req, res) => {
             description: req.body.description,
             cook: req.cook._id,
             assignedTo: req.cook._id,
-            images: images,
+            images,
         }).then((data) => {
             res.status(StatusCodes.CREATED).json({
                 status: 'success',

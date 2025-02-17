@@ -58,8 +58,8 @@ const cookSupportTicketSchema = new Schema({
     default: false
   },
 
-  images:[{
-    String,
+  images: [{
+    type: String,
   }]
 });
 
