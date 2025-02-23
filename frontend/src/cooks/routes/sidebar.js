@@ -54,11 +54,11 @@ const routes = [
     name: ' غذاها',
   },
 
-  {
-    path: '/cooks/rates',
-    icon: <StarIcon className={iconClasses} />,
-    name: 'امتیاز',
-  },
+  // {
+  //   path: '/cooks/rates',
+  //   icon: <StarIcon className={iconClasses} />,
+  //   name: 'امتیاز',
+  // },
 
   {
     path: '/cooks/create-support-ticket',

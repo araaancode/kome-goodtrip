@@ -8,7 +8,6 @@ import Blank from "../pages/protected/Blank";
 import Bookings from "../pages/Bookings";
 import Cooks from "../pages/Cooks";
 import Comments from "../pages/Comments";
-import Rates from "../pages/Rates";
 import Financials from "../pages/Financials";
 import Advertisments from "../pages/Advertisments";
 import Prices from "../pages/Prices";
@@ -23,6 +22,7 @@ import CreateAds from "../pages/CreateAds";
 import UpdateAds from "../pages/UpdateAds";
 import Foods from "../pages/Foods";
 import UpdateFood from "../pages/UpdateFood";
+import SingleSupportTicket from "../pages/SingleSupportTicket";
 
 const routes = [
   {
@@ -54,10 +54,10 @@ const routes = [
     path: '/comments',
     component: Comments,
   },
-  {
-    path: '/rates',
-    component: Rates,
-  },
+  // {
+  //   path: '/rates',
+  //   component: Rates,
+  // },
 
   {
     path: '/advertisments',
@@ -74,6 +74,11 @@ const routes = [
   {
     path: '/create-support-ticket',
     component: CreateSupportTicket,
+  },
+
+  {
+    path: '/support-tickets/:stId',
+    component: SingleSupportTicket,
   },
   {
     path: '/bank',
@@ -112,6 +117,8 @@ const routes = [
     path: '/foods/:foodId/update',
     component: UpdateFood,
   },
+
+
 
 ]
 

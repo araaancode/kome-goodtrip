@@ -586,6 +586,12 @@ exports.createSupportTicket = async (req, res) => {
                 msg: "تیکت پشتیبانی ساخته شد",
                 data
             })
+        }).catch((error) => {
+            console.error(error);
+            res.status(StatusCodes.BAD_REQUEST).json({
+                status: 'failure',
+                error
+            });
         })
 
 
@@ -836,7 +842,7 @@ exports.updateFood = async (req, res) => {
 // @route = /api/foods/:foodId/update-food-photo
 exports.updateFoodPhoto = async (req, res) => {
     try {
-        
+
         await Food.findByIdAndUpdate(req.params.foodId, { photo: req.file.path }, { new: true }).then((data) => {
             if (data) {
                 res.status(StatusCodes.OK).json({
