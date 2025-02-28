@@ -402,8 +402,8 @@ function UpdateFood() {
                 console.log('Response:', response.data.data.photo);
                 setPhoto(response.data.data.photo)
             } catch (error) {
-                console.error('Error updating product image:', error);
-                alert('Failed to update product image.');
+                console.error('Error updating food image:', error);
+                alert('Failed to update food image.');
             } finally {
                 setBtnSpinner(false);
             }
@@ -427,9 +427,6 @@ function UpdateFood() {
                 formData.append('photos', img);
             })
 
-
-
-
             try {
                 setBtnSpinner(true);
 
@@ -447,8 +444,8 @@ function UpdateFood() {
                 console.log('Response:', response.data);
                 // setPhotos(response.data.data.photos)
             } catch (error) {
-                console.error('Error updating product image:', error);
-                alert('Failed to update product image.');
+                console.error('Error updating food image:', error);
+                alert('Failed to update food image.');
             } finally {
                 setBtnSpinner(false);
             }

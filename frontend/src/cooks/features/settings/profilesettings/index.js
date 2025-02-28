@@ -1,16 +1,22 @@
 import { useEffect, useState } from "react"
 import TitleCard from "../../../components/Cards/TitleCard"
 
-import { FiFileText, FiPhone, FiUser } from "react-icons/fi";
-import { SlCalender } from "react-icons/sl";
-import { PiMoney, PiMapPinLight } from "react-icons/pi";
-
-
 import Swal from 'sweetalert2'
 import axios from "axios"
 
 import Select from "react-tailwindcss-select";
 import 'react-tailwindcss-select/dist/index.css'
+
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+// icons
+import { FiPhone, FiUser, FiMail, FiMapPin } from "react-icons/fi";
+import { SlCalender } from "react-icons/sl";
+import { PiMapPinLight, PiCityThin } from "react-icons/pi";
+import { RiUser5Line } from "react-icons/ri";
+import { LiaIdCardSolid } from "react-icons/lia";
 
 const provincesList = [
     {
@@ -6981,10 +6987,6 @@ function ProfileSettings() {
     const [addressError, setAddressError] = useState(false)
     const [addressErrorMsg, setAddressErrorMsg] = useState("")
 
-    const handleHousePhoneChange = (e) => {
-        setHousePhone(e.target.value)
-    }
-
     useEffect(() => {
         let token = localStorage.getItem("userToken")
 
@@ -7003,6 +7005,8 @@ function ProfileSettings() {
             setCity(res.data.cook.city)
             setGender(res.data.cook.gender)
             setNationalCode(res.data.cook.nationalCode)
+            setAddress(res.data.cook.address)
+            setHousePhone(res.data.cook.housePhone)
         }).catch((err) => {
             console.log(err);
         })
@@ -7011,39 +7015,10 @@ function ProfileSettings() {
 
 
     // Call API to update profile settings changes
-    const updateProfile = () => {
-        let token = localStorage.getItem("userToken")
-
-        axios.put(`/api/cooks/update-profile`, { name, phone, email, username, gender, province, city, nationalCode }, {
-            headers: {
-                'Content-Type': 'application/json',
-                'authorization': 'Bearer ' + token
-            },
-        })
-            .then((response) => {
-                Swal.fire({
-                    title: "<small>آیا از ویرایش پروفایل اطمینان دارید؟</small>",
-                    showDenyButton: true,
-                    confirmButtonText: "بله",
-                    denyButtonText: `خیر`
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        Swal.fire("<small>پروفایل ویرایش شد!</small>", "", "success");
-                    } else if (result.isDenied) {
-                        Swal.fire("<small>تغییرات ذخیره نشد</small>", "", "info");
-                    }
-                });
-            })
-            .catch((error) => {
-                console.log('error', error)
-                Swal.fire("<small>تغییرات ذخیره نشد</small>", "", "error");
-            })
-    }
-
-
-    const handleSubmit = async (e) => {
+    const updateProfile = (e) => {
         e.preventDefault();
 
+        let token = localStorage.getItem("userToken")
         setBtnSpinner(true)
 
         // // name error
@@ -7095,87 +7070,75 @@ function ProfileSettings() {
             setHousePhoneErrorMsg("* شماره اقامتگاه باید وارد شود")
         }
 
+        if (!address || address === "" || address === undefined || address === null) {
+            setAddressError(true)
+            setAddressErrorMsg("* آدرس باید وارد شود")
+        }
+        else {
 
+            axios.put(`/api/cooks/update-profile`, { name, phone, email, username, gender, province, city, housePhone, nationalCode, address }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'authorization': 'Bearer ' + token
+                },
+            })
+                .then((response) => {
+                    Swal.fire({
+                        title: "<small>آیا از ویرایش پروفایل اطمینان دارید؟</small>",
+                        showDenyButton: true,
+                        confirmButtonText: "بله",
+                        denyButtonText: `خیر`
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            setBtnSpinner(false)
 
-        // if (!price || price === "" || price === undefined || price === null) {
-        //     setPriceError(true)
-        //     setPriceErrorMsg("* قیمت باید وارد شود")
-        // }
-        // if (!selectedFiles || selectedFiles === "" || selectedFiles === undefined || selectedFiles === null || selectedFiles.length === 0) {
-        //     setPhotoError(true)
-        //     setPhotoErrorMsg("* تصویر اصلی آگهی باید وارد شود")
-        // }
-        // if (!selectedFiles2 || selectedFiles2 === "" || selectedFiles2 === undefined || selectedFiles2 === null || selectedFiles2.length === 0) {
-        //     setPhotosError(true)
-        //     setPhotosErrorMsg("* تصاویر آگهی باید وارد شوند")
-        // }
-        // if (!description || description === "" || description === undefined || description === null) {
-        //     setDescriptionError(true)
-        //     setDescriptionErrorMsg("* توضیح آگهی باید وارد شود")
-        // }
-        // if (!address || address === "" || address === undefined || address === null) {
-        //     setAddressError(true)
-        //     setAddressErrorMsg("* آدرس باید وارد شود")
-        // }
-        // else {
-        //     const formData = new FormData();
-        //     formData.append('title', title);
-        //     formData.append('description', description);
-        //     formData.append('price', price);
-        //     formData.append('name', name);
-        //     formData.append('address', address);
-        //     formData.append('phone', phone);
-        //     formData.append('photo', selectedFiles[0]);
-        //     selectedFiles2.forEach(image => formData.append('photos', image));
-        //     // formData.append('photos', selectedFiles2)
+                            toast.success('پروفایل ویرایش شد', {
+                                position: "top-left",
+                                autoClose: 5000,
+                                hideProgressBar: false,
+                                closeOnClick: true,
+                                pauseOnHover: true,
+                                draggable: true,
+                                progress: undefined,
+                            })
 
-        //     try {
-        //         const response = await axios.post('/api/cooks/ads', formData, {
-        //             headers: {
-        //                 'Content-Type': 'multipart/form-data',
-        //                 'authorization': 'Bearer ' + token
-        //             },
-        //         });
-        //         Swal.fire({
-        //             title: "<small>آیا از ایجاد آگهی اطمینان دارید؟</small>",
-        //             showDenyButton: true,
-        //             confirmButtonText: "بله",
-        //             denyButtonText: `خیر`
-        //         }).then((result) => {
-        //             if (result.isConfirmed) {
-        //                 Swal.fire("<small>آگهی ایجاد شد!</small>", "", "success");
-        //                 setTitle("");
-        //                 setDescription("");
-        //                 setPrice("");
-        //                 setName("");
-        //                 setAddress("");
-        //                 setPhone("");
-        //                 setPhoto(null);
-        //                 setPhotos([])
-        //                 setSelectedFiles([])
-        //                 setSelectedFiles2([])
+                        } else if (result.isDenied) {
+                            setBtnSpinner(false)
+                            toast.info('تغییرات ذخیره نشد', {
+                                position: "top-left",
+                                autoClose: 5000,
+                                hideProgressBar: false,
+                                closeOnClick: true,
+                                pauseOnHover: true,
+                                draggable: true,
+                                progress: undefined,
+                            })
+                        }
+                    });
+                })
+                .catch((error) => {
+                    setBtnSpinner(false)
+                    console.log('error', error)
+                    toast.error('خطایی وجود دارد. دوباره امتحان کنید !', {
+                        position: "top-left",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    })
+                })
+        }
 
-        //             } else if (result.isDenied) {
-        //                 Swal.fire("<small>تغییرات ذخیره نشد</small>", "", "info");
-        //             }
-        //         });
-        //         console.log(response.data);
-        //     } catch (error) {
-        //         console.log('error', error)
-        //         Swal.fire("<small>تغییرات ذخیره نشد</small>", "", "error");
-        //         // Swal.fire(`${error.response.data.msg}`, "", "error");
-        //     }
-        // }
-
-    };
-
+    }
 
     return (
         <>
 
             <TitleCard title="ثبت اطلاعات غذادار" topMargin="mt-2">
 
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={updateProfile}>
                     <div className="">
 
                         {/* name */}
@@ -7185,7 +7148,7 @@ function ProfileSettings() {
                                 <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
                                     <FiUser className="w-6 h-6 text-gray-400" />
                                 </div>
-                                <input style={{ borderRadius: '5px' }} type="text" value={cook.name}
+                                <input style={{ borderRadius: '5px' }} type="text" value={name}
                                     onChange={(e) => setName(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="نام و نام خانوادگی" />
                             </div>
                             <span className='text-red-500 relative text-sm'>{nameError ? nameErrorMsg : ""}</span>
@@ -7198,7 +7161,7 @@ function ProfileSettings() {
                                 <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
                                     <FiPhone className="w-6 h-6 text-gray-400" />
                                 </div>
-                                <input style={{ borderRadius: '5px' }} type="text" value={cook.phone}
+                                <input style={{ borderRadius: '5px' }} type="text" value={phone}
                                     onChange={(e) => setPhone(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="شماره همراه" />
                             </div>
                             <span className='text-red-500 relative text-sm'>{phoneError ? phoneErrorMsg : ""}</span>
@@ -7210,9 +7173,9 @@ function ProfileSettings() {
                             <label htmlFor="email" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">ایمیل  </label>
                             <div className="relative">
                                 <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
-                                    <FiPhone className="w-6 h-6 text-gray-400" />
+                                    <FiMail className="w-6 h-6 text-gray-400" />
                                 </div>
-                                <input style={{ borderRadius: '5px' }} type="text" value={cook.email}
+                                <input style={{ borderRadius: '5px' }} type="text" value={email}
                                     onChange={(e) => setEmail(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="ایمیل" />
                             </div>
                             <span className='text-red-500 relative text-sm'>{emailError ? emailErrorMsg : ""}</span>
@@ -7223,9 +7186,9 @@ function ProfileSettings() {
                             <label htmlFor="username" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">نام کاربری </label>
                             <div className="relative">
                                 <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
-                                    <FiPhone className="w-6 h-6 text-gray-400" />
+                                    <RiUser5Line className="w-6 h-6 text-gray-400" />
                                 </div>
-                                <input style={{ borderRadius: '5px' }} type="text" value={cook.username}
+                                <input style={{ borderRadius: '5px' }} type="text" value={username}
                                     onChange={(e) => setUsername(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="نام کاربری" />
                             </div>
                             <span className='text-red-500 relative text-sm'>{usernameError ? usernameErrorMsg : ""}</span>
@@ -7237,13 +7200,13 @@ function ProfileSettings() {
                             <label htmlFor="province" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600"> استان ها </label>
                             <div className="relative">
                                 <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
-                                    <SlCalender className="w-6 h-6 text-gray-400" />
+                                    {/* <CiMap className="w-6 h-6 text-gray-400" /> */}
                                 </div>
                                 <Select
                                     value={province}
                                     onChange={(e) => setProvince(e)}
                                     options={provincesList}
-                                    isMultiple={true}
+                                    isMultiple={false}
                                     placeholder="انتخاب"
                                     formatGroupLabel={data => (
                                         <div className={`py-2 text-xs flex items-center justify-between`}>
@@ -7264,13 +7227,13 @@ function ProfileSettings() {
                             <label htmlFor="city" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">شهرها</label>
                             <div className="relative">
                                 <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
-                                    <SlCalender className="w-6 h-6 text-gray-400" />
+                                    {/* <PiCityThin className="w-6 h-6 text-gray-400" /> */}
                                 </div>
                                 <Select
                                     value={city}
                                     onChange={(e) => setCity(e)}
                                     options={citiesList}
-                                    isMultiple={true}
+                                    isMultiple={false}
                                     placeholder="انتخاب"
                                     formatGroupLabel={data => (
                                         <div className={`py-2 text-xs flex items-center justify-between`}>
@@ -7291,9 +7254,9 @@ function ProfileSettings() {
                             <label htmlFor="nationalCode" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600"> کدملی </label>
                             <div className="relative">
                                 <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
-                                    <FiPhone className="w-6 h-6 text-gray-400" />
+                                    <LiaIdCardSolid className="w-6 h-6 text-gray-400" />
                                 </div>
-                                <input style={{ borderRadius: '5px' }} type="text" value={cook.nationalCode}
+                                <input style={{ borderRadius: '5px' }} type="number" value={nationalCode}
                                     onChange={(e) => setNationalCode(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="کدملی" />
                             </div>
                             <span className='text-red-500 relative text-sm'>{nationalCodeError ? nationalCodeErrorMsg : ""}</span>
@@ -7326,7 +7289,7 @@ function ProfileSettings() {
                                 <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
                                     <FiPhone className="w-6 h-6 text-gray-400" />
                                 </div>
-                                <input style={{ borderRadius: '5px' }} type="text" value={cook.housePhone}
+                                <input style={{ borderRadius: '5px' }} type="text" value={housePhone}
                                     onChange={(e) => setHousePhone(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="شماره اقامتگاه" />
                             </div>
                             <span className='text-red-500 relative text-sm'>{housePhoneError ? housePhoneErrorMsg : ""}</span>
@@ -7338,7 +7301,7 @@ function ProfileSettings() {
                             <label htmlFor="address" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">آدرس </label>
                             <div className="relative">
                                 <div className="inline-flex items-center justify-center absolute left-0 h-full w-10 text-gray-400" style={{ bottom: "52px" }}>
-                                    <PiMapPinLight className="w-6 h-6 text-gray-400" />
+                                    <FiMapPin className="w-6 h-6 text-gray-400" />
                                 </div>
                                 <textarea style={{ borderRadius: '5px', resize: 'none' }} type="text" value={address}
                                     onChange={(e) => setAddress(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="آدرس "></textarea>
@@ -7357,6 +7320,7 @@ function ProfileSettings() {
                         )}
                     </button>
                 </form>
+                <ToastContainer />
             </TitleCard>
         </>
     )

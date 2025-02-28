@@ -39,23 +39,21 @@ exports.getMe = async (req, res) => {
 // # cook update profile -> PUT -> Cook -> PRIVATE
 // @route = /api/cooks/update-profile
 exports.updateProfile = async (req, res) => {
+    console.log(req.body.housePhone);
+    
+
     try {
-
-
         let cook = await Cook.findByIdAndUpdate(req.cook._id, {
             name: req.body.name,
             phone: req.body.phone,
             email: req.body.email,
             username: req.body.username,
+            province: req.body.province.label,
+            city: req.body.city.label,
             nationalCode: req.body.nationalCode,
-            province: req.body.province,
-            city: req.body.city,
-            gender: req.body.gender,
+            gender: req.body.gender.label,
             housePhone: req.body.housePhone,
-            foodItems: req.body.foodItems,
-            count: req.body.count,
-            cookDate: req.body.cookDate,
-            cookHour: req.body.cookHour,
+            address: req.body.address,
         }, { new: true })
 
         if (cook) {
@@ -70,6 +68,8 @@ exports.updateProfile = async (req, res) => {
                 province: cook.province,
                 city: cook.city,
                 gender: cook.gender,
+                address: req.body.address,
+
             })
         } else {
             res.status(StatusCodes.BAD_REQUEST).json({

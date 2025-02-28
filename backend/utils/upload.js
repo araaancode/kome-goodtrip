@@ -144,17 +144,7 @@ module.exports = {
 
 
     // ******************** cook ********************
-    cookAvatarUpload: multer({
-        storage: multer.diskStorage({
-            destination: function (req, file, cb) {
-                const made = mkdirp.sync(cookAvatarDir);
-                cb(null, cookAvatarDir)
-            },
-            filename: function (req, file, cb) {
-                cb(null, Date.now() + path.extname(file.originalname));
-            }
-        })
-    }),
+    cookAvatarUpload: multer({ storage }),
 
     // cook ads
     cookAdsPhotosUpload: multer({
