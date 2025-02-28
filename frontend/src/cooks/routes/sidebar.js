@@ -18,11 +18,11 @@ const routes = [
     icon: <BiListUl size="140" className={iconClasses} />,
     name: 'لیست سفارش ها',
   },
-  {
-    path: '/cooks/cook-info',
-    icon: <PiChefHat className={iconClasses} />,
-    name: 'ثبت اطلاعات غذادار',
-  },
+  // {
+  //   path: '/cooks/cook-info',
+  //   icon: <PiChefHat className={iconClasses} />,
+  //   name: 'ثبت اطلاعات غذادار',
+  // },
 
   {
     path: '/cooks/comments',

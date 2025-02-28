@@ -58,11 +58,9 @@ function Login() {
 
             axios.post('/api/cooks/auth/login', { phone, password }, config).then((data) => {
 
+                localStorage.setItem("userId", data.data._id)
                 if (data) {
-                    console.log(data);
-
                     axios.post('/api/cooks/auth/send-otp', { phone }, config).then((otpData) => {
-
                         toast.info('!کد یکبار مصرف ارسال شده را در زیر وارد کنید', {
                             position: "top-right",
                             autoClose: 5000,
@@ -72,7 +70,6 @@ function Login() {
                             draggable: true,
                             progress: undefined,
                         })
-
                         setIsLogin(true)
                     })
 

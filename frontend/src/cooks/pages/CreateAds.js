@@ -497,7 +497,6 @@ function CreateAds() {
                                     onChange={(e) => setAddress(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="آدرس "></textarea>
                             </div>
                             <span className='text-red-500 relative text-sm'>{addressError ? addressErrorMsg : ""}</span>
-
                         </div>
                     </div>
                     <button className="app-btn-blue">

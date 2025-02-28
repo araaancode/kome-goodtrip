@@ -88,10 +88,10 @@ const routes = [
     path: '/profile',
     component: Profile,
   },
-  {
-    path: '/cook-info',
-    component: CookInfo,
-  },
+  // {
+  //   path: '/cook-info',
+  //   component: CookInfo,
+  // },
 
   {
     path: '/create-advertisment',
