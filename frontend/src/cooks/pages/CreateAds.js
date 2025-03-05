@@ -1,56 +1,40 @@
-import { useEffect, useState, useRef } from "react"
+import { useState, useRef } from "react"
 import TitleCard from "../components/Cards/TitleCard"
 
-import { FiFileText, FiPhone, FiUser } from "react-icons/fi";
-
-import { PiMoney, PiMapPinLight } from "react-icons/pi";
-import { IoIosInformationCircleOutline } from "react-icons/io";
+import Select from "react-tailwindcss-select";
+import 'react-tailwindcss-select/dist/index.css'
 
 import Swal from 'sweetalert2'
 import axios from "axios"
 
-function CreateAds() {
+import { IoFastFoodOutline } from "react-icons/io5";
+import { GoNumber } from "react-icons/go";
+import { SlCalender } from "react-icons/sl";
+import { TbClockHour12 } from "react-icons/tb";
+import { PiChefHatLight } from "react-icons/pi";
+import { PiBowlFood } from "react-icons/pi";
+import { IoPricetagOutline } from "react-icons/io5";
+import { IoIosInformationCircleOutline } from "react-icons/io";
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
+
+
+function CreateAds() {
+    const [name, setName] = useState("")
+    const [phone, setPhone] = useState("")
+    const [address, setAddress] = useState("")
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
-    const [price, setPrice] = useState("")
+    const [price, setPrice] = useState(0)
     const [photo, setPhoto] = useState(null)
     const [photos, setPhotos] = useState([])
-    const [name, setName] = useState("")
-    const [address, setAddress] = useState("")
-    const [phone, setPhone] = useState("")
-
-
-    let token = localStorage.getItem("userToken")
 
     const [btnSpinner, setBtnSpinner] = useState(false)
 
-
-
-    // error variables
-    const [nameError, setNameError] = useState(false)
-    const [nameErrorMsg, setNameErrorMsg] = useState("")
-
-    const [titleError, setTitleError] = useState(false)
-    const [titleErrorMsg, setTitleErrorMsg] = useState("")
-
-    const [phoneError, setPhoneError] = useState(false)
-    const [phoneErrorMsg, setPhoneErrorMsg] = useState("")
-
-    const [priceError, setPriceError] = useState(false)
-    const [priceErrorMsg, setPriceErrorMsg] = useState("")
-
-    const [photoError, setPhotoError] = useState(false)
-    const [photoErrorMsg, setPhotoErrorMsg] = useState("")
-
-    const [photosError, setPhotosError] = useState(false)
-    const [photosErrorMsg, setPhotosErrorMsg] = useState("")
-
-    const [descriptionError, setDescriptionError] = useState(false)
-    const [descriptionErrorMsg, setDescriptionErrorMsg] = useState("")
-
-    const [addressError, setAddressError] = useState(false)
-    const [addressErrorMsg, setAddressErrorMsg] = useState("")
+    let token = localStorage.getItem("userToken")
 
 
     // photo vars
@@ -155,361 +139,393 @@ function CreateAds() {
     };
 
 
-    const handleSubmit = async (e) => {
+    // error variables
+    const [nameError, setNameError] = useState(false)
+    const [nameErrorMsg, setNameErrorMsg] = useState("")
+
+    const [phoneError, setPhoneError] = useState(false)
+    const [phoneErrorMsg, setPhoneErrorMsg] = useState("")
+
+    const [addressError, setAddressError] = useState(false)
+    const [addressErrorMsg, setAddressErrorMsg] = useState("")
+
+    const [titleError, setTitleError] = useState(false)
+    const [titleErrorMsg, setTitleErrorMsg] = useState("")
+
+    const [priceError, setPriceError] = useState(false)
+    const [priceErrorMsg, setPriceErrorMsg] = useState("")
+
+    const [descriptionError, setDescriptionError] = useState(false)
+    const [descriptionErrorMsg, setDescriptionErrorMsg] = useState("")
+
+
+    const [photoError, setPhotoError] = useState(false)
+    const [photoErrorMsg, setPhotoErrorMsg] = useState("")
+
+    const [photosError, setPhotosError] = useState(false)
+    const [photosErrorMsg, setPhotosErrorMsg] = useState("")
+
+
+
+    const CreateAdsHandle = (e) => {
+
         e.preventDefault();
 
         // name error
         if (!name || name === "" || name === undefined || name === null) {
             setNameError(true)
-            setNameErrorMsg("* نام مشتری باید وارد شود")
+            setNameErrorMsg("* نام و نام خانوادگی مشتری باید وارد شود")
         }
-        if (!title || title === "" || title === undefined || title === null) {
-            setTitleError(true)
-            setTitleErrorMsg("* عنوان آگهی باید وارد شود")
-        }
+
         if (!phone || phone === "" || phone === undefined || phone === null) {
             setPhoneError(true)
-            setPhoneErrorMsg("* شماره همراه مشتری باید وارد شود")
+            setPhoneErrorMsg("*  شماره مشتری باید وارد شود")
         }
-        if (!price || price === "" || price === undefined || price === null) {
-            setPriceError(true)
-            setPriceErrorMsg("* قیمت باید وارد شود")
+
+        if (!address || address === "" || address === undefined || address === null) {
+            setAddressError(true)
+            setAddressErrorMsg("*  آدرس مشتری باید وارد شود")
         }
+
+        if (!title || title === "" || title === undefined || title === null) {
+            setTitleError(true)
+            setTitleErrorMsg("*  عنوان أگهی باید وارد شود")
+        }
+
+
+        if (!description || description === "" || description === undefined || description === null) {
+            setDescriptionError(true)
+            setDescriptionErrorMsg("* توضیحات أگهی باید وارد شود")
+        }
+
+
         if (!selectedFiles || selectedFiles === "" || selectedFiles === undefined || selectedFiles === null || selectedFiles.length === 0) {
             setPhotoError(true)
-            setPhotoErrorMsg("* تصویر اصلی آگهی باید وارد شود")
+            setPhotoErrorMsg("* تصویر اصلی أگهی باید وارد شود")
         }
         if (!selectedFiles2 || selectedFiles2 === "" || selectedFiles2 === undefined || selectedFiles2 === null || selectedFiles2.length === 0) {
             setPhotosError(true)
-            setPhotosErrorMsg("* تصاویر آگهی باید وارد شوند")
+            setPhotosErrorMsg("* تصاویر أگهی باید وارد شوند")
         }
-        if (!description || description === "" || description === undefined || description === null) {
-            setDescriptionError(true)
-            setDescriptionErrorMsg("* توضیح آگهی باید وارد شود")
-        }
-        if (!address || address === "" || address === undefined || address === null) {
-            setAddressError(true)
-            setAddressErrorMsg("* آدرس باید وارد شود")
-        }
+
         else {
+            setBtnSpinner(true)
+
             const formData = new FormData();
+            formData.append('name', name);
+            formData.append('phone', phone);
+            formData.append('address', address);
             formData.append('title', title);
             formData.append('description', description);
             formData.append('price', price);
-            formData.append('name', name);
-            formData.append('address', address);
-            formData.append('phone', phone);
             formData.append('photo', selectedFiles[0]);
             selectedFiles2.forEach(image => formData.append('photos', image));
-            // formData.append('photos', selectedFiles2)
 
-            try {
-                const response = await axios.post('/api/cooks/ads', formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                        'authorization': 'Bearer ' + token
-                    },
-                });
-                Swal.fire({
-                    title: "<small>آیا از ایجاد آگهی اطمینان دارید؟</small>",
-                    showDenyButton: true,
-                    confirmButtonText: "بله",
-                    denyButtonText: `خیر`
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        Swal.fire("<small>آگهی ایجاد شد!</small>", "", "success");
-                        setTitle("");
-                        setDescription("");
-                        setPrice("");
-                        setName("");
-                        setAddress("");
-                        setPhone("");
-                        setPhoto(null);
-                        setPhotos([])
-                        setSelectedFiles([])
-                        setSelectedFiles2([])
+            axios.post(`/api/cooks/ads`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    'authorization': 'Bearer ' + token
+                },
+            })
+                .then((response) => {
+                    setBtnSpinner(false)
+                    setName("")
+                    setPhone("")
+                    setAddress("")
+                    setTitle("")
+                    setDescription("")
+                    setPrice("")
+                    setPhoto(null)
+                    setPhotos([])
 
-                    } else if (result.isDenied) {
-                        Swal.fire("<small>تغییرات ذخیره نشد</small>", "", "info");
-                    }
-                });
-                console.log(response.data);
-            } catch (error) {
-                console.log('error', error)
-                Swal.fire("<small>تغییرات ذخیره نشد</small>", "", "error");
-                // Swal.fire(`${error.response.data.msg}`, "", "error");
-            }
+                    toast.success('أگهی اضافه شد', {
+                        position: "top-left",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    })
+                })
+                .catch((error) => {
+                    setBtnSpinner(false)
+                    console.log('error', error)
+                    toast.error('خطایی وجود دارد. دوباره امتحان کنید !', {
+                        position: "top-left",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    })
+                })
         }
+    }
 
-    };
+
 
 
 
     return (
         <>
-
-            <TitleCard title="ایجاد آگهی" topMargin="mt-2">
-
-
-                <form onSubmit={handleSubmit}>
-                    <div className="">
-
-                        {/* name */}
-                        <div className="flex flex-col mb-6">
-                            <label htmlFor="name" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">نام و نام خانوادگی مشتری</label>
-                            <div className="relative">
-                                <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
-                                    <FiUser className="w-6 h-6 text-gray-400" />
-                                </div>
-                                <input style={{ borderRadius: '5px' }} type="text" value={name}
-                                    onChange={(e) => setName(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="نام و نام خانوادگی مشتری" />
+            <TitleCard title="افزودن أگهی" topMargin="mt-2">
+                <div className="mx-auto">
+                    {/*  company name  */}
+                    <div className="flex flex-col mb-6">
+                        <label htmlFor="name" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">نام و نام خانوادگی مشتری</label>
+                        <div className="relative">
+                            <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
+                                <IoFastFoodOutline className="w-6 h-6 text-gray-400" />
                             </div>
-                            <span className='text-red-500 relative text-sm'>{nameError ? nameErrorMsg : ""}</span>
+                            <input style={{ borderRadius: '5px' }} type="text" value={name}
+                                onChange={(e) => setName(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="نام و  نام خانوادگی مشتری" />
                         </div>
-
-                        {/* phone */}
-                        <div className="flex flex-col mb-6">
-                            <label htmlFor="phone" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">شماره همراه مخاطب</label>
-                            <div className="relative">
-                                <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
-                                    <FiPhone className="w-6 h-6 text-gray-400" />
-                                </div>
-                                <input style={{ borderRadius: '5px' }} type="text" value={phone}
-                                    onChange={(e) => setPhone(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="شماره همراه مخاطب" />
-                            </div>
-                            <span className='text-red-500 relative text-sm'>{phoneError ? phoneErrorMsg : ""}</span>
-                        </div>
-
-                        {/* ads title */}
-                        <div className="flex flex-col mb-6">
-                            <label htmlFor="title" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">عنوان</label>
-                            <div className="relative">
-                                <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
-                                    <FiFileText className="w-6 h-6 text-gray-400" />
-                                </div>
-                                <input style={{ borderRadius: '5px' }} type="text" value={title}
-                                    onChange={(e) => setTitle(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="عنوان" />
-                            </div>
-                            <span className='text-red-500 relative text-sm'>{titleError ? titleErrorMsg : ""}</span>
-                        </div>
-
-                        {/* ads price */}
-                        <div className="flex flex-col mb-6">
-                            <label htmlFor="price" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">قیمت</label>
-                            <div className="relative">
-                                <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
-                                    <PiMoney className="w-6 h-6 text-gray-400" />
-                                </div>
-                                <input style={{ borderRadius: '5px' }} type="text" value={price}
-                                    onChange={(e) => setPrice(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="شماره همراه مخاطب" />
-                            </div>
-                            <span className='text-red-500 relative text-sm'>{priceError ? priceErrorMsg : ""}</span>
-                        </div>
-
-                        {/*  ads photo  */}
-                        <div className="flex flex-col mb-6">
-                            <label htmlFor="photo" className="mb-2 text-xs sm:text-sm tracking-wide text-gray-600">تصویر اصلی آگهی </label>
-
-                            {/* <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
-                                    <PiImage className="w-6 h-6 text-gray-400" />
-                                </div> */}
-                            {/* <input type="file" onChange={(e) => setPhoto(e.target.files[0])} name="photo" id="photo" className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" /> */}
-                            <div className="grid grid-cols-1 md:grid-cols-3 border border-gray-300 rounded-md py-2 focus:outline-none focus:border-blue-800">
-                                <div className="flex items-center">
-                                    <button
-                                        type="button"
-                                        onClick={handleCustomButtonClick}
-                                        className="app-btn-gray"
-                                    >
-                                        انتخاب تصویر اصلی
-                                    </button>
-                                    <input
-                                        type="file"
-                                        id="photo"
-                                        name="photo"
-                                        accept={acceptedFileTypesString}
-                                        ref={fileInputRef}
-                                        className="hidden"
-                                        onChange={handleFileChange}
-                                        onClick={(event) => {
-                                            event.target.value = null;
-                                        }}
-                                    />
-                                </div>
-
-                                <div className="rounded-3xl py-4 max-h-[23rem] overflow-auto">
-                                    {selectedFiles.length > 0 ? (
-                                        <ul className="px-4">
-                                            {selectedFiles.map((file, index) => (
-
-                                                <li
-                                                    key={file.name}
-                                                    className="flex justify-between items-center border-b py-2"
-                                                >
-                                                    <div className="flex items-center">
-                                                        {/* <img
-                                                            src={window.location.origin + file.name}
-                                                            alt="File"
-                                                            className="w-10 h-10 mr-2"
-                                                        /> */}
-                                                        <span className="text-base mx-2">{file.name}</span>
-                                                    </div>
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => handleFileDelete(index)}
-                                                        className="text-red-500 hover:text-red-700 focus:outline-none"
-                                                    >
-                                                        <svg
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                            viewBox="0 0 20 20"
-                                                            fill="none"
-                                                            className="w-6 h-6"
-                                                        >
-                                                            <path
-                                                                stroke="currentColor"
-                                                                strokeWidth="2"
-                                                                d="M6 4l8 8M14 4l-8 8"
-                                                            />
-                                                        </svg>
-                                                    </button>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    ) : (
-                                        <div className="h-full flex justify-center items-center">
-                                            <p className="text-center text-gray-500 text-sm">
-                                                هنوز تصویری آپلود نشده است...
-                                            </p>
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
-
-                            <span className='text-red-500 relative text-sm'>{photoError ? photoErrorMsg : ""}</span>
-                        </div>
-
-
-                        {/* ads photos */}
-                        <div className="flex flex-col mb-6">
-                            <label htmlFor="photo" className="mb-2 text-xs sm:text-sm tracking-wide text-gray-600">تصاویر آگهی </label>
-
-                            {/* <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
-                                    <PiImage className="w-6 h-6 text-gray-400" />
-                                </div> */}
-                            {/* <input type="file" onChange={(e) => setPhoto(e.target.files[0])} name="photo" id="photo" className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" /> */}
-                            <div className="grid grid-cols-1 md:grid-cols-3 border border-gray-300 rounded-md py-2 focus:outline-none focus:border-blue-800">
-                                <div className="flex items-center">
-                                    <button
-                                        type="button"
-                                        onClick={handleCustomButtonClick2}
-                                        className="app-btn-gray"
-                                    >
-                                        انتخاب تصاویر آگهی
-                                    </button>
-                                    <input
-                                        type="file"
-                                        id="photos"
-                                        name="photos"
-                                        multiple
-                                        accept={acceptedFileTypesString2}
-                                        ref={fileInputRef2}
-                                        className="hidden"
-                                        onChange={handleFileChange2}
-                                        onClick={(event) => {
-                                            event.target.value = null;
-                                        }}
-                                    />
-                                </div>
-
-                                <div className="rounded-3xl py-4 max-h-[23rem] overflow-auto">
-                                    {selectedFiles2.length > 0 ? (
-                                        <ul className="px-4">
-                                            {selectedFiles2.map((file, index) => (
-
-                                                <li
-                                                    key={file.name}
-                                                    className="flex justify-between items-center border-b py-2"
-                                                >
-                                                    <div className="flex items-center">
-                                                        {/* <img
-                                                            src={window.location.origin + file.name}
-                                                            alt="File"
-                                                            className="w-10 h-10 mr-2"
-                                                        /> */}
-                                                        <span className="text-base mx-2">{file.name}</span>
-                                                    </div>
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => handleFileDelete2(index)}
-                                                        className="text-red-500 hover:text-red-700 focus:outline-none"
-                                                    >
-                                                        <svg
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                            viewBox="0 0 20 20"
-                                                            fill="none"
-                                                            className="w-6 h-6"
-                                                        >
-                                                            <path
-                                                                stroke="currentColor"
-                                                                strokeWidth="2"
-                                                                d="M6 4l8 8M14 4l-8 8"
-                                                            />
-                                                        </svg>
-                                                    </button>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    ) : (
-                                        <div className="h-full flex justify-center items-center">
-                                            <p className="text-center text-gray-500 text-sm">
-                                                هنوز تصویری آپلود نشده است...
-                                            </p>
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
-
-                            <span className='text-red-500 relative text-sm'>{photosError ? photosErrorMsg : ""}</span>
-                        </div>
-
-
-                        {/*  description */}
-                        <div className="flex flex-col mb-4">
-                            <label htmlFor="description" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">توضیحات </label>
-                            <div className="relative">
-                                <div className="inline-flex items-center justify-center absolute left-0 h-full w-10 text-gray-400" style={{ bottom: "52px" }}>
-                                    <IoIosInformationCircleOutline className="w-6 h-6 text-gray-400" />
-                                </div>
-                                <textarea style={{ borderRadius: '5px', resize: 'none' }} type="text" value={description}
-                                    onChange={(e) => setDescription(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="توضیحات "></textarea>
-                            </div>
-                            <span className='text-red-500 relative text-sm'>{descriptionError ? descriptionErrorMsg : ""}</span>
-                        </div>
-
-                        {/*  address */}
-                        <div className="flex flex-col mb-4">
-                            <label htmlFor="address" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">آدرس </label>
-                            <div className="relative">
-                                <div className="inline-flex items-center justify-center absolute left-0 h-full w-10 text-gray-400" style={{ bottom: "52px" }}>
-                                    <PiMapPinLight className="w-6 h-6 text-gray-400" />
-                                </div>
-                                <textarea style={{ borderRadius: '5px', resize: 'none' }} type="text" value={address}
-                                    onChange={(e) => setAddress(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="آدرس "></textarea>
-                            </div>
-                            <span className='text-red-500 relative text-sm'>{addressError ? addressErrorMsg : ""}</span>
-                        </div>
+                        <span className='text-red-500 relative text-sm'>{nameError ? nameErrorMsg : ""}</span>
                     </div>
-                    <button className="app-btn-blue">
-                        {btnSpinner ? (
-                            <div className="px-10 py-1 flex items-center justify-center">
-                                <div className="w-5 h-5 border-2 border-t-transparent border-white rounded-full animate-spin"></div>
-                            </div>
-                        ) : (
-                            <span>اضافه کردن غذا</span>
-                        )}
-                    </button>
-                </form>
 
+                    {/*  phone  */}
+                    <div className="flex flex-col mb-6">
+                        <label htmlFor="phone" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">شماره مشتری</label>
+                        <div className="relative">
+                            <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
+                                <GoNumber className="w-6 h-6 text-gray-400" />
+                            </div>
+                            <input style={{ borderRadius: '5px' }} type="number" min={11} max={11} value={phone}
+                                onChange={(e) => setPhone(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="شماره مشتری" />
+                        </div>
+                        <span className='text-red-500 relative text-sm'>{phoneError ? phoneErrorMsg : ""}</span>
+                    </div>
+
+
+                    {/*  title  */}
+                    <div className="flex flex-col mb-6">
+                        <label htmlFor="title" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">عنوان آگهی</label>
+                        <div className="relative">
+                            <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
+                                <IoPricetagOutline className="w-6 h-6 text-gray-400" />
+                            </div>
+                            <input style={{ borderRadius: '5px' }} type="text" value={title}
+                                onChange={(e) => setTitle(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="عنوان آگهی " />
+                        </div>
+                        <span className='text-red-500 relative text-sm'>{titleError ? titleErrorMsg : ""}</span>
+                    </div>
+
+
+                    {/*  price  */}
+                    <div className="flex flex-col mb-6">
+                        <label htmlFor="price" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">قیمت أگهی </label>
+                        <div className="relative">
+                            <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
+                                <IoPricetagOutline className="w-6 h-6 text-gray-400" />
+                            </div>
+                            <input style={{ borderRadius: '5px' }} type="number" value={price}
+                                onChange={(e) => setPrice(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="قیمت آگهی " />
+                        </div>
+                        {/* <span className='text-red-500 relative text-sm'>{errorPhoneMessage ? errorPhoneMessage : ""}</span> */}
+                        <span className='text-red-500 relative text-sm'>{priceError ? priceErrorMsg : ""}</span>
+
+                    </div>
+
+
+                    {/*  ads photo  */}
+                    <div className="flex flex-col mb-6">
+                        <label htmlFor="photo" className="mb-2 text-xs sm:text-sm tracking-wide text-gray-600">تصویر اصلی أگهی </label>
+
+                        {/* <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
+                                    <PiImage className="w-6 h-6 text-gray-400" />
+                                </div> */}
+                        {/* <input type="file" onChange={(e) => setPhoto(e.target.files[0])} name="photo" id="photo" className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" /> */}
+                        <div className="grid grid-cols-1 md:grid-cols-3 border border-gray-300 rounded-md py-2 focus:outline-none focus:border-blue-800">
+                            <div className="flex items-center">
+
+                                <button className="app-btn-gray" onClick={handleCustomButtonClick}>
+                                    انتخاب تصویر اصلی
+                                </button>
+
+                                <input
+                                    type="file"
+                                    id="photo"
+                                    name="photo"
+                                    accept={acceptedFileTypesString}
+                                    ref={fileInputRef}
+                                    className="hidden"
+                                    onChange={handleFileChange}
+                                    onClick={(event) => {
+                                        event.target.value = null;
+                                    }}
+                                />
+                            </div>
+
+                            <div className="rounded-3xl py-4 max-h-[23rem] overflow-auto">
+                                {selectedFiles.length > 0 ? (
+                                    <ul className="px-4">
+                                        {selectedFiles.map((file, index) => (
+
+                                            <li
+                                                key={file.name}
+                                                className="flex justify-between items-center border-b py-2"
+                                            >
+                                                <div className="flex items-center">
+
+                                                    <span className="text-base mx-2">{file.name}</span>
+                                                </div>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => handleFileDelete(index)}
+                                                    className="text-red-500 hover:text-red-700 focus:outline-none"
+                                                >
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        viewBox="0 0 20 20"
+                                                        fill="none"
+                                                        className="w-6 h-6"
+                                                    >
+                                                        <path
+                                                            stroke="currentColor"
+                                                            strokeWidth="2"
+                                                            d="M6 4l8 8M14 4l-8 8"
+                                                        />
+                                                    </svg>
+                                                </button>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                ) : (
+                                    <div className="h-full flex justify-center items-center">
+                                        <p className="text-center text-gray-500 text-sm">
+                                            هنوز تصویری آپلود نشده است...
+                                        </p>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+
+                        <span className='text-red-500 relative text-sm'>{photoError ? photoErrorMsg : ""}</span>
+                    </div>
+
+
+                    {/* ads photos */}
+                    <div className="flex flex-col mb-6">
+                        <label htmlFor="photo" className="mb-2 text-xs sm:text-sm text-gray-600">تصاویر أگهی </label>
+                        <div className="grid grid-cols-1 md:grid-cols-3 border border-gray-300 rounded-md py-2 focus:outline-none focus:border-blue-800">
+                            <div className="flex items-center">
+                                <button
+                                    type="button"
+                                    onClick={handleCustomButtonClick2}
+                                    className="app-btn-gray"
+                                >
+
+                                    انتخاب تصاویر أگهی
+                                </button>
+                                <input
+                                    type="file"
+                                    id="photos"
+                                    name="photos"
+                                    multiple
+                                    accept={acceptedFileTypesString2}
+                                    ref={fileInputRef2}
+                                    className="hidden"
+                                    onChange={handleFileChange2}
+                                    onClick={(event) => {
+                                        event.target.value = null;
+                                    }}
+                                />
+                            </div>
+
+                            <div className="rounded-3xl py-4 max-h-[23rem] overflow-auto">
+                                {selectedFiles2.length > 0 ? (
+                                    <ul className="px-4">
+                                        {selectedFiles2.map((file, index) => (
+
+                                            <li
+                                                key={file.name}
+                                                className="flex justify-between items-center border-b py-2"
+                                            >
+                                                <div className="flex items-center">
+                                                    {/* <img
+                                                            src={window.location.origin + file.name}
+                                                            alt="File"
+                                                            className="w-10 h-10 mr-2"
+                                                        /> */}
+                                                    <span className="text-base mx-2">{file.name}</span>
+                                                </div>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => handleFileDelete2(index)}
+                                                    className="text-red-500 hover:text-red-700 focus:outline-none"
+                                                >
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        viewBox="0 0 20 20"
+                                                        fill="none"
+                                                        className="w-6 h-6"
+                                                    >
+                                                        <path
+                                                            stroke="currentColor"
+                                                            strokeWidth="2"
+                                                            d="M6 4l8 8M14 4l-8 8"
+                                                        />
+                                                    </svg>
+                                                </button>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                ) : (
+                                    <div className="h-full flex justify-center items-center">
+                                        <p className="text-center text-gray-500 text-sm">
+                                            هنوز تصویری آپلود نشده است...
+                                        </p>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                        <span className='text-red-500 relative text-sm'>{photosError ? photosErrorMsg : ""}</span>
+                    </div>
+
+                    {/*  description */}
+                    <div className="flex flex-col mb-2">
+                        <label htmlFor="description" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">توضیحات </label>
+                        <div className="relative">
+                            <div className="inline-flex items-center justify-center absolute left-0 h-full w-10 text-gray-400" style={{ bottom: "52px" }}>
+                                <IoIosInformationCircleOutline className="w-6 h-6 text-gray-400" />
+                            </div>
+                            <textarea style={{ borderRadius: '5px', resize: 'none' }} type="text" value={description}
+                                onChange={(e) => setDescription(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="توضیحات "></textarea>
+                        </div>
+                        <span className='text-red-500 relative text-sm'>{descriptionError ? descriptionErrorMsg : ""}</span>
+                    </div>
+
+
+                    {/*  address */}
+                    <div className="flex flex-col mb-2">
+                        <label htmlFor="address" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">آدرس </label>
+                        <div className="relative">
+                            <div className="inline-flex items-center justify-center absolute left-0 h-full w-10 text-gray-400" style={{ bottom: "52px" }}>
+                                <IoIosInformationCircleOutline className="w-6 h-6 text-gray-400" />
+                            </div>
+                            <textarea style={{ borderRadius: '5px', resize: 'none' }} type="text" value={address}
+                                onChange={(e) => setAddress(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="آدرس "></textarea>
+                        </div>
+                        <span className='text-red-500 relative text-sm'>{addressError ? addressErrorMsg : ""}</span>
+                    </div>
+
+                    {/* add button */}
+                    <div className="mt-4">
+                        <button className="app-btn-blue" onClick={CreateAdsHandle}>
+                            {btnSpinner ? (
+                                <div className="px-10 py-1 flex items-center justify-center">
+                                    <div className="w-5 h-5 border-2 border-t-transparent border-white rounded-full animate-spin"></div>
+                                </div>
+                            ) : (
+                                <span>اضافه کردن أگهی</span>
+                            )}
+                        </button>
+                    </div>
+                </div>
+
+                <ToastContainer />
 
             </TitleCard>
         </>

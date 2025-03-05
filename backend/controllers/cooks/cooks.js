@@ -751,6 +751,11 @@ exports.getFood = async (req, res) => {
 exports.createFood = async (req, res) => {
     try {
 
+        res.send(req.file)
+
+        console.log(req.body);
+        
+
         let photos = [];
         if (req.files.photos) {
             req.files.photos.forEach((e) => {
@@ -772,11 +777,19 @@ exports.createFood = async (req, res) => {
             photos,
         })
 
+
+        
+
         if (food) {
             res.status(StatusCodes.CREATED).json({
                 status: 'success',
                 msg: 'غذا ایجاد شد',
                 food
+            });
+        }else{
+            res.status(StatusCodes.BAD_REQUEST).json({
+                status: 'failure',
+                msg: 'غذا ایجاد نشد',
             });
         }
     } catch (error) {
