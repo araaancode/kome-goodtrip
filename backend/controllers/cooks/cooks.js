@@ -843,11 +843,6 @@ exports.getFood = async (req, res) => {
 exports.createFood = async (req, res) => {
     try {
 
-        res.send(req.file)
-
-        console.log(req.body);
-
-
         let photos = [];
         if (req.files.photos) {
             req.files.photos.forEach((e) => {
@@ -868,8 +863,6 @@ exports.createFood = async (req, res) => {
             photo: req.files.photo[0].path,
             photos,
         })
-
-
 
 
         if (food) {

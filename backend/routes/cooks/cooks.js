@@ -69,6 +69,7 @@ router.post('/foods', authCook, upload.foodPhotosUpload.fields([
         maxCount: 6,
     },
 ]), cookCtrls.createFood)
+
 router.put('/foods/:foodId/update-food', authCook, cookCtrls.updateFood)
 router.put('/foods/:foodId/update-food-photo', authCook, upload.foodPhotoUpload.single("photo"), cookCtrls.updateFoodPhoto)
 router.put('/foods/:foodId/update-food-photos', authCook, upload.foodPhotosUpload.array("photos", 4), cookCtrls.updateFoodPhotos)
