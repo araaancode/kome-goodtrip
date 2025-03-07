@@ -145,6 +145,10 @@ function SingleSupportTicket() {
         fetchSupportTicket()
     }, [])
 
+
+
+    
+
     return (
         <div className="grid grid-cols-[2fr_1fr] gap-4 p-4">
             {/* ticket */}
@@ -186,8 +190,13 @@ function SingleSupportTicket() {
 
                         {/* text editor */}
                         <p className="mt-6">پیام: </p>
-                        <div dir="ltr" className="p-4 bg-white w-full ">
-                            <ReactQuill theme="snow" value={value} onChange={setValue} />
+                        <div className="p-4 bg-white w-full ">
+                            {/* <ReactQuill theme="snow" value={value} onChange={setValue} /> */}
+                            
+                        </div>
+
+                        <div className="mx-auto">
+                            <button className="app-btn-blue">ارسال پیام پشتیبانی</button>
                         </div>
 
                     </div>

@@ -141,15 +141,15 @@ function CreateSupportTicket() {
             setDescriptionError(true)
             setDescriptionErrorMsg("* توضیحات تیکت پشتیبانی باید وارد شود")
         }
-      
+
         if (!selectedFiles2 || selectedFiles2 === "" || selectedFiles2 === undefined || selectedFiles2 === null || selectedFiles2.length === 0) {
             setPhotosError(true)
             setPhotosErrorMsg("* تصویر یا فایل مربوط به تیکت پشتیبانی باید وارد شود")
         }
-      
+
         else {
             setBtnSpinner(true)
-            
+
 
             const formData = new FormData();
             formData.append('title', title);
@@ -269,7 +269,7 @@ function CreateSupportTicket() {
                                                 className="flex justify-between items-center border-b py-2"
                                             >
                                                 <div className="flex items-center">
-                                                   
+
                                                     <span className="text-base mx-2">{file.name}</span>
                                                 </div>
                                                 <button
@@ -305,7 +305,7 @@ function CreateSupportTicket() {
                         <span className='text-red-500 relative text-sm'>{photosError ? photosErrorMsg : ""}</span>
                     </div>
 
-
+                    {/* create support ticket button */}
                     <div className="mt-4">
 
                         <button className="app-btn-blue" onClick={addSupportTicketHandler}>
