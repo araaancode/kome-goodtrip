@@ -173,7 +173,7 @@ function UpdateAds() {
         })
             .then((res) => {
                 console.log(res.data.ads);
-                
+
                 setName(res.data.ads.company.name)
                 setPhone(res.data.ads.company.phone)
                 setAddress(res.data.ads.company.address)
@@ -249,8 +249,7 @@ function UpdateAds() {
                                 'authorization': 'Bearer ' + token
                             },
                         }).then((res) => {
-                            console.log(res);
-                            
+
                             setBtnSpinner(false)
 
                             toast.success('آگهی ویرایش شد', {
@@ -309,11 +308,15 @@ function UpdateAds() {
             const formData = new FormData();
             formData.append('photo', selectedFiles[0]);
 
+
+            console.log(formData);
+
+
             try {
                 setBtnSpinner(true);
 
-                const response = await axios.put(
-                    `/api/cooks/ads/${adsId}/update-food-photo`,
+                await axios.put(
+                    `/api/cooks/ads/${adsId}/update-photo`,
                     formData,
                     {
                         headers: {
@@ -321,13 +324,47 @@ function UpdateAds() {
                             authorization: `Bearer ${token}`,
                         },
                     }
-                );
+                ).then((res) => {
 
-                console.log('Response:', response.data.data.photo);
-                setPhoto(response.data.data.photo)
+                    setBtnSpinner(false)
+
+                    toast.success('تصویر اصلی ویرایش شد', {
+                        position: "top-left",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    })
+                    console.log('Response:', res.data.ads);
+                    setPhoto(res.data.ads.photo)
+                }).catch((error) => {
+                    setBtnSpinner(false)
+                    console.log('error', error)
+                    toast.error('خطایی وجود دارد. دوباره امتحان کنید !', {
+                        position: "top-left",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    })
+                })
+
             } catch (error) {
-                console.error('Error updating food image:', error);
-                alert('Failed to update food image.');
+                setBtnSpinner(false)
+                console.log('error', error)
+                toast.error('خطایی وجود دارد. دوباره امتحان کنید !', {
+                    position: "top-left",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                })
             } finally {
                 setBtnSpinner(false);
             }
@@ -339,8 +376,8 @@ function UpdateAds() {
         e.preventDefault();
 
         if (!selectedFiles2 || selectedFiles2 === "" || selectedFiles2 === undefined || selectedFiles2 === null || selectedFiles2.length === 0) {
-            setPhotoError(true)
-            setPhotoErrorMsg("* تصویر اصلی آگهی باید وارد شود")
+            setPhotosError(true)
+            setPhotosErrorMsg("* تصویر اصلی آگهی باید وارد شود")
         } else {
             setBtnSpinner(true)
 
@@ -354,8 +391,8 @@ function UpdateAds() {
             try {
                 setBtnSpinner(true);
 
-                const response = await axios.put(
-                    `/api/cooks/شیس/${adsId}/update-ads-photos`,
+                await axios.put(
+                    `/api/cooks/ads/${adsId}/update-photos`,
                     formData,
                     {
                         headers: {
@@ -363,13 +400,47 @@ function UpdateAds() {
                             authorization: `Bearer ${token}`,
                         },
                     }
-                );
+                ).then((res) => {
 
-                console.log('Response:', response.data);
-                // setPhotos(response.data.data.photos)
+                    setBtnSpinner(false)
+
+                    toast.success('تصاویر أگهی ویرایش شدند', {
+                        position: "top-left",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    })
+                    console.log('Response:', res.data.ads);
+                    setPhoto(res.data.ads.photo)
+                }).catch((error) => {
+                    setBtnSpinner(false)
+                    console.log('error', error)
+                    toast.error('خطایی وجود دارد. دوباره امتحان کنید !', {
+                        position: "top-left",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    })
+                })
+
             } catch (error) {
-                console.error('Error updating food image:', error);
-                alert('Failed to update food image.');
+                setBtnSpinner(false)
+                console.log('error', error)
+                toast.error('خطایی وجود دارد. دوباره امتحان کنید !', {
+                    position: "top-left",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                })
             } finally {
                 setBtnSpinner(false);
             }
@@ -383,9 +454,9 @@ function UpdateAds() {
     return (
         <>
             <TitleCard title="ویرایش آگهی" topMargin="mt-2">
-                {/* update food main photo */}
+                {/* update ads main photo */}
                 <div className="mx-auto">
-                    {/*  food photo  */}
+                    {/*  ads photo  */}
                     <div className="flex flex-col mb-6">
                         <h4 className="font-bold text-gray-600">ویرایش عکس اصلی آگهی</h4>
                         <label htmlFor="photo" className="mb-2 text-xs sm:text-sm tracking-wide text-gray-600 mt-6">تصویر اصلی آگهی </label>
@@ -459,7 +530,7 @@ function UpdateAds() {
 
                         </div>
                         <div className="mt-6">
-                            <img className="rounded-md" src={photo} style={{ width: '50px', height: '50px' }} alt="تصویر اصلی آگهی" />
+                            <img className="rounded-md" src={`../../../../uploads/cookAdsDir/${photo}`} style={{ width: '50px', height: '50px' }} alt="تصویر اصلی آگهی" />
                         </div>
                         <button className="app-btn-blue mt-4" onClick={updatePhotoFunction}>
                             {btnSpinner ? (
@@ -474,9 +545,9 @@ function UpdateAds() {
                     </div>
                 </div>
                 <hr className="my-4" />
-                {/* update food photos */}
+                {/* update ads photos */}
                 <div className="mx-auto">
-                    {/* food photos */}
+                    {/* ads photos */}
                     <div className="flex flex-col mb-6">
                         <h4 className="font-bold text-gray-600">ویرایش تصاویر آگهی</h4>
 

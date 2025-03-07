@@ -35,8 +35,8 @@ router.post('/ads', authCook, upload.cookAdsPhotosUpload.fields([
     },
 ]), cookCtrls.createAds)
 
-router.put('/ads/:adsId/update-photo', authCook, upload.cookAdsPhotosUpload.single("photo"), cookCtrls.updateAdsPhoto)
 router.put('/ads/:adsId/update-ads', authCook, cookCtrls.updateAds)
+router.put('/ads/:adsId/update-photo', authCook, upload.cookAdsPhotosUpload.single("photo"), cookCtrls.updateAdsPhoto)
 router.put('/ads/:adsId/update-photos', authCook, upload.cookAdsPhotosUpload.array("photos", 4), cookCtrls.updateAdsPhotos)
 router.delete('/ads/:adsId', authCook, cookCtrls.deleteAds)
 
