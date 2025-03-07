@@ -377,7 +377,7 @@ function UpdateAds() {
 
         if (!selectedFiles2 || selectedFiles2 === "" || selectedFiles2 === undefined || selectedFiles2 === null || selectedFiles2.length === 0) {
             setPhotosError(true)
-            setPhotosErrorMsg("* تصویر اصلی آگهی باید وارد شود")
+            setPhotosErrorMsg("* تصاویر آگهی باید وارد شوند")
         } else {
             setBtnSpinner(true)
 

@@ -388,7 +388,7 @@ function UpdateFood() {
             try {
                 setBtnSpinner(true);
 
-                const response = await axios.put(
+                await axios.put(
                     `/api/cooks/foods/${foodId}/update-food-photo`,
                     formData,
                     {
@@ -397,13 +397,49 @@ function UpdateFood() {
                             authorization: `Bearer ${token}`,
                         },
                     }
-                );
+                ).then((res) => {
 
-                console.log('Response:', response.data.data.photo);
-                setPhoto(response.data.data.photo)
+                    setBtnSpinner(false)
+
+                    toast.success('تصویر اصلی ویرایش شد', {
+                        position: "top-left",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    })
+                    console.log('Response:', res.data.data.photo);
+                    setPhoto(res.data.data.photo)
+                }).catch((error) => {
+                    setBtnSpinner(false)
+                    console.log('error', error)
+                    toast.error('خطایی وجود دارد. دوباره امتحان کنید !', {
+                        position: "top-left",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    })
+                })
+
+
+                // setPhoto(response.data.data.photo)
             } catch (error) {
-                console.error('Error updating food image:', error);
-                alert('Failed to update food image.');
+                setBtnSpinner(false)
+                console.log('error', error)
+                toast.error('خطایی وجود دارد. دوباره امتحان کنید !', {
+                    position: "top-left",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                })
             } finally {
                 setBtnSpinner(false);
             }
@@ -415,22 +451,23 @@ function UpdateFood() {
         e.preventDefault();
 
         if (!selectedFiles2 || selectedFiles2 === "" || selectedFiles2 === undefined || selectedFiles2 === null || selectedFiles2.length === 0) {
-            setPhotoError(true)
-            setPhotoErrorMsg("* تصویر اصلی غذا باید وارد شود")
+            setPhotosError(true)
+            setPhotosErrorMsg("* تصاویر غذا باید وارد شوند")
         } else {
+
             setBtnSpinner(true)
 
             const formData = new FormData();
-            
 
-            selectedFiles2.forEach((img)=>{
+
+            selectedFiles2.forEach((img) => {
                 formData.append('photos', img);
             })
 
             try {
                 setBtnSpinner(true);
 
-                const response = await axios.put(
+                await axios.put(
                     `/api/cooks/foods/${foodId}/update-food-photos`,
                     formData,
                     {
@@ -439,13 +476,47 @@ function UpdateFood() {
                             authorization: `Bearer ${token}`,
                         },
                     }
-                );
+                ).then((res) => {
 
-                console.log('Response:', response.data);
-                // setPhotos(response.data.data.photos)
+                    setBtnSpinner(false)
+
+                    toast.success('تصاویر أگهی ویرایش شدند', {
+                        position: "top-left",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    })
+                    console.log('Response:', res.data.food);
+                    setPhoto(res.data.food.photos)
+                }).catch((error) => {
+                    setBtnSpinner(false)
+                    console.log('error', error)
+                    toast.error('خطایی وجود دارد. دوباره امتحان کنید !', {
+                        position: "top-left",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    })
+                })
+
             } catch (error) {
-                console.error('Error updating food image:', error);
-                alert('Failed to update food image.');
+                setBtnSpinner(false)
+                console.log('error', error)
+                toast.error('خطایی وجود دارد. دوباره امتحان کنید !', {
+                    position: "top-left",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                })
             } finally {
                 setBtnSpinner(false);
             }
@@ -532,7 +603,7 @@ function UpdateFood() {
 
                         </div>
                         <div className="mt-6">
-                            <img className="rounded-md" src={photo} style={{ width: '50px', height: '50px' }} alt="تصویر اصلی غذا" />
+                            <img className="rounded-md" src={`../../../../uploads/cookAdsDir/${photo}`} style={{ width: '50px', height: '50px' }} alt="تصویر اصلی غذا" />
                         </div>
                         <button className="app-btn-blue mt-4" onClick={updatePhotoFunction}>
                             {btnSpinner ? (
@@ -546,7 +617,10 @@ function UpdateFood() {
                         <span className='text-red-500 relative text-sm'>{photoError ? photoErrorMsg : ""}</span>
                     </div>
                 </div>
+
+
                 <hr className="my-4" />
+
                 {/* update food photos */}
                 <div className="mx-auto">
                     {/* food photos */}
@@ -635,6 +709,7 @@ function UpdateFood() {
                         <span className='text-red-500 relative text-sm'>{photosError ? photosErrorMsg : ""}</span>
                     </div>
                 </div>
+
                 <hr className="my-4" />
                 {/* update food */}
                 <div className="mx-auto">
