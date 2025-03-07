@@ -7,14 +7,15 @@ import 'react-tailwindcss-select/dist/index.css'
 import Swal from 'sweetalert2'
 import axios from "axios"
 
-import { IoFastFoodOutline } from "react-icons/io5";
-import { GoNumber } from "react-icons/go";
-import { SlCalender } from "react-icons/sl";
-import { TbClockHour12 } from "react-icons/tb";
-import { PiChefHatLight } from "react-icons/pi";
-import { PiBowlFood } from "react-icons/pi";
+
+
+// icons
 import { IoPricetagOutline } from "react-icons/io5";
+import { CiUser } from "react-icons/ci";
+import { BsTelephone } from "react-icons/bs";
+import { TbClipboardText } from "react-icons/tb";
 import { IoIosInformationCircleOutline } from "react-icons/io";
+import { HiOutlineMapPin } from "react-icons/hi2";
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -277,7 +278,7 @@ function CreateAds() {
                         <label htmlFor="name" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">نام و نام خانوادگی مشتری</label>
                         <div className="relative">
                             <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
-                                <IoFastFoodOutline className="w-6 h-6 text-gray-400" />
+                                <CiUser className="w-6 h-6 text-gray-400" />
                             </div>
                             <input style={{ borderRadius: '5px' }} type="text" value={name}
                                 onChange={(e) => setName(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="نام و  نام خانوادگی مشتری" />
@@ -290,7 +291,7 @@ function CreateAds() {
                         <label htmlFor="phone" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">شماره مشتری</label>
                         <div className="relative">
                             <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
-                                <GoNumber className="w-6 h-6 text-gray-400" />
+                                <BsTelephone className="w-6 h-6 text-gray-400" />
                             </div>
                             <input style={{ borderRadius: '5px' }} type="number" min={11} max={11} value={phone}
                                 onChange={(e) => setPhone(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="شماره مشتری" />
@@ -304,7 +305,7 @@ function CreateAds() {
                         <label htmlFor="title" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">عنوان آگهی</label>
                         <div className="relative">
                             <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
-                                <IoPricetagOutline className="w-6 h-6 text-gray-400" />
+                                <TbClipboardText className="w-6 h-6 text-gray-400" />
                             </div>
                             <input style={{ borderRadius: '5px' }} type="text" value={title}
                                 onChange={(e) => setTitle(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="عنوان آگهی " />
@@ -503,7 +504,7 @@ function CreateAds() {
                         <label htmlFor="address" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">آدرس </label>
                         <div className="relative">
                             <div className="inline-flex items-center justify-center absolute left-0 h-full w-10 text-gray-400" style={{ bottom: "52px" }}>
-                                <IoIosInformationCircleOutline className="w-6 h-6 text-gray-400" />
+                                <HiOutlineMapPin className="w-6 h-6 text-gray-400" />
                             </div>
                             <textarea style={{ borderRadius: '5px', resize: 'none' }} type="text" value={address}
                                 onChange={(e) => setAddress(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="آدرس "></textarea>

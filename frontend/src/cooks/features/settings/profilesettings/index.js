@@ -6946,10 +6946,7 @@ const genderList = [
 
 
 function ProfileSettings() {
-    const [errorMessage, setErrorMessage] = useState("")
 
-    const [errorPhoneMessage, setErrorPhoneMessage] = useState("")
-    const [errorPasswordMessage, setErrorPasswordMessage] = useState("")
 
     const [cook, setCook] = useState({})
     const [name, setName] = useState("")

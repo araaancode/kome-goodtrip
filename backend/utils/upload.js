@@ -11,18 +11,46 @@ const driverBusPhotosDir = path.join(__dirname, '../uploads/driverBusPhotosDir/'
 const ownerAdsDir = path.join(__dirname, '../uploads/ownerAdsDir/');
 const cookAvatarDir = path.join(__dirname, '../uploads/cookAvatarDir/');
 const cookAdsDir = path.join(__dirname, '../uploads/cookAdsDir/');
+const cookSupportTicktsDir = path.join(__dirname, '../uploads/cookSupportTicktsDir/');
 const foodPhotosDir = path.join(__dirname, '../uploads/foodPhotosDir/');
 
-const { CloudinaryStorage } = require('multer-storage-cloudinary');
-const cloudinary = require('./cloudinary');
+// const { CloudinaryStorage } = require('multer-storage-cloudinary');
+// const cloudinary = require('./cloudinary');
 
-const storage = new CloudinaryStorage({
-    cloudinary,
-    params: {
-        folder: 'mern_uploads', // Folder in Cloudinary
-        allowed_formats: ['jpg', 'png', 'jpeg'], // Allowed file types
+
+const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
+
+// const storage = new CloudinaryStorage({
+//     cloudinary,
+//     params: {
+//         folder: 'mern_uploads', // Folder in Cloudinary
+//         allowed_formats: ['jpg', 'png', 'jpeg'], // Allowed file types
+//     },
+// });
+
+
+// تنظیمات S3 برای پارس پک
+const s3 = new S3Client({
+    region: process.env.AWS_REGION,
+    endpoint: process.env.AWS_ENDPOINT,
+    credentials: {
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
     },
 });
+
+
+// تابع تولید نام تصادفی برای فایل
+const generateFileName = (originalName) => {
+    const ext = path.extname(originalName);
+    const randomName = crypto.randomBytes(16).toString("hex");
+    return `${randomName}${ext}`;
+};
+
+// تنظیم Multer برای ذخیره فایل در حافظه موقت
+const storage = multer.memoryStorage();
+// const upload = multer({ storage });
+
 
 module.exports = {
 
@@ -144,7 +172,17 @@ module.exports = {
 
 
     // ******************** cook ********************
-    cookAvatarUpload: multer({ storage }),
+    cookAvatarUpload: multer({
+        storage: multer.diskStorage({
+            destination: function (req, file, cb) {
+                const made = mkdirp.sync(cookAvatarDir);
+                cb(null, cookAvatarDir)
+            },
+            filename: function (req, file, cb) {
+                cb(null, Date.now() + path.extname(file.originalname));
+            }
+        })
+    }),
 
     // cook ads
     cookAdsPhotosUpload: multer({
@@ -160,21 +198,44 @@ module.exports = {
     }),
 
     // cook support ticket image
-    cookSupportTicketUpload: multer({ storage }),
+    cookSupportTicketUpload: multer({
+        storage: multer.diskStorage({
+            destination: function (req, file, cb) {
+                const made = mkdirp.sync(cookSupportTicktsDir);
+                cb(null, cookSupportTicktsDir)
+            },
+            filename: function (req, file, cb) {
+                cb(null, Date.now() + path.extname(file.originalname));
+            }
+        })
+    }),
 
     // foods uploads
-    // foodPhotosUpload: multer({
-    //     storage: multer.diskStorage({
-    //         destination: function (req, file, cb) {
-    //             const made = mkdirp.sync(foodPhotosDir);
-    //             cb(null, foodPhotosDir)
-    //         },
-    //         filename: function (req, file, cb) {
-    //             cb(null, Date.now() + path.extname(file.originalname));
-    //         }
-    //     })
-    // }),
+    foodPhotoUpload: multer({
+        storage: multer.diskStorage({
+            destination: function (req, file, cb) {
+                const made = mkdirp.sync(foodPhotosDir);
+                cb(null, foodPhotosDir)
+            },
+            filename: function (req, file, cb) {
+                cb(null, Date.now() + path.extname(file.originalname));
+            }
+        })
+    }),
 
-    foodPhotoUpload: multer({ storage }),
-    foodPhotosUpload: multer({ storage }),
+    foodPhotosUpload: multer({
+        storage: multer.diskStorage({
+            destination: function (req, file, cb) {
+                const made = mkdirp.sync(foodPhotosDir);
+                cb(null, foodPhotosDir)
+            },
+            filename: function (req, file, cb) {
+                cb(null, Date.now() + path.extname(file.originalname));
+            }
+        })
+    }),
+
+
+    // foodPhotoUpload: multer({ storage }),
+    // foodPhotosUpload: multer({ storage }),
 }

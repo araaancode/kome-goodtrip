@@ -6,6 +6,47 @@ const CookSupportTicket = require('../../models/CookSupportTicket');
 const Food = require('../../models/Food');
 const OrderFood = require('../../models/OrderFood');
 
+// ****** uplaod images *****
+// const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
+// const multer = require("multer")
+// const path = require("path")
+// const crypto = require("crypto")
+
+// const upload = multer({
+//     storage: multer.memoryStorage(),
+// });
+
+// const uploadFields = upload.fields([
+//     { name: "photo", maxCount: 1 },
+//     { name: "photos", maxCount: 6 },
+// ]);
+
+// // ****** uplaod images *****
+
+// // تنظیمات S3 برای پارس پک
+// const s3 = new S3Client({
+//     region: process.env.AWS_REGION,
+//     endpoint: process.env.AWS_ENDPOINT,
+//     credentials: {
+//         accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+//         secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+//     },
+    
+// });
+
+
+// // تابع تولید نام تصادفی برای فایل
+// const generateFileName = (originalName) => {
+//     const ext = path.extname(originalName);
+//     const randomName = crypto.randomBytes(16).toString("hex");
+//     return `${randomName}${ext}`;
+// };
+
+// // تنظیم Multer برای ذخیره فایل در حافظه موقت
+// const storage = multer.memoryStorage();
+// // const upload = multer({ storage });
+
+
 // # description -> HTTP VERB -> Accesss -> Access Type
 // # cook get profile -> GET -> Cook -> PRIVATE
 // @route = /api/cooks/me
@@ -40,7 +81,7 @@ exports.getMe = async (req, res) => {
 // @route = /api/cooks/update-profile
 exports.updateProfile = async (req, res) => {
     console.log(req.body.housePhone);
-    
+
 
     try {
         let cook = await Cook.findByIdAndUpdate(req.cook._id, {
@@ -320,6 +361,57 @@ exports.singleAds = async (req, res) => {
 // # get create cook ads -> POST -> Cook -> PRIVATE
 // @route = /api/cooks/ads
 exports.createAds = async (req, res) => {
+
+    // if (!req.files || !req.files.photo || !req.files.photos) {
+    //     return res.status(400).json({ error: "لطفا همه تصاویر را آپلود کنید." });
+    // }
+
+
+    // // upload ads photo
+    // const photoFile = req.files.photo[0];
+    // const photoName = generateFileName(photoFile.originalname);
+
+    // await s3.send(
+    //     new PutObjectCommand({
+    //         Bucket: process.env.AWS_BUCKET_NAME,
+    //         Key: photoName,
+    //         Body: photoFile.buffer,
+    //         ContentType: photoFile.mimetype,
+    //         ACL: "public-read",
+    //     })
+    // );
+
+    // const photoUrl = `${process.env.AWS_ENDPOINT}/${process.env.AWS_BUCKET_NAME}/${photoName}`;
+
+  
+    // console.log(photoUrl);
+    
+
+    // upload ads photos
+    // آپلود تصاویر اضافی
+    // const photosUrls = await Promise.all(
+    //     req.files.photos.map(async (file) => {
+    //         const fileName = generateFileName(file.originalname);
+
+    //         await s3.send(
+    //             new PutObjectCommand({
+    //                 Bucket: process.env.AWS_BUCKET_NAME,
+    //                 Key: fileName,
+    //                 Body: file.buffer,
+    //                 ContentType: file.mimetype,
+    //                 ACL: "public-read",
+    //             })
+    //         );
+
+    //         return `${process.env.AWS_ENDPOINT}/${process.env.AWS_BUCKET_NAME}/${fileName}`;
+    //     })
+    // );
+
+
+    // console.log(photosUrls);
+    
+
+    // res.send("create ads")
 
     let photos = [];
     if (req.files.photos) {
@@ -754,7 +846,7 @@ exports.createFood = async (req, res) => {
         res.send(req.file)
 
         console.log(req.body);
-        
+
 
         let photos = [];
         if (req.files.photos) {
@@ -778,7 +870,7 @@ exports.createFood = async (req, res) => {
         })
 
 
-        
+
 
         if (food) {
             res.status(StatusCodes.CREATED).json({
@@ -786,7 +878,7 @@ exports.createFood = async (req, res) => {
                 msg: 'غذا ایجاد شد',
                 food
             });
-        }else{
+        } else {
             res.status(StatusCodes.BAD_REQUEST).json({
                 status: 'failure',
                 msg: 'غذا ایجاد نشد',
