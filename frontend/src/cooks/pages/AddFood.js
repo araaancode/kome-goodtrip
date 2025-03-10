@@ -668,7 +668,6 @@ function AddFood() {
                         <span className='text-red-500 relative text-sm'>{descriptionError ? descriptionErrorMsg : ""}</span>
                     </div>
                     <div className="mt-4">
-
                         <button className="app-btn-blue" onClick={addFoodHandle}>
                             {btnSpinner ? (
                                 <div className="px-10 py-1 flex items-center justify-center">
@@ -678,7 +677,6 @@ function AddFood() {
                                 <span>اضافه کردن غذا</span>
                             )}
                         </button>
-
                     </div>
                 </div>
 
