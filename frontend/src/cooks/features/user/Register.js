@@ -50,6 +50,9 @@ function Register() {
         setPassword(e.target.value);
     };
 
+
+
+
     const register = (e) => {
 
         e.preventDefault()
@@ -108,6 +111,8 @@ function Register() {
 
                     navigate('/cooks/login')
 
+
+
                 }).catch((error) => {
                     setBtnSpinner(false)
                     console.log('error', error)
@@ -152,7 +157,7 @@ function Register() {
                                 <div className="hero-content p-2">
                                     <div className="w-50 px-6 py-4">
                                         <h1 className="mb-4 text-center font-bold text-lg"> ثبت نام در پنل غذادار</h1>
-                                        <div className="my-auto"><img width={500} height={400} src="https://i.pinimg.com/736x/f2/a7/8a/f2a78a484ee31f62ed9f1ea433597d9b.jpg" style={{borderRadius:'12px'}} alt="اقامتگاه" className="inline-block"></img></div>
+                                        <div className="my-auto"><img width={500} height={400} src="https://i.pinimg.com/736x/f2/a7/8a/f2a78a484ee31f62ed9f1ea433597d9b.jpg" style={{ borderRadius: '12px' }} alt="اقامتگاه" className="inline-block"></img></div>
                                     </div>
                                 </div>
                             </div>
@@ -207,6 +212,22 @@ function Register() {
                                             <span className='text-red-500 relative text-sm'>{phoneError ? phoneErrorMsg : ""}</span>
                                         </div>
 
+                                        {/* email */}
+                                        <div className="flex flex-col mb-1">
+                                            <div className="flex flex-col mb-4">
+                                                <label htmlFor="email" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">ایمیل</label>
+                                                <div className="relative">
+                                                    <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
+                                                        <RiMailLine />
+                                                    </div>
+                                                    <input style={{ borderRadius: '5px' }} type="text" value={email}
+                                                        onChange={(e) => setEmail(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="ایمیل" />
+                                                </div>
+                                                <span className='text-red-500 relative text-sm'>{emailError ? emailErrorMsg : ""}</span>
+                                            </div>
+                                        </div>
+
+
                                         {/* password */}
                                         <div className="relative mb-4">
                                             <label className="block mb-1 text-xs sm:text-sm tracking-wide text-gray-600" htmlFor="password">
@@ -238,20 +259,6 @@ function Register() {
                                         </div>
 
 
-                                        {/* email */}
-                                        <div className="flex flex-col mb-1">
-                                            <div className="flex flex-col mb-4">
-                                                <label htmlFor="email" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">ایمیل</label>
-                                                <div className="relative">
-                                                    <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
-                                                        <RiMailLine />
-                                                    </div>
-                                                    <input style={{ borderRadius: '5px' }} type="text" value={email}
-                                                        onChange={(e) => setEmail(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="ایمیل" />
-                                                </div>
-                                                <span className='text-red-500 relative text-sm'>{emailError ? emailErrorMsg : ""}</span>
-                                            </div>
-                                        </div>
 
                                         {/* register user */}
                                         <div className="my-2 w-full">
