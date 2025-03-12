@@ -59,8 +59,7 @@ import CooksLayout from "./cooks/containers/Layout"
 import CooksLogin from "./cooks/pages/Login"
 import CooksRegister from "./cooks/pages/Register"
 import CooksForgotPassword from "./cooks/pages/ForgotPassword"
-
-import CookResetPassword from "./cooks/features/user/ResetPassword"
+import CookResetPassword from "./cooks/pages/ResetPassword"
 
 
 // const token = checkAuth()
