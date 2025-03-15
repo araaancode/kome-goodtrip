@@ -63,6 +63,10 @@ import CooksForgotPassword from "./cooks/pages/ForgotPassword"
 import CookResetPassword from "./cooks/pages/ResetPassword"
 
 
+// not found page
+import NotFound from "./NotFound"
+
+
 // const token = checkAuth()
 const token = localStorage.getItem("token")
 
@@ -140,6 +144,12 @@ function App() {
             <Route path="/cooks/*" element={<CooksLayout />} />
           </Route>
 
+
+          {/* not found Page */}
+          <Route
+            path="*"
+            element={<NotFound />}
+          />
         </Routes>
       </Router>
     </>
