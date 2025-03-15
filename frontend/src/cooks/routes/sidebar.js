@@ -1,18 +1,20 @@
 import BankIcon from '@iconscout/react-unicons/icons/uil-university'
 import NewsPaperIcon from '@iconscout/react-unicons/icons/uil-newspaper'
-import StarIcon from '@iconscout/react-unicons/icons/uil-star-half-alt'
-import ChatIcon from '@iconscout/react-unicons/icons/uil-chat'
 import { BiListUl } from "react-icons/bi";
 import { BiSupport } from "react-icons/bi";
-import { PiChefHat, PiBowlFoodLight } from "react-icons/pi";
 import { TbNewSection } from "react-icons/tb";
 import { IoFastFoodOutline } from "react-icons/io5";
-
+import { MdOutlineDashboard } from "react-icons/md";
 
 const iconClasses = `h-8 w-8 text-gray-800`
 
 const routes = [
 
+  {
+    path: '/cooks/dashboard',
+    icon: <MdOutlineDashboard size="140" className={iconClasses} />,
+    name: 'پنل کاربری',
+  },
   {
     path: '/cooks/orders',
     icon: <BiListUl size="140" className={iconClasses} />,
@@ -24,11 +26,11 @@ const routes = [
   //   name: 'ثبت اطلاعات غذادار',
   // },
 
-  {
-    path: '/cooks/comments',
-    icon: <ChatIcon size="140" className={iconClasses} />,
-    name: ' نظرات کاربران ',
-  },
+  // {
+  //   path: '/cooks/comments',
+  //   icon: <ChatIcon size="140" className={iconClasses} />,
+  //   name: ' نظرات کاربران ',
+  // },
 
   {
     path: '/cooks/create-advertisment',

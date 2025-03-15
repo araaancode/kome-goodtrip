@@ -24,6 +24,8 @@ function ForgotPassword() {
     const sendEmail = (e) => {
         e.preventDefault()
 
+        setBtnSpinner(true)
+
         // email error
         if (!email || email === "" || email === undefined || email === null) {
             setEmailError(true)
@@ -54,6 +56,7 @@ function ForgotPassword() {
                         progress: undefined,
                     })
                     setLinkSent(true)
+                    setBtnSpinner(false)
                 }
             }).catch((error) => {
                 console.log(error);

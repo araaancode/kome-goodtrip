@@ -7224,12 +7224,11 @@ function ProfileSettings() {
                             <label htmlFor="city" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">شهرها</label>
                             <div className="relative">
                                 <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
-                                    {/* <PiCityThin className="w-6 h-6 text-gray-400" /> */}
                                 </div>
                                 <Select
                                     value={city}
                                     onChange={(e) => setCity(e)}
-                                    options={citiesList}
+                                    options={provincesList}
                                     isMultiple={false}
                                     placeholder="انتخاب"
                                     formatGroupLabel={data => (

@@ -35,12 +35,13 @@ function ResetPassword() {
 
     const submitForm = (e) => {
         e.preventDefault()
-        setErrorMessage("")
+
+        setBtnSpinner(true)
 
         if (password.trim() === "") return setErrorPasswordMessage("پسورد ضروری است!")
         if (confirmPassword.trim() === "") return setErrorConfirmPasswordMessage("نایید پسورد ضروری است!")
         else {
-         
+
 
             const config = {
                 headers: {
@@ -63,6 +64,9 @@ function ResetPassword() {
                         draggable: true,
                         progress: undefined,
                     })
+
+                    setBtnSpinner(false)
+
                 }
             }).catch((errMsg) => {
                 console.log(errMsg);
