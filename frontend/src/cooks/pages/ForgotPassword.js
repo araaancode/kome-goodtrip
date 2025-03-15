@@ -107,7 +107,7 @@ function ForgotPassword() {
 
                             <p className='mb-6 mt-4 text-right text-gray-500'>برای تغییر پسورد ایمیل خود را در زیر وارد کنید</p>
                             <form className='my-auto '>
-                                <div className="flex flex-col mb-2 sm:px-6">
+                                <div className="flex flex-col mb-2 sm:px-2">
                                     <label htmlFor="phone" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">ایمیل</label>
                                     <div className="relative">
                                         <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
@@ -122,7 +122,7 @@ function ForgotPassword() {
 
 
                                 {/* send email forgot password */}
-                                <div className="mt-4 w-full sm:px-6">
+                                <div className="mt-4 w-full sm:px-2">
                                     <button className="app-btn-blue w-full" onClick={sendEmail}>
                                         {btnSpinner ? (
                                             <div className="px-10 py-1 flex items-center justify-center">
@@ -134,7 +134,7 @@ function ForgotPassword() {
                                     </button>
                                 </div>
 
-                                <p className='text-sm text-gray-800 mt-2'>حساب ندارید؟ <Link to='/cooks/register' className='hover:text-blue-900 hover:cursor-pointer'>ثبت نام </Link></p>
+                                <p className='text-sm text-gray-800 mt-2 px-2'>حساب ندارید؟ <Link to='/cooks/register' className='hover:text-blue-900 hover:cursor-pointer'>ثبت نام </Link></p>
                             </form>
 
                         </div>

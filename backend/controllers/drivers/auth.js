@@ -248,8 +248,6 @@ exports.logout = (req, res) => {
 exports.forgotPassword = async (req, res) => {
     try {
         let driver = await Driver.findOne({ email: req.body.email })
-        console.log(req.body);
-        
 
         if (driver) {
             let token = driver.token

@@ -47,6 +47,7 @@ import DriversLayout from "./drivers/containers/Layout"
 import DriversLogin from "./drivers/pages/Login"
 import DriversRegister from "./drivers/pages/Register"
 import DriversForgotPassword from "./drivers/pages/ForgotPassword"
+import DriversResetPassword from "./drivers/pages/ResetPassword"
 
 // owners pages
 import OwnersLayout from "./owners/containers/Layout"
@@ -116,6 +117,7 @@ function App() {
           <Route path="/drivers/*" element={<DriversLayout />} />
           <Route path="/drivers/login" element={<DriversLogin />} />
           <Route path="/drivers/forgot-password" element={<DriversForgotPassword />} />
+          <Route path="/drivers/reset-password" element={<DriversResetPassword />} />
           <Route path="/drivers/register" element={<DriversRegister />} />
 
           {/* owners pages */}
