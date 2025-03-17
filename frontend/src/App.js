@@ -34,6 +34,10 @@ import AdminResetPassword from "./admin/features/user/ResetPassword"
 import CookPublicRoutes from "./cooks/routing/publicRoutes"
 import CookPrivateRoutes from "./cooks/routing/privateRoutes"
 
+// driver private routes
+import DriverPublicRoutes from "./drivers/routing/publicRoutes"
+import DriverPrivateRoutes from "./drivers/routing/privateRoutes"
+
 
 // Importing pages
 import Layout from "./admin/containers/Layout"
@@ -116,20 +120,26 @@ function App() {
             <Route path="/admins/*" element={<Layout />} />
           </Route>
 
-          {/* drivers pages */}
-          <Route path="/drivers" element={<Navigate to={token ? "/drivers/welcome" : "/drivers/login"} replace />} />
-          <Route path="/drivers/*" element={<DriversLayout />} />
-          <Route path="/drivers/login" element={<DriversLogin />} />
-          <Route path="/drivers/forgot-password" element={<DriversForgotPassword />} />
-          <Route path="/drivers/reset-password" element={<DriversResetPassword />} />
-          <Route path="/drivers/register" element={<DriversRegister />} />
-
           {/* owners pages */}
           <Route path="/owners" element={<Navigate to={token ? "/owners/welcome" : "/owners/login"} replace />} />
           <Route path="/owners/*" element={<OwnersLayout />} />
           <Route path="/owners/login" element={<OwnersLogin />} />
           <Route path="/owners/forgot-password" element={<OwnersForgotPassword />} />
           <Route path="/owners/register" element={<OwnersRegister />} />
+
+          {/* drivers pages */}
+          <Route element={<DriverPublicRoutes />}>
+            <Route path="/drivers" element={<Navigate to={token ? "/drivers/welcome" : "/drivers/login"} replace />} />
+            <Route path="/drivers/*" element={<DriversLayout />} />
+            <Route path="/drivers/login" element={<DriversLogin />} />
+            <Route path="/drivers/forgot-password" element={<DriversForgotPassword />} />
+            <Route path="/drivers/reset-password" element={<DriversResetPassword />} />
+            <Route path="/drivers/register" element={<DriversRegister />} />
+          </Route>
+
+          <Route element={<DriverPrivateRoutes />}>
+            <Route path="/drivers/*" element={<DriversLayout />} />
+          </Route>
 
           {/* cooks pages */}
           <Route element={<CookPublicRoutes />}>
@@ -138,7 +148,6 @@ function App() {
             <Route path="/cooks/reset-password" element={<CookResetPassword />} />
             <Route path="/cooks/register" element={<CooksRegister />} />
           </Route>
-
 
           <Route element={<CookPrivateRoutes />}>
             <Route path="/cooks/*" element={<CooksLayout />} />
