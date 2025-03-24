@@ -6993,6 +6993,8 @@ function ProfileSettings() {
                 'authorization': 'Bearer ' + token
             },
         }).then((res) => {
+            console.log(res);
+            
             setCook(res.data.cook)
             setName(res.data.cook.name)
             setUsername(res.data.cook.username)

@@ -122,6 +122,7 @@ function Login() {
             axios.post('/api/drivers/auth/verify-otp', { phone, code }, config).then((data) => {
 
                 if (data) {
+                    
                     const token = data.data.token
                     localStorage.setItem("userToken", token)
                     navigate('/drivers/welcome')

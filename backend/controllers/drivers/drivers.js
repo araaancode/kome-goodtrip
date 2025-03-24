@@ -12,6 +12,7 @@ const StatusCodes = require("http-status-codes")
 exports.getMe = async (req, res) => {
     try {
         let driver = await Driver.findById(req.driver._id)
+        log
         if (driver) {
             return res.status(StatusCodes.OK).json({
                 status: 'success',
