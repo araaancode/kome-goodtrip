@@ -11,19 +11,12 @@ const StatusCodes = require("http-status-codes")
 // @route = /api/drivers/me
 exports.getMe = async (req, res) => {
     try {
-        let driver = await Driver.findById(req.driver._id)
-        log
+        let driver = await Driver.findById(req.driver._id).select('-password')
         if (driver) {
             return res.status(StatusCodes.OK).json({
                 status: 'success',
                 msg: "راننده پیدا شد",
-                _id: driver._id,
-                name: driver.name,
-                phone: driver.phone,
-                email: driver.email,
-                username: driver.username,
-                avatar: driver.avatar,
-                role: driver.role,
+                driver
             })
         } else {
             return res.status(StatusCodes.BAD_REQUEST).json({
@@ -46,6 +39,15 @@ exports.getMe = async (req, res) => {
 // @route = /api/drivers/me
 exports.updateProfile = async (req, res) => {
     try {
+        let drivingLicenseBody = {
+            name: req.body.name,
+            nationalCode: req.body.nationalCode,
+            dateOfIssue: req.body.dateOfIssue,
+            birthDate: req.body.birthDate,
+            licenseNumber: req.body.licenseNumber,
+            crediteDate: req.body.crediteDate,
+        }
+
         await Driver.findByIdAndUpdate(
             req.driver._id,
             {
@@ -57,6 +59,10 @@ exports.updateProfile = async (req, res) => {
                 province: req.body.province,
                 city: req.body.city,
                 gender: req.body.gender,
+                address: req.body.address,
+                firstCity: req.body.firstCity,
+                lastCity: req.body.lastCity,
+                drivingLicense: drivingLicenseBody,
             },
             { new: true }
         ).then((user) => {
@@ -122,7 +128,7 @@ exports.updateAvatar = async (req, res) => {
 exports.notifications = async (req, res) => {
     try {
 
-        let notifications = await DriverNotification.find({reciever: req.driver._id})
+        let notifications = await DriverNotification.find({ reciever: req.driver._id })
         // let findDriverNotifications = []
 
         // for (let i = 0; i < notifications.length; i++) {

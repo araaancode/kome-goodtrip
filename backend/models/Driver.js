@@ -35,7 +35,7 @@ const drivingLicenseSchema = new mongoose.Schema({
   },
   crediteDate: {
     type: Date,
-    required: [true, "  شماره گواهینامه باید وارد شود"],
+    required: [true, "  تاریخ اعتبار گواهینامه باید وارد شود"],
     default: Date.now()
   },
 })
@@ -138,7 +138,9 @@ const driverSchema = new mongoose.Schema({
     default: Date.now()
   },
 
-
+  address: {
+    type: String,
+  },
 
   drivingLicense: drivingLicenseSchema,
 

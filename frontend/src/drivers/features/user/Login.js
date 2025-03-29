@@ -48,7 +48,7 @@ function Login() {
     const login = (e) => {
         e.preventDefault()
 
-        
+
 
         if (phone && password) {
             const config = {
@@ -78,10 +78,10 @@ function Login() {
 
                 }
             }).catch((error) => {
-                console.log(error);
                 setBtnSpinner(false)
+                console.log(error);
 
-                toast.error(error.response.data.msg || error.name, {
+                toast.error(error.name || error.response.data.msg, {
                     position: "top-right",
                     autoClose: 5000,
                     hideProgressBar: false,
@@ -122,7 +122,7 @@ function Login() {
             axios.post('/api/drivers/auth/verify-otp', { phone, code }, config).then((data) => {
 
                 if (data) {
-                    
+
                     const token = data.data.token
                     localStorage.setItem("userToken", token)
                     navigate('/drivers/welcome')

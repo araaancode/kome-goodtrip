@@ -16,7 +16,7 @@ function InternalPage(){
       <div className="hero h-4/5 bg-base-200">
       <div className="hero-content">
         <div className="max-w-md">
-            <TemplatePointers />
+            {/* <TemplatePointers /> */}
             <Link to="/drivers/dashboard"><button className="btn bg-base-100 btn-outline">دیدن پنل اتوبوس دارها</button></Link>
         </div>
       </div>

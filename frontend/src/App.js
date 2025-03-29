@@ -129,8 +129,6 @@ function App() {
 
           {/* drivers pages */}
           <Route element={<DriverPublicRoutes />}>
-            <Route path="/drivers" element={<Navigate to={token ? "/drivers/welcome" : "/drivers/login"} replace />} />
-            <Route path="/drivers/*" element={<DriversLayout />} />
             <Route path="/drivers/login" element={<DriversLogin />} />
             <Route path="/drivers/forgot-password" element={<DriversForgotPassword />} />
             <Route path="/drivers/reset-password" element={<DriversResetPassword />} />

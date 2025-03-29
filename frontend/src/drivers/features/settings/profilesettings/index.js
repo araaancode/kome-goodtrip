@@ -13,10 +13,12 @@ import 'react-toastify/dist/ReactToastify.css';
 
 // icons
 import { FiPhone, FiUser, FiMail, FiMapPin } from "react-icons/fi";
-import { SlCalender } from "react-icons/sl";
-import { PiMapPinLight, PiCityThin } from "react-icons/pi";
 import { RiUser5Line } from "react-icons/ri";
 import { LiaIdCardSolid } from "react-icons/lia";
+import { CiCreditCard2 } from "react-icons/ci";
+
+import PersianDatePicker from "../../../components/PersianDatePicker"
+
 
 const provincesList = [
     {
@@ -6948,7 +6950,7 @@ const genderList = [
 function ProfileSettings() {
 
 
-    const [cook, setCook] = useState({})
+    const [driver, setDriver] = useState({})
     const [name, setName] = useState("")
     const [phone, setPhone] = useState("")
     const [email, setEmail] = useState("")
@@ -6957,9 +6959,22 @@ function ProfileSettings() {
     const [city, setCity] = useState("")
     const [nationalCode, setNationalCode] = useState("")
     const [gender, setGender] = useState("")
-    const [housePhone, setHousePhone] = useState("")
     const [address, setAddress] = useState("")
+    const [firstCity, setFirstCity] = useState("")
+    const [lastCity, setLastCity] = useState("")
+    const [birthYear, setBirthYear] = useState("");
+    const [crediteDate, setCrediteDate] = useState("");
+    const [licenseNumber, setLicenseNumber] = useState('')
 
+
+
+
+    // handle year change
+    const handleYearChange = (year) => {
+        setBirthYear(year);
+    };
+
+    // 
     const [btnSpinner, setBtnSpinner] = useState(false)
 
     // error variables
@@ -6979,10 +6994,24 @@ function ProfileSettings() {
     const [nationalCodeErrorMsg, setNationalCodeErrorMsg] = useState("")
     const [genderError, setGenderError] = useState(false)
     const [genderErrorMsg, setGenderErrorMsg] = useState("")
-    const [housePhoneError, setHousePhoneError] = useState(false)
-    const [housePhoneErrorMsg, setHousePhoneErrorMsg] = useState("")
     const [addressError, setAddressError] = useState(false)
     const [addressErrorMsg, setAddressErrorMsg] = useState("")
+    const [licenseNumberError, setLicenseNumberError] = useState(false)
+    const [licenseNumberErrorMsg, setLicenseNumberErrorMsg] = useState("")
+
+
+    // handleLicenseNumberChange
+    const handleLicenseNumberChange = (e) => {
+        const value = e.target.value;
+        if (value.length <= 10) {
+            setLicenseNumber(value);
+            if (value.length === 10) {
+                setLicenseNumberError(false);
+            } else {
+                setLicenseNumberErrorMsg('Input must be exactly 10 characters long.');
+            }
+        }
+    };
 
     useEffect(() => {
         let token = localStorage.getItem("userToken")
@@ -6994,22 +7023,20 @@ function ProfileSettings() {
             },
         }).then((res) => {
             console.log(res);
-            
-            setCook(res.data.cook)
-            setName(res.data.cook.name)
-            setUsername(res.data.cook.username)
-            setPhone(res.data.cook.phone)
-            setEmail(res.data.cook.email)
-            setProvince(res.data.cook.province)
-            setCity(res.data.cook.city)
-            setGender(res.data.cook.gender)
-            setNationalCode(res.data.cook.nationalCode)
-            setAddress(res.data.cook.address)
-            setHousePhone(res.data.cook.housePhone)
+
+            setDriver(res.data.driver)
+            setName(res.data.driver.name)
+            setUsername(res.data.driver.username)
+            setPhone(res.data.driver.phone)
+            setEmail(res.data.driver.email)
+            setProvince(res.data.driver.province)
+            setCity(res.data.driver.city)
+            setGender(res.data.driver.gender)
+            setNationalCode(res.data.driver.nationalCode)
+            setAddress(res.data.driver.address)
         }).catch((err) => {
             console.log(err);
         })
-
     }, [])
 
 
@@ -7019,6 +7046,7 @@ function ProfileSettings() {
 
         let token = localStorage.getItem("userToken")
         setBtnSpinner(true)
+
 
         // // name error
         if (!name || name === "" || name === undefined || name === null) {
@@ -7064,18 +7092,15 @@ function ProfileSettings() {
             setGenderErrorMsg("* جنسیت باید وارد شود")
         }
 
-        if (!housePhone || housePhone === "" || housePhone === undefined || housePhone === null) {
-            setHousePhoneError(true)
-            setHousePhoneErrorMsg("* شماره اقامتگاه باید وارد شود")
-        }
 
         if (!address || address === "" || address === undefined || address === null) {
             setAddressError(true)
             setAddressErrorMsg("* آدرس باید وارد شود")
         }
+
         else {
 
-            axios.put(`/api/drivers/update-profile`, { name, phone, email, username, gender, province, city, housePhone, nationalCode, address }, {
+            axios.put(`/api/drivers/update-profile`, { name, phone, email, username, gender: gender.label, province: province.label, city: city.label, nationalCode, address }, {
                 headers: {
                     'Content-Type': 'application/json',
                     'authorization': 'Bearer ' + token
@@ -7193,6 +7218,18 @@ function ProfileSettings() {
                             <span className='text-red-500 relative text-sm'>{usernameError ? usernameErrorMsg : ""}</span>
                         </div>
 
+                        {/* nationalCode */}
+                        <div className="flex flex-col mb-6">
+                            <label htmlFor="nationalCode" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600"> کدملی </label>
+                            <div className="relative">
+                                <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
+                                    <LiaIdCardSolid className="w-6 h-6 text-gray-400" />
+                                </div>
+                                <input style={{ borderRadius: '5px' }} type="number" value={nationalCode}
+                                    onChange={(e) => setNationalCode(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="کدملی" />
+                            </div>
+                            <span className='text-red-500 relative text-sm'>{nationalCodeError ? nationalCodeErrorMsg : ""}</span>
+                        </div>
 
                         {/* province */}
                         <div className="flex flex-col mb-6">
@@ -7247,19 +7284,6 @@ function ProfileSettings() {
                             <span className='text-red-500 relative text-sm'>{cityError ? cityErrorMsg : ""}</span>
                         </div>
 
-                        {/* nationalCode */}
-                        <div className="flex flex-col mb-6">
-                            <label htmlFor="nationalCode" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600"> کدملی </label>
-                            <div className="relative">
-                                <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
-                                    <LiaIdCardSolid className="w-6 h-6 text-gray-400" />
-                                </div>
-                                <input style={{ borderRadius: '5px' }} type="number" value={nationalCode}
-                                    onChange={(e) => setNationalCode(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="کدملی" />
-                            </div>
-                            <span className='text-red-500 relative text-sm'>{nationalCodeError ? nationalCodeErrorMsg : ""}</span>
-                        </div>
-
                         {/* gender */}
                         <div className="flex flex-col mb-6">
                             <label htmlFor="gender" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">جنیست</label>
@@ -7280,22 +7304,46 @@ function ProfileSettings() {
                         </div>
 
 
-                        {/* housePhone */}
+                        {/* licenseNumber */}
                         <div className="flex flex-col mb-6">
-                            <label htmlFor="housePhone" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600"> شماره اقامتگاه </label>
+                            <label htmlFor="name" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">شماره گواهینامه </label>
                             <div className="relative">
                                 <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
-                                    <FiPhone className="w-6 h-6 text-gray-400" />
+                                    <CiCreditCard2 className="w-6 h-6 text-gray-400" />
                                 </div>
-                                <input style={{ borderRadius: '5px' }} type="text" value={housePhone}
-                                    onChange={(e) => setHousePhone(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="شماره اقامتگاه" />
+                                <input
+                                    type="text"
+                                    id="licenseNumber"
+                                    value={licenseNumber}
+                                    onChange={handleLicenseNumberChange}
+                                    maxLength={10}
+                                    style={{ borderRadius: '5px' }}
+                                    className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800"
+                                    placeholder="شماره گواهینامه"
+                                />
                             </div>
-                            <span className='text-red-500 relative text-sm'>{housePhoneError ? housePhoneErrorMsg : ""}</span>
+                            <span className='text-red-500 relative text-sm'>{licenseNumberError ? licenseNumberErrorMsg : ""}</span>
+                        </div>
+
+                        {/* birth year */}
+                        <div className="flex flex-col mb-6">
+                            <div className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800">
+                                <h3>سال تولد: {birthYear || "انتخاب نشده"}</h3>
+                                <PersianDatePicker onChange={setBirthYear} />
+                            </div>
                         </div>
 
 
+                        {/* credite date */}
+                        <div className="flex flex-col mb-6">
+                            <div className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800">
+                                <h3> تاریخ اعتبار گواهینامه: {crediteDate || "انتخاب نشده"}</h3>
+                                <PersianDatePicker onChange={setCrediteDate} />
+                            </div>
+                        </div>
+
                         {/*  address */}
-                        <div className="flex flex-col mb-4">
+                        <div className="flex flex-col mb-6">
                             <label htmlFor="address" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">آدرس </label>
                             <div className="relative">
                                 <div className="inline-flex items-center justify-center absolute left-0 h-full w-10 text-gray-400" style={{ bottom: "52px" }}>
@@ -7323,6 +7371,8 @@ function ProfileSettings() {
         </>
     )
 }
+
+
 
 
 export default ProfileSettings
