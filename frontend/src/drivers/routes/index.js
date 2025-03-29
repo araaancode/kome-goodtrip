@@ -1,6 +1,5 @@
 import Dashboard from '../pages/protected/Dashboard'
 import Welcome from '../pages/protected/Welcome'
-import Page404 from '../pages/protected/404'
 import Blank from '../pages/protected/Blank'
 import Bookings from '../pages/Bookings'
 import Buses from '../pages/Buses'
@@ -11,29 +10,28 @@ import Advertisments from '../pages/Advertisments'
 import Prices from '../pages/Prices'
 import Support from '../pages/Support'
 import Bank from '../pages/Bank'
-import Owners from '../pages/Owners'
 import Profile from '../pages/Profile'
 import DriverInfo from '../pages/DriverInfo'
-
+import CreateAds from "../pages/CreateAds"
 
 const routes = [
   
  
   {
-    path: '/bookings', // the url
-    component: Bookings, // view rendered
+    path: '/bookings', 
+    component: Bookings,
   },
   {
-    path: '/buses', // the url
-    component: Buses, // view rendered
+    path: '/buses', 
+    component: Buses,
   },
   {
-    path: '/dashboard', // the url
-    component: Dashboard, // view rendered
+    path: '/dashboard', 
+    component: Dashboard,
   },
   {
-    path: '/welcome', // the url
-    component: Welcome, // view rendered
+    path: '/welcome', 
+    component: Welcome,
   },
   {
     path: '/blank',
@@ -54,6 +52,10 @@ const routes = [
   {
     path: '/advertisments',
     component: Advertisments,
+  },
+  {
+    path: '/create-advertisment',
+    component: CreateAds,
   },
   {
     path: '/price',
