@@ -36,7 +36,7 @@ router.post('/ads', authDriver, driverAdsPhotosUpload.fields([
 
 router.put('/ads/:adsId/update-ads', authDriver, driverCtrls.updateAds)
 router.put('/ads/:adsId/update-photo', authDriver, driverAdsPhotosUpload.single("photo"), driverCtrls.updateAdsPhoto)
-router.put('/ads/:adsId/update-photos', authDriver, driverAdsPhotosUpload.single("photos"), driverCtrls.updateAdsPhotos)
+router.put('/ads/:adsId/update-photos', authDriver, driverAdsPhotosUpload.array("photos", 4), driverCtrls.updateAdsPhotos)
 router.delete('/ads/:adsId', authDriver, driverCtrls.deleteAds)
 
 // support tickets

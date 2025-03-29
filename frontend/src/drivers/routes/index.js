@@ -13,6 +13,7 @@ import Bank from '../pages/Bank'
 import Profile from '../pages/Profile'
 import DriverInfo from '../pages/DriverInfo'
 import CreateAds from "../pages/CreateAds"
+import UpdateAds from "../pages/UpdateAds"
 
 const routes = [
   
@@ -57,6 +58,11 @@ const routes = [
     path: '/create-advertisment',
     component: CreateAds,
   },
+  {
+    path: '/advertisments/:adsId/update',
+    component: UpdateAds,
+  },
+
   {
     path: '/price',
     component: Prices,

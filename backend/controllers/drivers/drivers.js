@@ -252,7 +252,8 @@ exports.markNotification = async (req, res) => {
 // @route = /api/drivers/ads
 exports.allAds = async (req, res) => {
     try {
-        let ads = await DriverAds.find({ driver: req.driver._id }).populate('driver').select('-password')
+        
+        let ads = await DriverAds.find({ driver: req.driver._id }).populate('company').select('-password')
         if (ads) {
             return res.status(StatusCodes.OK).json({
                 status: 'success',
@@ -310,17 +311,26 @@ exports.singleAds = async (req, res) => {
 // # get create driver ads -> POST -> Driver -> PRIVATE
 // @route = /api/drivers/ads
 exports.createAds = async (req, res) => {
-    var photos = [];
+    
+    let photos = [];
     if (req.files.photos) {
         req.files.photos.forEach((element) => {
             photos.push(element.filename);
         });
     }
 
+
+    let company = {}
+
+    company.name = req.body.name
+    company.phone = req.body.phone
+    company.address = req.body.address
+
+
     try {
         await DriverAds.create({
             driver: req.driver._id,
-            company: "6702a7927bfdbe2dde087edd",
+            company: company,
             title: req.body.title,
             description: req.body.description,
             price: req.body.price,
@@ -347,11 +357,46 @@ exports.createAds = async (req, res) => {
 // # update driver ads -> PUT -> Driver -> PRIVATE
 // @route = /api/drivers/ads/:adsId/update-ads
 exports.updateAds = async (req, res) => {
+    // try {
+    //     await DriverAds.findByIdAndUpdate(req.params.adsId, {
+    //         title: req.body.title,
+    //         description: req.body.description,
+    //         price: req.body.price,
+    //     }, { new: true }).then((ads) => {
+    //         if (ads) {
+    //             return res.status(StatusCodes.OK).json({
+    //                 status: 'success',
+    //                 msg: "آگهی ویرایش شد",
+    //                 ads
+    //             })
+    //         } else {
+    //             return res.status(StatusCodes.BAD_REQUEST).json({
+    //                 status: 'failure',
+    //                 msg: "آگهی ویرایش نشد"
+    //             })
+    //         }
+    //     })
+
+    // } catch (error) {
+    //     console.error(error.message);
+    //     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+    //         status: 'failure',
+    //         msg: "خطای داخلی سرور",
+    //         error
+    //     });
+    // }
+
     try {
+        let company = {
+            name: req.body.name,
+            phone: req.body.phone,
+            address: req.body.address,
+        }
         await DriverAds.findByIdAndUpdate(req.params.adsId, {
             title: req.body.title,
             description: req.body.description,
             price: req.body.price,
+            company,
         }, { new: true }).then((ads) => {
             if (ads) {
                 return res.status(StatusCodes.OK).json({
@@ -383,7 +428,7 @@ exports.updateAds = async (req, res) => {
 exports.updateAdsPhoto = async (req, res) => {
     try {
         await DriverAds.findByIdAndUpdate(req.params.adsId, {
-            photo: req.file.filename,
+            photo: req.file ? req.file.filename : null,
         }).then((ads) => {
             if (ads) {
                 return res.status(StatusCodes.OK).json({
@@ -413,8 +458,14 @@ exports.updateAdsPhoto = async (req, res) => {
 // @route = /api/drivers/ads/:adsId/update-photos
 exports.updateAdsPhotos = async (req, res) => {
     try {
+        const imagePaths = req.files.map((file) => file.path);
+
+        if (imagePaths.length === 0) {
+            return res.status(400).json({ error: "حداقل یک تصویر باید وارد کنید..!" });
+        }
+
         await DriverAds.findByIdAndUpdate(req.params.adsId, {
-            photos: req.file.filename,
+            photos: imagePaths
         }).then((ads) => {
             if (ads) {
                 return res.status(StatusCodes.OK).json({
@@ -429,6 +480,7 @@ exports.updateAdsPhotos = async (req, res) => {
                 })
             }
         });
+
     } catch (error) {
         console.error(error.message);
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({

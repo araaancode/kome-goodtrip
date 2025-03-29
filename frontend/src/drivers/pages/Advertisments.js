@@ -1,154 +1,219 @@
-import moment from "moment"
 import { useEffect, useState } from "react"
-import { useDispatch, useSelector } from "react-redux"
+
+import { useDispatch } from "react-redux"
 import TitleCard from "../components/Cards/TitleCard"
-import { showNotification } from '../features/common/headerSlice'
-import MomentJalali from "moment-jalaali"
-import { CONFIRMATION_MODAL_CLOSE_TYPES, MODAL_BODY_TYPES } from '../utils/globalConstantUtil'
-import { openModal } from "../features/common/modalSlice"
+
 import Swal from 'sweetalert2'
-import withReactContent from 'sweetalert2-react-content'
 import { setPageTitle } from '../features/common/headerSlice'
-import Subtitle from "../components/Typography/Subtitle"
+import axios from "axios"
+import "../components/modal.css"
+import { PiNewspaperClipping, PiMoney, PiMapPinLight } from "react-icons/pi";
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // load icons
 import DeleteIcon from '@iconscout/react-unicons/icons/uil-trash-alt'
 import EditIcon from '@iconscout/react-unicons/icons/uil-edit-alt'
 
-import UpdateAdmin from "../features/admins/UpdateAdmin"
+import { DataGrid } from "@mui/x-data-grid";
+import { CircularProgress, Box, createTheme, ThemeProvider } from "@mui/material";
+import { CssBaseline } from "@mui/material";
+import { arSA } from "@mui/x-data-grid/locales"; // Optional: Arabic localization
+
+const theme = createTheme(
+    {
+        direction: "rtl", 
+    },
+);
 
 
 
 const TopSideButtons = () => {
 
-    const dispatch = useDispatch()
+    return (
+        <>
+            <div className="inline-block">
+                <h6>لیست آگهی ها</h6>
+            </div>
 
-    const createNewUser = () => {
-        // dispatch(showNotification({ message: "Add New Member clicked", status: 1 }))
-        dispatch(openModal({ title: "ایجاد ادمین جدید", bodyType: MODAL_BODY_TYPES.ADD_NEW_ADMIN }))
-    }
+        </>
 
-
-
-    // return (
-    //     <div className="inline-block float-right">
-    //         <button className="btn px-6 btn-sm normal-case btn-primary" onClick={() => createNewUser()}>ایجاد آگهی جدید</button>
-    //     </div>
-    // )
-}
-
-
-const TEAM_MEMBERS = [
-    { name: "آگهی یک", avatar: "https://cdn-icons-png.flaticon.com/128/16157/16157793.png", email: "example@admin.test", role: "Owner", joinedOn: MomentJalali(new Date()).add(-5 * 1, 'days').format("jYYYY/jMM/jDD"), lastActive: "5 hr ago" },
-    { name: "آگهی دو", avatar: "https://cdn-icons-png.flaticon.com/128/16157/16157793.png", email: "example@admin.test", role: "Admin", joinedOn: MomentJalali(new Date()).add(-5 * 2, 'days').format("jYYYY/jMM/jDD"), lastActive: "15 min ago" },
-    { name: "آگهی سه", avatar: "https://cdn-icons-png.flaticon.com/128/16157/16157793.png", email: "example@admin.test", role: "Admin", joinedOn: MomentJalali(new Date()).add(-5 * 3, 'days').format("jYYYY/jMM/jDD"), lastActive: "20 hr ago" },
-    { name: "آگهی چهار", avatar: "https://cdn-icons-png.flaticon.com/128/16157/16157793.png", email: "example@admin.test", role: "Manager", joinedOn: MomentJalali(new Date()).add(-5 * 4, 'days').format("jYYYY/jMM/jDD"), lastActive: "1 hr ago" },
-    { name: "آگهی پنج", avatar: "https://cdn-icons-png.flaticon.com/128/16157/16157793.png", email: "example@admin.test", role: "Support", joinedOn: MomentJalali(new Date()).add(-5 * 5, 'days').format("jYYYY/jMM/jDD"), lastActive: "40 min ago" },
-    { name: "آگهی شش", avatar: "https://cdn-icons-png.flaticon.com/128/16157/16157793.png", email: "example@admin.test", role: "Support", joinedOn: MomentJalali(new Date()).add(-5 * 7, 'days').format("jYYYY/jMM/jDD"), lastActive: "5 hr ago" },
-
-]
-
-const updateUser = () => {
-    alert("update user")
+    )
 }
 
 
 
-const deleteUser = () => {
-    Swal.fire({
-        title: "آیا از حذف ادمین اطمینان دارید؟",
-        showDenyButton: true,
-        showCancelButton: true,
-        confirmButtonText: "بله",
-        denyButtonText: `خیر`
-    }).then((result) => {
-        /* Read more about isConfirmed, isDenied below */
-        if (result.isConfirmed) {
-            Swal.fire("ادمین حذف شد!", "", "success");
-        } else if (result.isDenied) {
-            Swal.fire("تغییرات ذخیره نشد", "", "info");
-        }
-    });
+
+
+const deleteAds = (adsId) => {
+    let token = localStorage.getItem("userToken")
+
+
+    axios.delete(`/api/drivers/ads/${adsId}`, {
+        headers: {
+            'authorization': 'Bearer ' + token
+        },
+    })
+        .then((response) => {
+            Swal.fire({
+                title: "<small>آیا از حذف آگهی اطمینان دارید؟</small>",
+                showDenyButton: true,
+                confirmButtonText: "بله",
+                denyButtonText: `خیر`
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire("<small>آگهی حذف شد!</small>", "", "success");
+                    window.location.reload()
+                } else if (result.isDenied) {
+                    Swal.fire("<small>تغییرات ذخیره نشد</small>", "", "info");
+                }
+            });
+        })
+        .catch((error) => {
+            console.log('error', error)
+            Swal.fire("<small>تغییرات ذخیره نشد</small>", "", "error");
+        })
+
 }
 
 const Advertisments = () => {
 
-    const dispatch = useDispatch()
-    useEffect(() => {
-        dispatch(setPageTitle({ title: "آگهی ها" }))
-    }, [])
+    const [orderStatus, setAdstatus] = useState('');
+    const [isOpen, setIsOpen] = useState(false);
+    const [orderId, setOrderId] = useState("");
+    const [ads, setAds] = useState([])
+    const [loading, setLoading] = useState(true);
+    const [data, setData] = useState([]);
 
-    const [members, setMembers] = useState(TEAM_MEMBERS)
 
-    const getRoleComponent = (role) => {
-        if (role === "Admin") return <div className="badge badge-secondary">ادمین</div>
-        if (role === "Manager") return <div className="badge">مدیر داخلی</div>
-        if (role === "Owner") return <div className="badge badge-primary">مدیریت اصلی</div>
-        if (role === "Support") return <div className="badge badge-accent">پشتیبانی</div>
-        else return <div className="badge badge-ghost">{role}</div>
+    const handleOrderStatusChange = (e) => {
+        setAdstatus(e.target.value);
+    };
+
+    const openChangeStatusModal = (orderId) => {
+        setIsOpen(true);
+        setOrderId(orderId)
+    };
+
+    const closeModal = () => {
+        setIsOpen(false);
     }
 
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(setPageTitle({ title: "لیست آگهی ها" }))
+    }, [])
+
+
+
+
+    useEffect(() => {
+        let token = localStorage.getItem("userToken")
+        const AuthStr = 'Bearer '.concat(token);
+
+        axios.get('/api/drivers/ads', { headers: { authorization: AuthStr } })
+            .then(response => {
+                console.log(response.data);
+                
+                setAds(response.data.ads)
+                setLoading(false);
+
+            })
+            .catch((error) => {
+                console.log('error ' + error);
+            });
+    }, [])
+
+ 
+
+
+    const changeOrderStatus = () => {
+        let token = localStorage.getItem("userToken")
+
+        axios.put(`/api/drivers/foods/order-foods/${orderId}/change-status`, { orderStatus }, {
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': 'Bearer ' + token
+            },
+        })
+            .then((response) => {
+                console.log('response', response.data)
+                Swal.fire({
+                    title: "<small>آیا از ویرایش آگهی اطمینان دارید؟</small>",
+                    showDenyButton: true,
+                    confirmButtonText: "بله",
+                    denyButtonText: `خیر`
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire("<small>آگهی ویرایش شد!</small>", "", "success");
+                        document.location.reload()
+                    } else if (result.isDenied) {
+                        Swal.fire("<small>تغییرات ذخیره نشد</small>", "", "info");
+                    }
+                });
+            })
+            .catch((error) => {
+                console.log('error', error)
+                Swal.fire("<small>تغییرات ذخیره نشد</small>", "", "error");
+            })
+    }
+
+  
     return (
         <>
-            <div className={"card w-full p-6 bg-base-100 shadow-xl mt-6 h-screen"}>
 
-                {/* Title for Card */}
-                <Subtitle styleClass={TopSideButtons ? "inline-block" : ""}>
-                    آگهی ها
+            <TitleCard title="" topMargin="mt-2" TopSideButtons={<TopSideButtons />}>
 
-                    {/* Top side button, show only if present */}
-                    {
-                        TopSideButtons && <div className="inline-block float-righ">{TopSideButtons}</div>
-                    }
-                </Subtitle>
-
-                <div className="divider mt-2"></div>
-
-                {/** Card Body */}
-                <div className='h-full w-full pb-6 bg-base-100'>
-                    <div className="overflow-x-auto w-full">
+                <div className="overflow-x-auto w-full">
+                     {ads.length > 0 ? (
                         <table className="table w-full">
                             <thead>
                                 <tr>
-                                    <th>نام و نام خانوادگی</th>
-                                    <th>ایمیل</th>
-                                    <th>شروع رزرو</th>
-                                    <th>پایان رزرو</th>
-                                    <th>حذف</th>
-                                    <th>ویرایش</th>
+                                    <th>کد آگهی</th>
+                                    <th>عنوان آگهی </th>
+                                    <th>نام مشتری </th>
+                                    <th> شماره همراه</th>
+                                    <th>تاریخ ایجاد</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {
-                                    members.map((l, k) => {
+                                    ads.map((l, k) => {
                                         return (
                                             <tr key={k}>
-                                                <td>
+                                                <td className="flex items-center" >
                                                     <div className="flex items-center space-x-3">
                                                         <div className="avatar">
-                                                            <div className="mask mask-circle w-12 h-12">
-                                                                <img className="w-6 h-6" src={l.avatar} alt="Avatar" />
-                                                            </div>
+                                                            <PiNewspaperClipping className="w-7 h-7" />
                                                         </div>
                                                         <div>
-                                                            <div className="font-bold mr-3">{l.name}</div>
+                                                            <div className="font-bold mr-3">{l._id}</div>
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td>{l.email}</td>
-                                                <td>{l.joinedOn}</td>
-                                                <td>{l.lastActive}</td>
-                                                <td><button onClick={() => deleteUser()}><DeleteIcon /></button></td>
-                                                <td><button onClick={() => updateUser()}><EditIcon /></button></td>
+                                                <td>{l.title}</td>
+                                                <td>{l.company.name}</td>
+                                                <td>{l.company.phone}</td>
+                                                <td>{new Date(l.createdAt).toLocaleDateString('fa')}</td>
+                                                <td><a href={`/drivers/advertisments/${l._id}/update`}><EditIcon /></a></td>
+                                                <td><button onClick={() => deleteAds(l._id)}><DeleteIcon /></button></td>
                                             </tr>
                                         )
                                     })
                                 }
                             </tbody>
                         </table>
-                    </div>
+                    ) : (
+                        <h3>هنوز آگهی اضافه نشده است...!</h3>
+                    )} 
+                    
+
                 </div>
-            </div>
+                <ToastContainer />
+
+            </TitleCard>
         </>
     )
 }
