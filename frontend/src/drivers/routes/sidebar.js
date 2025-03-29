@@ -36,42 +36,42 @@ const routes = [
   {
     path: '/drivers/bookings',
     icon: <CalendarIcon size="140" className={iconClasses} />, 
-    name: 'لیست رزروها',
+    name: 'رزروها',
   },
   {
     // path: '/drivers/calendar', // url
     path: '/drivers/driver-info', // url
     icon: <DriverIcon className={iconClasses}/>, // icon component
-    name: 'ثبت اطلاعات راننده', // name that appear in Sidebar
+    name: 'ثبت اطلاعات اتوبوس', // name that appear in Sidebar
   },
-  {
-    path: '/drivers/buses',
-    icon: <BusIcon size="140" className={iconClasses} />, 
-    name: 'تایید یا عدم اتوبوس',
-  },
-  {
-    path: '/drivers/comments', // url
-    // path: '/drivers/leads', // url
-    icon: <ChatIcon size="140" className={iconClasses} />, // icon component
-    name: ' نظرات کاربران ', // name that appear in Sidebar
-  },
-  {
-    path: '/drivers/rates', // url
-    // path: '/drivers/transactions', // url
-    icon: <StarIcon className={iconClasses}/>, // icon component
-    name: 'امتیاز',
-  },
+  // {
+  //   path: '/drivers/buses',
+  //   icon: <BusIcon size="140" className={iconClasses} />, 
+  //   name: 'تایید یا عدم اتوبوس',
+  // },
+  // {
+  //   path: '/drivers/comments', // url
+  //   // path: '/drivers/leads', // url
+  //   icon: <ChatIcon size="140" className={iconClasses} />, // icon component
+  //   name: ' نظرات کاربران ', // name that appear in Sidebar
+  // },
+  // {
+  //   path: '/drivers/rates', // url
+  //   // path: '/drivers/transactions', // url
+  //   icon: <StarIcon className={iconClasses}/>, // icon component
+  //   name: 'امتیاز',
+  // },
   // {
   //   path: '/drivers/charts', // url
   //   icon: <TicketIcon className={iconClasses}/>, // icon component
   //   name: 'تیکت پشتیبانی کاربران، ملک داران، اتوبوس دارها، غذادارها', // name that appear in Sidebar
   // },
-  {
-    path: '/drivers/financials', // url
-    // path: '/drivers/integration', // url
-    icon: <MoneyIcon className={iconClasses}/>, // icon component
-    name: 'قسمت مالی', // name that appear in Sidebar
-  },
+  // {
+  //   path: '/drivers/financials', // url
+  //   // path: '/drivers/integration', // url
+  //   icon: <MoneyIcon className={iconClasses}/>, // icon component
+  //   name: 'قسمت مالی', // name that appear in Sidebar
+  // },
 
   {
     path: '/drivers/advertisments', // url

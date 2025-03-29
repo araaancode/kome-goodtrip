@@ -7008,7 +7008,7 @@ function ProfileSettings() {
             if (value.length === 10) {
                 setLicenseNumberError(false);
             } else {
-                setLicenseNumberErrorMsg('Input must be exactly 10 characters long.');
+                setLicenseNumberErrorMsg('شماره');
             }
         }
     };

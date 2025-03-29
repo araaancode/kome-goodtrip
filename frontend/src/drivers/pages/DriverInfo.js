@@ -7,7 +7,7 @@ function DriverInfo(){
     const dispatch = useDispatch()
 
     useEffect(() => {
-        dispatch(setPageTitle({ title : "ثبت اطلاعات راننده"}))
+        dispatch(setPageTitle({ title : "ثبت اطلاعات اتوبوس"}))
       }, [])
     return(
         <DriverSettings />

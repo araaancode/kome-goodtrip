@@ -37,7 +37,7 @@ function DriverSettings() {
 
     // Call API to update profile settings changes
     const updateProfile = () => {
-        dispatch(showNotification({ message: "اطلاعات راننده ویرایش شد", status: 1 }))
+        dispatch(showNotification({ message: "اطلاعات اتوبوس ویرایش شد", status: 1 }))
     }
 
     const updateFormValue = ({ updateType, value }) => {
@@ -57,7 +57,7 @@ function DriverSettings() {
     return (
         <>
 
-            <TitleCard title="ثبت اطلاعات راننده" topMargin="mt-2">
+            <TitleCard title="ثبت اطلاعات اتوبوس" topMargin="mt-2">
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {/* <InputText labelTitle="رنگ وسیله" placeholder="رنگ وسیله" updateFormValue={updateFormValue} />
@@ -85,7 +85,7 @@ function DriverSettings() {
                                 <IoColorPaletteOutline className="w-6 h-6 text-gray-400" />
                             </div>
                             <input style={{ borderRadius: '5px' }} type="text" value={color}
-                                onChange={handleColorChange} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="رنگ وسیله" />
+                                onChange={handleColorChange} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="رنگ وسیله" />
                         </div>
                         <span className='text-red-500 relative text-sm'>{errorPhoneMessage ? errorPhoneMessage : ""}</span>
                     </div>
@@ -98,7 +98,7 @@ function DriverSettings() {
                                 <LuBus className="w-6 h-6 text-gray-400" />
                             </div>
                             <input style={{ borderRadius: '5px' }} type="text" value={color}
-                                onChange={handleColorChange} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="نوع وسیله" />
+                                onChange={handleColorChange} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="نوع وسیله" />
                         </div>
                         <span className='text-red-500 relative text-sm'>{errorPhoneMessage ? errorPhoneMessage : ""}</span>
                     </div>
@@ -111,7 +111,7 @@ function DriverSettings() {
                                 <BsCardHeading className="w-6 h-6 text-gray-400"  />
                             </div>
                             <input style={{ borderRadius: '5px' }} type="text" value={phone}
-                                onChange={handlePhoneChange} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="پلاک " />
+                                onChange={handlePhoneChange} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="پلاک " />
                         </div>
                         <span className='text-red-500 relative text-sm'>{errorPhoneMessage ? errorPhoneMessage : ""}</span>
                     </div>
@@ -124,7 +124,7 @@ function DriverSettings() {
                                 <FaRegUserCircle className="w-6 h-6 text-gray-400" />
                             </div>
                             <input style={{ borderRadius: '5px' }} type="text" value={phone}
-                                onChange={handlePhoneChange} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="نام صاحب خودرو " />
+                                onChange={handlePhoneChange} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="نام صاحب خودرو " />
                         </div>
                         <span className='text-red-500 relative text-sm'>{errorPhoneMessage ? errorPhoneMessage : ""}</span>
                     </div>
@@ -137,7 +137,7 @@ function DriverSettings() {
                                 <MdOutlineReduceCapacity className="w-6 h-6 text-gray-400" />
                             </div>
                             <input style={{ borderRadius: '5px' }} type="text" value={phone}
-                                onChange={handlePhoneChange} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="تعداد ظرفیت " />
+                                onChange={handlePhoneChange} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="تعداد ظرفیت " />
                         </div>
                         <span className='text-red-500 relative text-sm'>{errorPhoneMessage ? errorPhoneMessage : ""}</span>
                     </div>
@@ -150,7 +150,7 @@ function DriverSettings() {
                                 <RxBoxModel className="w-6 h-6 text-gray-400" />
                             </div>
                             <input style={{ borderRadius: '5px' }} type="text" value={phone}
-                                onChange={handlePhoneChange} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="مدل ماشین " />
+                                onChange={handlePhoneChange} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="مدل ماشین " />
                         </div>
                         <span className='text-red-500 relative text-sm'>{errorPhoneMessage ? errorPhoneMessage : ""}</span>
                     </div>
@@ -163,7 +163,7 @@ function DriverSettings() {
                                 <MdOutlineWhatshot className="w-6 h-6 text-gray-400" />
                             </div>
                             <input style={{ borderRadius: '5px' }} type="text" value={phone}
-                                onChange={handlePhoneChange} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="گرمایش " />
+                                onChange={handlePhoneChange} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="گرمایش " />
                         </div>
                         <span className='text-red-500 relative text-sm'>{errorPhoneMessage ? errorPhoneMessage : ""}</span>
                     </div>
@@ -176,7 +176,7 @@ function DriverSettings() {
                                 <IoSnowOutline className="w-6 h-6 text-gray-400" />
                             </div>
                             <input style={{ borderRadius: '5px' }} type="text" value={phone}
-                                onChange={handlePhoneChange} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="سرمایش " />
+                                onChange={handlePhoneChange} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="سرمایش " />
                         </div>
                         <span className='text-red-500 relative text-sm'>{errorPhoneMessage ? errorPhoneMessage : ""}</span>
                     </div>
@@ -189,7 +189,7 @@ function DriverSettings() {
                                 <TfiMoney className="w-6 h-6 text-gray-400" />
                             </div>
                             <input style={{ borderRadius: '5px' }} type="text" value={phone}
-                                onChange={handlePhoneChange} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" placeholder=" هزینه" />
+                                onChange={handlePhoneChange} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder=" هزینه" />
                         </div>
                         <span className='text-red-500 relative text-sm'>{errorPhoneMessage ? errorPhoneMessage : ""}</span>
                     </div>
@@ -202,7 +202,7 @@ function DriverSettings() {
                                 <FiCalendar  className="w-6 h-6 text-gray-400" />
                             </div>
                             <input style={{ borderRadius: '5px' }} type="text" value={phone}
-                                onChange={handlePhoneChange} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="تاریخ " />
+                                onChange={handlePhoneChange} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="تاریخ " />
                         </div>
                         <span className='text-red-500 relative text-sm'>{errorPhoneMessage ? errorPhoneMessage : ""}</span>
                     </div>
@@ -215,7 +215,7 @@ function DriverSettings() {
                                 <FaMountainCity className="w-6 h-6 text-gray-400" />
                             </div>
                             <input style={{ borderRadius: '5px' }} type="text" value={phone}
-                                onChange={handlePhoneChange} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="مبدا " />
+                                onChange={handlePhoneChange} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="مبدا " />
                         </div>
                         <span className='text-red-500 relative text-sm'>{errorPhoneMessage ? errorPhoneMessage : ""}</span>
                     </div>
@@ -228,7 +228,7 @@ function DriverSettings() {
                                 <FaTreeCity  className="w-6 h-6 text-gray-400"  />
                             </div>
                             <input style={{ borderRadius: '5px' }} type="text" value={phone}
-                                onChange={handlePhoneChange} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="مقصد " />
+                                onChange={handlePhoneChange} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="مقصد " />
                         </div>
                         <span className='text-red-500 relative text-sm'>{errorPhoneMessage ? errorPhoneMessage : ""}</span>
                     </div>
@@ -241,7 +241,7 @@ function DriverSettings() {
                                 <BsCalendar3 className="w-6 h-6 text-gray-400" />
                             </div>
                             <input style={{ borderRadius: '5px' }} type="text" value={phone}
-                                onChange={handlePhoneChange} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="تاریخ حرکت " />
+                                onChange={handlePhoneChange} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="تاریخ حرکت " />
                         </div>
                         <span className='text-red-500 relative text-sm'>{errorPhoneMessage ? errorPhoneMessage : ""}</span>
                     </div>
@@ -254,7 +254,7 @@ function DriverSettings() {
                                 <TbClockHour3 className="w-6 h-6 text-gray-400" />
                             </div>
                             <input style={{ borderRadius: '5px' }} type="text" value={phone}
-                                onChange={handlePhoneChange} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="ساعت حرکت " />
+                                onChange={handlePhoneChange} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="ساعت حرکت " />
                         </div>
                         <span className='text-red-500 relative text-sm'>{errorPhoneMessage ? errorPhoneMessage : ""}</span>
                     </div>
@@ -267,7 +267,7 @@ function DriverSettings() {
                                 <TbClockHour4 className="w-6 h-6 text-gray-400" />
                             </div>
                             <input style={{ borderRadius: '5px' }} type="text" value={phone}
-                                onChange={handlePhoneChange} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="ساعت رسیدن " />
+                                onChange={handlePhoneChange} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="ساعت رسیدن " />
                         </div>
                         <span className='text-red-500 relative text-sm'>{errorPhoneMessage ? errorPhoneMessage : ""}</span>
                     </div>
@@ -280,7 +280,7 @@ function DriverSettings() {
                                 <LiaBusSolid className="w-6 h-6 text-gray-400" />
                             </div>
                             <input style={{ borderRadius: '5px' }} type="text" value={phone}
-                                onChange={handlePhoneChange} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="نام سرویس " />
+                                onChange={handlePhoneChange} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="نام سرویس " />
                         </div>
                         <span className='text-red-500 relative text-sm'>{errorPhoneMessage ? errorPhoneMessage : ""}</span>
                     </div>
@@ -288,7 +288,7 @@ function DriverSettings() {
 
                 </div>
 
-                <div className="mt-6"><button className="btn bg-blue-800 hover:bg-blue-900 text-white float-right" onClick={() => updateProfile()}>ثبت اطلاعات راننده</button></div>
+                <div className="mt-6"><button className="btn bg-blue-800 hover:bg-blue-900 text-white float-right" onClick={() => updateProfile()}>ثبت اطلاعات اتوبوس</button></div>
             </TitleCard>
         </>
     )
