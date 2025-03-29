@@ -14,6 +14,8 @@ import Profile from '../pages/Profile'
 import DriverInfo from '../pages/DriverInfo'
 import CreateAds from "../pages/CreateAds"
 import UpdateAds from "../pages/UpdateAds"
+import CreateSupportTicket from "../pages/CreateSupportTicket"
+import SupportTickets from "../pages/SupportTickets"
 
 const routes = [
   
@@ -67,6 +69,19 @@ const routes = [
     path: '/price',
     component: Prices,
   },
+  {
+    path: '/support-tickets',
+    component: SupportTickets,
+  },
+  {
+    path: '/create-support-ticket',
+    component: CreateSupportTicket,
+  },
+
+  // {
+  //   path: '/support-tickets/:stId',
+  //   component: SingleSupportTicket,
+  // },
   {
     path: '/support',
     component: Support,

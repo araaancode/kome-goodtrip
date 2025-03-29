@@ -13,13 +13,13 @@ const routes = [
 
   {
     path: '/drivers/bookings',
-    icon: <CalendarIcon size="140" className={iconClasses} />, 
+    icon: <CalendarIcon size="140" className={iconClasses} />,
     name: 'رزروها',
   },
   {
     // path: '/drivers/calendar', // url
     path: '/drivers/driver-info', // url
-    icon: <DriverIcon className={iconClasses}/>, // icon component
+    icon: <DriverIcon className={iconClasses} />, // icon component
     name: 'ثبت اطلاعات اتوبوس', // name that appear in Sidebar
   },
   // {
@@ -59,7 +59,7 @@ const routes = [
 
   {
     path: '/drivers/advertisments', // url
-    icon: <NewsPaperIcon className={iconClasses}/>, // icon component
+    icon: <NewsPaperIcon className={iconClasses} />, // icon component
     name: ' آگهی ها', // name that appear in Sidebar
   },
 
@@ -70,20 +70,34 @@ const routes = [
   //   name: 'قیمت', // name that appear in Sidebar
   // },
 
+  // {
+  //   // path: '/drivers/calendar', // url
+  //   path: '/drivers/support', // url
+  //   icon: <BiSupport className={iconClasses}/>, // icon component
+  //   name: 'پشتیبانی', // name that appear in Sidebar
+  // },
+
   {
-    // path: '/drivers/calendar', // url
-    path: '/drivers/support', // url
-    icon: <BiSupport className={iconClasses}/>, // icon component
-    name: 'پشتیبانی', // name that appear in Sidebar
+    path: '/drivers/create-support-ticket',
+    icon: <TbNewSection className={iconClasses} />,
+    name: 'ایجاد تیکت پشتیبانی',
   },
+
+  {
+    path: '/cooks/support-tickets',
+    icon: <BiSupport className={iconClasses} />,
+    name: 'تیکت های من',
+  },
+
+
 
   {
     // path: '/drivers/calendar', // url
     path: '/drivers/bank', // url
-    icon: <BankIcon className={iconClasses}/>, // icon component
+    icon: <BankIcon className={iconClasses} />, // icon component
     name: 'حساب بانکی', // name that appear in Sidebar
   },
-  
+
 
 ]
 
