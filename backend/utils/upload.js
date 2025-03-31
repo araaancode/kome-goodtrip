@@ -1,14 +1,20 @@
 const multer = require('multer')
 const path = require('path');
 const mkdirp = require('mkdirp');
-const ownerAvatarDir = path.join(__dirname, '../uploads/ownerAvatars/');
+// user
 const houseCoverImagesDir = path.join(__dirname, '../uploads/houseCoverImages/');
 const userAvatarDir = path.join(__dirname, '../uploads/userAvatarDir/');
+// admin
 const adminAvatarDir = path.join(__dirname, '../uploads/adminAvatarDir/');
+// driver
 const driverAvatarDir = path.join(__dirname, '../uploads/driverAvatarDir/');
 const driverAdsPhotosDir = path.join(__dirname, '../uploads/driverAdsPhotosDir/');
 const driverBusPhotosDir = path.join(__dirname, '../uploads/driverBusPhotosDir/');
+const driverSupportTicktsDir = path.join(__dirname, '../uploads/driverSupportTicktsDir/');
+// owner
+const ownerAvatarDir = path.join(__dirname, '../uploads/ownerAvatars/');
 const ownerAdsDir = path.join(__dirname, '../uploads/ownerAdsDir/');
+// cook
 const cookAvatarDir = path.join(__dirname, '../uploads/cookAvatarDir/');
 const cookAdsDir = path.join(__dirname, '../uploads/cookAdsDir/');
 const cookSupportTicktsDir = path.join(__dirname, '../uploads/cookSupportTicktsDir/');
@@ -170,6 +176,19 @@ module.exports = {
         })
     }),
 
+
+    // driver support ticket image
+    driverSupportTicketUpload: multer({
+        storage: multer.diskStorage({
+            destination: function (req, file, cb) {
+                const made = mkdirp.sync(driverSupportTicktsDir);
+                cb(null, driverSupportTicktsDir)
+            },
+            filename: function (req, file, cb) {
+                cb(null, Date.now() + path.extname(file.originalname));
+            }
+        })
+    }),
 
 
     // ******************** cook ********************

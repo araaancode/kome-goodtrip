@@ -26,60 +26,60 @@ const TopSideButtons = () => {
   )
 }
 
-const deletefoods = async (foodId) => {
-  let token = localStorage.getItem("userToken")
+// const deletefoods = async (foodId) => {
+//   let token = localStorage.getItem("userToken")
 
-  Swal.fire({
-    title: "<small>آیا از حذف تیکت های پشتیبانی اطمینان دارید؟</small>",
-    showDenyButton: true,
-    confirmButtonText: "بله",
-    denyButtonText: `خیر`
-  }).then((result) => {
-    if (result.isConfirmed) {
-      axios.delete(`/api/cooks/foods/${foodId}`, {
-        headers: {
-          'authorization': 'Bearer ' + token
-        },
-      })
-        .then((response) => {
-          toast.success('تیکت های پشتیبانی حذف شد', {
-            position: "top-left",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          })
-        })
-        .catch((error) => {
-          console.log('error', error)
-          toast.error('خطایی وجود دارد. دوباره امتحان کنید !', {
-            position: "top-left",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          })
-        })
-    } else if (result.isDenied) {
-      toast.info('!.. تغییرات ذخیره نشد', {
-        position: "top-left",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      })
-    }
-  });
+//   Swal.fire({
+//     title: "<small>آیا از حذف تیکت های پشتیبانی اطمینان دارید؟</small>",
+//     showDenyButton: true,
+//     confirmButtonText: "بله",
+//     denyButtonText: `خیر`
+//   }).then((result) => {
+//     if (result.isConfirmed) {
+//       axios.delete(`/api/drivers/foods/${foodId}`, {
+//         headers: {
+//           'authorization': 'Bearer ' + token
+//         },
+//       })
+//         .then((response) => {
+//           toast.success('تیکت های پشتیبانی حذف شد', {
+//             position: "top-left",
+//             autoClose: 5000,
+//             hideProgressBar: false,
+//             closeOnClick: true,
+//             pauseOnHover: true,
+//             draggable: true,
+//             progress: undefined,
+//           })
+//         })
+//         .catch((error) => {
+//           console.log('error', error)
+//           toast.error('خطایی وجود دارد. دوباره امتحان کنید !', {
+//             position: "top-left",
+//             autoClose: 5000,
+//             hideProgressBar: false,
+//             closeOnClick: true,
+//             pauseOnHover: true,
+//             draggable: true,
+//             progress: undefined,
+//           })
+//         })
+//     } else if (result.isDenied) {
+//       toast.info('!.. تغییرات ذخیره نشد', {
+//         position: "top-left",
+//         autoClose: 5000,
+//         hideProgressBar: false,
+//         closeOnClick: true,
+//         pauseOnHover: true,
+//         draggable: true,
+//         progress: undefined,
+//       })
+//     }
+//   });
 
 
 
-}
+// }
 
 const SupportTickets = () => {
 
@@ -92,18 +92,15 @@ const SupportTickets = () => {
 
 
   const [supportTickets, setSupportTickets] = useState([])
+  let token = localStorage.getItem("userToken")
 
 
   useEffect(() => {
-    let token = localStorage.getItem("userToken")
     const AuthStr = 'Bearer '.concat(token);
 
-    axios.get('/api/cooks/support-tickets', { headers: { authorization: AuthStr } })
+    axios.get('/api/drivers/support-tickets', { headers: { authorization: AuthStr } })
       .then(response => {
-        console.log(response);
-        
         setSupportTickets(response.data.tickets)
-        console.log(response.data.tickets);
       })
       .catch((error) => {
         console.log('error ' + error);
@@ -136,6 +133,10 @@ const SupportTickets = () => {
     }
   }
 
+
+  
+  console.log(supportTickets[0]);
+  
   
 
   return (
@@ -174,7 +175,7 @@ const SupportTickets = () => {
                         <td>{showPersianPriority(l.priority)}</td>
                         <td>{l.isRead ? 'خوانده شده' : 'خوانده نشده'}</td>
                         <td>{new Date(l.createdAt).toLocaleDateString('fa')}</td>
-                        <td><a href={`/cooks/support-tickets/${l._id}`}><PiEye className="w-6 h-6" /></a></td>
+                        <td><a href={`/drivers/support-tickets/${l._id}`}><PiEye className="w-6 h-6" /></a></td>
                       </tr>
                     )
                   })
@@ -185,10 +186,11 @@ const SupportTickets = () => {
 
 
           ) : (
-            <h3>هنوز تیکت های پشتیبانی اضافه نشد ...!</h3>
+            <h3>هنوز تیکت پشتیبانی اضافه نشده است ...!</h3>
           )}
 
         </div>
+
         <ToastContainer />
       </TitleCard>
     </>

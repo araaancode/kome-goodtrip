@@ -584,21 +584,36 @@ exports.supportTicket = async (req, res) => {
 // @route = /api/drivers/support-tickets
 exports.createSupportTicket = async (req, res) => {
     try {
-        await DriverSupportTicket.create({
+        let images = [];
+        if (req.files.images) {
+            req.files.images.forEach((e) => {
+                images.push(e.path);
+            });
+        }
 
+        await DriverSupportTicket.create({
             title: req.body.title,
             description: req.body.description,
             driver: req.driver._id,
             assignedTo: req.driver._id,
+            images,
         }).then((data) => {
             res.status(StatusCodes.CREATED).json({
                 status: 'success',
                 msg: "تیکت پشتیبانی ساخته شد",
                 data
             })
+        }).catch((error) => {
+            console.error(error);
+            res.status(StatusCodes.BAD_REQUEST).json({
+                status: 'failure',
+                error
+            });
         })
+
+
     } catch (error) {
-        console.error(error.message);
+        console.error(error);
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
             status: 'failure',
             msg: "خطای داخلی سرور",

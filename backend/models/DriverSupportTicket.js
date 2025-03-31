@@ -58,7 +58,10 @@ const DriverSupportTicketSchema = new Schema({
   isRead: {
     type: Boolean,
     default: false
-  }
+  },
+  images: [{
+    type: String,
+  }]
 });
 
 // Middleware to update the `updatedAt` field on save

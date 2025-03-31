@@ -6,7 +6,7 @@ const driverCtrls = require("../../controllers/drivers/drivers")
 
 const authDriver = require("../../middlewares/authDriver")
 
-const { driverUpload, driverAdsPhotosUpload, driverBusPhotosUpload } = require("../../utils/upload")
+const { driverUpload, driverAdsPhotosUpload, driverBusPhotosUpload, driverSupportTicketUpload } = require("../../utils/upload")
 
 
 // basic profile api
@@ -42,7 +42,11 @@ router.delete('/ads/:adsId', authDriver, driverCtrls.deleteAds)
 // support tickets
 router.get('/support-tickets', authDriver, driverCtrls.supportTickets)
 router.get('/support-tickets/:stId', authDriver, driverCtrls.supportTicket)
-router.post('/support-tickets', authDriver, driverCtrls.createSupportTicket)
+// router.post('/support-tickets', authDriver, driverCtrls.createSupportTicket)
+router.post('/support-tickets', authDriver, driverSupportTicketUpload.fields([
+    { name: 'images', maxCount: 6 }
+]), driverCtrls.createSupportTicket)
+
 router.put('/support-tickets/:stId/read', authDriver, driverCtrls.readSupportTicket)
 router.put('/support-tickets/:stId/add-comment', authDriver, driverCtrls.addCommentsToSupportTicket)
 

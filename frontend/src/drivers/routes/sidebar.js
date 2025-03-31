@@ -84,7 +84,7 @@ const routes = [
   },
 
   {
-    path: '/cooks/support-tickets',
+    path: '/drivers/support-tickets',
     icon: <BiSupport className={iconClasses} />,
     name: 'تیکت های من',
   },
