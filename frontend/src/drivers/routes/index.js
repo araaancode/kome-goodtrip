@@ -11,7 +11,7 @@ import Prices from '../pages/Prices'
 import Support from '../pages/Support'
 import Bank from '../pages/Bank'
 import Profile from '../pages/Profile'
-import DriverInfo from '../pages/DriverInfo'
+import AddBus from '../pages/AddBus'
 import CreateAds from "../pages/CreateAds"
 import UpdateAds from "../pages/UpdateAds"
 import CreateSupportTicket from "../pages/CreateSupportTicket"
@@ -96,8 +96,8 @@ const routes = [
     component: Profile,
   },
   {
-    path: '/driver-info',
-    component: DriverInfo,
+    path: '/add-bus',
+    component: AddBus,
   },
   
 ]

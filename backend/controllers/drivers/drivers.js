@@ -252,7 +252,7 @@ exports.markNotification = async (req, res) => {
 // @route = /api/drivers/ads
 exports.allAds = async (req, res) => {
     try {
-        
+
         let ads = await DriverAds.find({ driver: req.driver._id }).populate('company').select('-password')
         if (ads) {
             return res.status(StatusCodes.OK).json({
@@ -311,7 +311,7 @@ exports.singleAds = async (req, res) => {
 // # get create driver ads -> POST -> Driver -> PRIVATE
 // @route = /api/drivers/ads
 exports.createAds = async (req, res) => {
-    
+
     let photos = [];
     if (req.files.photos) {
         req.files.photos.forEach((element) => {
@@ -737,44 +737,55 @@ exports.getDriverBus = async (req, res) => {
 // # add driver bus -> POST -> Driver -> PRIVATE
 // @route = /api/drivers/bus
 exports.addDriverBus = async (req, res) => {
-    var photos = [];
-    if (req.files.photos) {
-        req.files.photos.forEach((element) => {
-            photos.push(element.filename);
-        });
+    let findBus = await Bus.findOne({ driver: req.driver._id })
+
+    if (findBus) {
+        res.status(StatusCodes.BAD_REQUEST).json({
+            status: 'failure',
+            msg: "شما قبلا اتوبوس خود را اضافه کردید",
+        })
+    } else {
+        var photos = [];
+        if (req.files.photos) {
+            req.files.photos.forEach((element) => {
+                photos.push(element.filename);
+            });
+        }
+
+        try {
+            await Bus.create({
+                driver: req.driver._id,
+                name: req.body.name,
+                description: req.body.description,
+                model: req.body.model,
+                color: req.body.color,
+                type: req.body.type,
+                licensePlate: req.body.licensePlate,
+                serviceProvider: req.body.serviceProvider,
+                price: req.body.price,
+                seats: req.body.seats,
+                capacity: req.body.capacity,
+                photo: req.files.photo[0].filename,
+                photos,
+                options: req.body.options,
+            }).then((data) => {
+                res.status(StatusCodes.CREATED).json({
+                    status: 'success',
+                    msg: "اتوبوس افزوده شد",
+                    data
+                })
+            })
+        } catch (error) {
+            console.error(error.message);
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+                status: 'failure',
+                msg: "خطای داخلی سرور",
+                error
+            });
+        }
     }
 
-    try {
-        await Bus.create({
-            driver: req.driver._id,
-            name: req.body.name,
-            description: req.body.description,
-            model: req.body.model,
-            color: req.body.color,
-            type: req.body.type,
-            licensePlate: req.body.licensePlate,
-            serviceProvider: req.body.serviceProvider,
-            price: req.body.price,
-            seats: req.body.seats,
-            capacity: req.body.capacity,
-            photo: req.files.photo[0].filename,
-            photos,
-            options: req.body.options,
-        }).then((data) => {
-            res.status(StatusCodes.CREATED).json({
-                status: 'success',
-                msg: "اتوبوس افزوده شد",
-                data
-            })
-        })
-    } catch (error) {
-        console.error(error.message);
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            status: 'failure',
-            msg: "خطای داخلی سرور",
-            error
-        });
-    }
+
 }
 
 // # description -> HTTP VERB -> Accesss -> Access Type
@@ -853,23 +864,56 @@ exports.updateDriverBusPhoto = async (req, res) => {
 // # update driver bus cover photo -> PUT -> Driver -> PRIVATE
 // @route = /api/drivers/bus/:busId/update-photos
 exports.updateDriverBusPhotos = async (req, res) => {
+    // try {
+    //     await Bus.findByIdAndUpdate(req.params.busId, {
+    //         photos: req.file.filename,
+    //     }).then((ads) => {
+    //         if (ads) {
+    //             return res.status(StatusCodes.OK).json({
+    //                 status: 'success',
+    //                 msg: "تصاویر اتوبوس ویرایش شدند",
+    //                 ads
+    //             })
+    //         } else {
+    //             return res.status(StatusCodes.BAD_REQUEST).json({
+    //                 status: 'failure',
+    //                 msg: "تصاویر اتوبوس ویرایش نشدند",
+    //             })
+    //         }
+    //     });
+    // } catch (error) {
+    //     console.error(error.message);
+    //     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+    //         status: 'failure',
+    //         msg: "خطای داخلی سرور",
+    //         error
+    //     });
+    // }
+
     try {
+        const imagePaths = req.files.map((file) => file.path);
+
+        if (imagePaths.length === 0) {
+            return res.status(400).json({ error: "حداقل یک تصویر باید وارد کنید..!" });
+        }
+
         await Bus.findByIdAndUpdate(req.params.busId, {
-            photos: req.file.filename,
-        }).then((ads) => {
-            if (ads) {
+            photos: imagePaths
+        }).then((bus) => {
+            if (bus) {
                 return res.status(StatusCodes.OK).json({
                     status: 'success',
-                    msg: "تصاویر اتوبوس ویرایش شدند",
-                    ads
+                    msg: "تصاویر آگهی ویرایش شدند",
+                    bus
                 })
             } else {
                 return res.status(StatusCodes.BAD_REQUEST).json({
                     status: 'failure',
-                    msg: "تصاویر اتوبوس ویرایش نشدند",
+                    msg: "تصاویر آگهی ویرایش نشدند",
                 })
             }
         });
+
     } catch (error) {
         console.error(error.message);
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({

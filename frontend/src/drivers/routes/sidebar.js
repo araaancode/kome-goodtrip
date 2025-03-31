@@ -18,7 +18,7 @@ const routes = [
   },
   {
     // path: '/drivers/calendar', // url
-    path: '/drivers/driver-info', // url
+    path: '/drivers/add-bus', // url
     icon: <DriverIcon className={iconClasses} />, // icon component
     name: 'ثبت اطلاعات اتوبوس', // name that appear in Sidebar
   },

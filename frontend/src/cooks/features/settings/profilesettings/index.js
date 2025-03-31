@@ -6947,7 +6947,6 @@ const genderList = [
 
 function ProfileSettings() {
 
-
     const [cook, setCook] = useState({})
     const [name, setName] = useState("")
     const [phone, setPhone] = useState("")
@@ -7033,7 +7032,6 @@ function ProfileSettings() {
             setEmailError(true)
             setEmailErrorMsg("* ایمیل باید وارد شود")
         }
-
 
         if (!username || username === "" || username === undefined || username === null) {
             setUsernameError(true)

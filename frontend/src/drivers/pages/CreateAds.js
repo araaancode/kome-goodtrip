@@ -154,7 +154,6 @@ function CreateAds() {
     const [descriptionError, setDescriptionError] = useState(false)
     const [descriptionErrorMsg, setDescriptionErrorMsg] = useState("")
 
-
     const [photoError, setPhotoError] = useState(false)
     const [photoErrorMsg, setPhotoErrorMsg] = useState("")
 

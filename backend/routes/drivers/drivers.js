@@ -64,7 +64,7 @@ router.post('/bus', authDriver, driverBusPhotosUpload.fields([
 ]), driverCtrls.addDriverBus)
 router.put('/bus/:busId/update-bus', authDriver, driverCtrls.updateDriverBus)
 router.put('/bus/:busId/update-photo', authDriver, driverBusPhotosUpload.single('photo'), driverCtrls.updateDriverBusPhoto)
-router.put('/bus/:busId/update-photos', authDriver, driverBusPhotosUpload.single('photos'), driverCtrls.updateDriverBusPhotos)
+router.put('/bus/:busId/update-photos', authDriver, driverBusPhotosUpload.array('photos',6), driverCtrls.updateDriverBusPhotos)
 
 router.get('/finance', authDriver, driverCtrls.finance)
 

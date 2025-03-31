@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { setPageTitle } from '../features/common/headerSlice'
-import DriverSettings from '../features/settings/driverInfo/drive_settings'
+import AddBus from '../features/settings/AddBus/add_bus'
 
 function DriverInfo(){
     const dispatch = useDispatch()
@@ -10,7 +10,7 @@ function DriverInfo(){
         dispatch(setPageTitle({ title : "ثبت اطلاعات اتوبوس"}))
       }, [])
     return(
-        <DriverSettings />
+        <AddBus />
     )
 }
 
