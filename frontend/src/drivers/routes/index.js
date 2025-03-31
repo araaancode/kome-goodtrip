@@ -16,6 +16,7 @@ import CreateAds from "../pages/CreateAds"
 import UpdateAds from "../pages/UpdateAds"
 import CreateSupportTicket from "../pages/CreateSupportTicket"
 import SupportTickets from "../pages/SupportTickets"
+import SingleSupportTicket from "../pages/SingleSupportTicket"
 
 const routes = [
   
@@ -78,10 +79,10 @@ const routes = [
     component: CreateSupportTicket,
   },
 
-  // {
-  //   path: '/support-tickets/:stId',
-  //   component: SingleSupportTicket,
-  // },
+  {
+    path: '/support-tickets/:stId',
+    component: SingleSupportTicket,
+  },
   {
     path: '/support',
     component: Support,
