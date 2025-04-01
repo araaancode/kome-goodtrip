@@ -1,5 +1,4 @@
 import { useEffect, useState, useRef } from "react"
-import { useDispatch } from "react-redux"
 import TitleCard from "../../../components/Cards/TitleCard"
 
 import Select from "react-tailwindcss-select";
@@ -140,7 +139,6 @@ function AddBus() {
         let hasError = false;
         const fileTypeRegex = new RegExp(acceptedFileExtensions.join("|"), "i");
         filesArray.forEach((file) => {
-            console.log(file);
 
             if (newSelectedFiles.some((f) => f.name === file.name)) {
                 alert("File names must be unique", "error");
@@ -265,10 +263,8 @@ function AddBus() {
     const [photosError, setPhotosError] = useState(false)
     const [photosErrorMsg, setPhotosErrorMsg] = useState("")
 
-    const dispatch = useDispatch()
-
-    // Call API to update profile settings changes
     const addBusHandler = (e) => {
+        e.preventDefault();
 
         if (!name || name === "" || name === undefined || name === null) {
             setNameError(true)
@@ -345,6 +341,11 @@ function AddBus() {
             setDescriptionError(true)
             setDescriptionErrorMsg("* توضیحات اتوبوس باید وارد شود")
         }
+        // if (licensePlate.length < 26) {
+        //     setLicensePlateError(true)
+        //     setLicensePlateErrorMsg("* شماره پلاک باید هشت رقمی باشد");
+        // }
+
         else {
             setBtnSpinner(true)
 
@@ -352,8 +353,8 @@ function AddBus() {
 
             let optionsArr = []
 
-            for (const element of options) {
-                optionsArr.push(element.label);
+            for (let i = 0; i < options.length; i++) {
+                optionsArr.push(options[i].label);
             }
 
             const formData = new FormData();
@@ -373,13 +374,15 @@ function AddBus() {
             formData.append('photo', selectedFiles[0]);
             selectedFiles2.forEach(image => formData.append('photos', image));
 
-            axios.post(`/api/drivers/bus`, formData, {
+            axios.post('/api/drivers/bus', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     'authorization': 'Bearer ' + token
                 },
             })
                 .then((response) => {
+                    console.log(response);
+
                     setBtnSpinner(false)
 
                     setName("")
@@ -432,371 +435,371 @@ function AddBus() {
         <>
             <TitleCard title="ثبت اطلاعات اتوبوس" topMargin="mt-2">
                 <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
-
-                    {/* name */}
-                    <div className="flex flex-col mb-6">
-                        <label htmlFor="name" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">نام اتوبوس</label>
-                        <div className="relative">
-                            <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
-                                <LuBus className="w-6 h-6 text-gray-400" />
+                        {/* name */}
+                        <div className="flex flex-col mb-6">
+                            <label htmlFor="name" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">نام اتوبوس</label>
+                            <div className="relative">
+                                <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
+                                    <LuBus className="w-6 h-6 text-gray-400" />
+                                </div>
+                                <input style={{ borderRadius: '5px' }} type="text" value={name}
+                                    onChange={(e) => setName(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="نام اتوبوس" />
                             </div>
-                            <input style={{ borderRadius: '5px' }} type="text" value={name}
-                                onChange={(e) => setName(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="نام اتوبوس" />
+                            <span className='text-red-500 relative text-sm'>{nameError ? nameErrorMsg : ""}</span>
                         </div>
-                        <span className='text-red-500 relative text-sm'>{nameError ? nameErrorMsg : ""}</span>
-                    </div>
 
-                    {/* models */}
-                    <div className="flex flex-col mb-6">
-                        <label htmlFor="models" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">مدل اتوبوس</label>
-                        <div className="relative">
-                            <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
-                                <LuBus className="w-6 h-6 text-gray-400" />
+                        {/* models */}
+                        <div className="flex flex-col mb-6">
+                            <label htmlFor="models" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">مدل اتوبوس</label>
+                            <div className="relative">
+                                <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
+                                    <LuBus className="w-6 h-6 text-gray-400" />
+                                </div>
+                                <Select
+                                    value={model}
+                                    onChange={(e) => setModel(e)}
+                                    options={modelsList}
+                                    placeholder="انتخاب مدل اتوبوس"
+                                    classNames={`placholder-gray-400`}
+                                />
                             </div>
-                            <Select
-                                value={model}
-                                onChange={(e) => setModel(e)}
-                                options={modelsList}
-                                placeholder="انتخاب مدل اتوبوس"
-                                classNames={`placholder-gray-400`}
-                            />
+                            <span className='text-red-500 relative text-sm'>{modelError ? modelErrorMsg : ""}</span>
                         </div>
-                        <span className='text-red-500 relative text-sm'>{modelError ? modelErrorMsg : ""}</span>
-                    </div>
 
-                    {/* color */}
-                    <div className="flex flex-col mb-6">
-                        <label htmlFor="color" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">رنگ وسیله</label>
-                        <div className="relative">
-                            <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
-                                <IoColorPaletteOutline className="w-6 h-6 text-gray-400" />
+                        {/* color */}
+                        <div className="flex flex-col mb-6">
+                            <label htmlFor="color" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">رنگ وسیله</label>
+                            <div className="relative">
+                                <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
+                                    <IoColorPaletteOutline className="w-6 h-6 text-gray-400" />
+                                </div>
+                                <input style={{ borderRadius: '5px' }} type="text" value={color}
+                                    onChange={(e) => setColor(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="رنگ وسیله" />
                             </div>
-                            <input style={{ borderRadius: '5px' }} type="text" value={color}
-                                onChange={(e) => setColor(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="رنگ وسیله" />
+                            <span className='text-red-500 relative text-sm'>{colorError ? colorErrorMsg : ""}</span>
                         </div>
-                        <span className='text-red-500 relative text-sm'>{colorError ? colorErrorMsg : ""}</span>
-                    </div>
 
-                    {/* type */}
-                    <div className="flex flex-col mb-6">
-                        <label htmlFor="type" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">نوع اتوبوس</label>
-                        <div className="relative">
-                            <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
-                                <LuBus className="w-6 h-6 text-gray-400" />
+                        {/* type */}
+                        <div className="flex flex-col mb-6">
+                            <label htmlFor="type" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">نوع اتوبوس</label>
+                            <div className="relative">
+                                <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
+                                    <LuBus className="w-6 h-6 text-gray-400" />
+                                </div>
+                                <Select
+                                    value={type}
+                                    onChange={(e) => setType(e)}
+                                    options={typesList}
+                                    placeholder="انتخاب نوع اتوبوس"
+                                    classNames={`placholder-gray-400`}
+                                />
                             </div>
-                            <Select
-                                value={type}
-                                onChange={(e) => setType(e)}
-                                options={typesList}
-                                placeholder="انتخاب نوع اتوبوس"
-                                classNames={`placholder-gray-400`}
-                            />
+                            <span className='text-red-500 relative text-sm'>{typeError ? typeErrorMsg : ""}</span>
                         </div>
-                        <span className='text-red-500 relative text-sm'>{typeError ? typeErrorMsg : ""}</span>
-                    </div>
 
-                    {/* pelak -> licensePlate */}
-                    <div className="flex flex-col mb-6">
-                        <label htmlFor="licensePlate" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">پلاک </label>
-                        <div className="relative">
-                            <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
-                                <BsCardHeading className="w-6 h-6 text-gray-400" />
+                        {/* pelak -> licensePlate */}
+                        <div className="flex flex-col mb-6">
+                            <label htmlFor="licensePlate" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">پلاک </label>
+                            <div className="relative">
+                                <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
+                                    <BsCardHeading className="w-6 h-6 text-gray-400" />
+                                </div>
+                                <input style={{ borderRadius: '5px' }} type="text" value={licensePlate}
+                                    onChange={(e) => setLicensePlate(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="پلاک " />
                             </div>
-                            <input style={{ borderRadius: '5px' }} type="text" value={licensePlate}
-                                onChange={(e) => setLicensePlate(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="پلاک " />
+                            <span className='text-red-500 relative text-sm'>{licensePlateError ? licensePlateErrorMsg : ""}</span>
                         </div>
-                        <span className='text-red-500 relative text-sm'>{licensePlateError ? licensePlateErrorMsg : ""}</span>
-                    </div>
 
-                    {/* service name provider */}
-                    <div className="flex flex-col mb-6">
-                        <label htmlFor="serviceProvider" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">نام ارائه دهنده سرویس</label>
-                        <div className="relative">
-                            <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
-                                <LiaBusSolid className="w-6 h-6 text-gray-400" />
+                        {/* service name provider */}
+                        <div className="flex flex-col mb-6">
+                            <label htmlFor="serviceProvider" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">نام ارائه دهنده سرویس</label>
+                            <div className="relative">
+                                <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
+                                    <LiaBusSolid className="w-6 h-6 text-gray-400" />
+                                </div>
+                                <input style={{ borderRadius: '5px' }} type="text" value={serviceProvider}
+                                    onChange={(e) => setServiceProvider(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="نام ارائه دهنده سرویس" />
                             </div>
-                            <input style={{ borderRadius: '5px' }} type="text" value={serviceProvider}
-                                onChange={(e) => setServiceProvider(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="نام ارائه دهنده سرویس" />
+                            <span className='text-red-500 relative text-sm'>{serviceProviderError ? serviceProviderErrorMsg : ""}</span>
                         </div>
-                        <span className='text-red-500 relative text-sm'>{serviceProviderError ? serviceProviderErrorMsg : ""}</span>
-                    </div>
 
-                    {/* price */}
-                    <div className="flex flex-col mb-6">
-                        <label htmlFor="price" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600"> قیمت به ازای هر نفر</label>
-                        <div className="relative">
-                            <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
-                                <TfiMoney className="w-6 h-6 text-gray-400" />
+                        {/* price */}
+                        <div className="flex flex-col mb-6">
+                            <label htmlFor="price" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600"> قیمت به ازای هر نفر</label>
+                            <div className="relative">
+                                <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
+                                    <TfiMoney className="w-6 h-6 text-gray-400" />
+                                </div>
+                                <input style={{ borderRadius: '5px' }} type="text" value={price}
+                                    onChange={(e) => setPrice(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder=" قیمت به ازای هر نفر" />
                             </div>
-                            <input style={{ borderRadius: '5px' }} type="text" value={price}
-                                onChange={(e) => setPrice(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder=" قیمت به ازای هر نفر" />
+                            <span className='text-red-500 relative text-sm'>{priceError ? priceErrorMsg : ""}</span>
                         </div>
-                        <span className='text-red-500 relative text-sm'>{priceError ? priceErrorMsg : ""}</span>
-                    </div>
 
-                    {/* seats */}
-                    <div className="flex flex-col mb-6">
-                        <label htmlFor="seats" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">تعداد صندلی ها</label>
-                        <div className="relative">
-                            <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
-                                <MdOutlineReduceCapacity className="w-6 h-6 text-gray-400" />
+                        {/* seats */}
+                        <div className="flex flex-col mb-6">
+                            <label htmlFor="seats" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">تعداد صندلی ها</label>
+                            <div className="relative">
+                                <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
+                                    <MdOutlineReduceCapacity className="w-6 h-6 text-gray-400" />
+                                </div>
+                                <input style={{ borderRadius: '5px' }} type="number" value={seats} min={0} max={50}
+                                    onChange={(e) => setSeats(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="تعداد صندلی ها" />
                             </div>
-                            <input style={{ borderRadius: '5px' }} type="number" value={seats} min={0} max={50}
-                                onChange={(e) => setSeats(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="تعداد صندلی ها" />
+                            <span className='text-red-500 relative text-sm'>{seatsError ? seatsErrorMsg : ""}</span>
                         </div>
-                        <span className='text-red-500 relative text-sm'>{seatsError ? seatsErrorMsg : ""}</span>
-                    </div>
 
-                    {/* capacity */}
-                    <div className="flex flex-col mb-6">
-                        <label htmlFor="capacity" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">ظرفیت اتوبوس </label>
-                        <div className="relative">
-                            <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
-                                <MdOutlineReduceCapacity className="w-6 h-6 text-gray-400" />
+                        {/* capacity */}
+                        <div className="flex flex-col mb-6">
+                            <label htmlFor="capacity" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">ظرفیت اتوبوس </label>
+                            <div className="relative">
+                                <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
+                                    <MdOutlineReduceCapacity className="w-6 h-6 text-gray-400" />
+                                </div>
+                                <input style={{ borderRadius: '5px' }} type="number" value={capacity} min={0} max={50}
+                                    onChange={(e) => setCapacity(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="ظرفیت اتوبوس " />
                             </div>
-                            <input style={{ borderRadius: '5px' }} type="number" value={capacity} min={0} max={50}
-                                onChange={(e) => setCapacity(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="ظرفیت اتوبوس " />
+                            <span className='text-red-500 relative text-sm'>{capacityError ? capacityErrorMsg : ""}</span>
                         </div>
-                        <span className='text-red-500 relative text-sm'>{capacityError ? capacityErrorMsg : ""}</span>
-                    </div>
 
-                    {/* options */}
-                    <div className="flex flex-col mb-6">
-                        <label htmlFor="options" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">امکانات اضافی</label>
-                        <div className="relative">
-                            <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
-                                <SlCalender className="w-6 h-6 text-gray-400" />
+                        {/* options */}
+                        <div className="flex flex-col mb-6">
+                            <label htmlFor="options" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">امکانات اضافی</label>
+                            <div className="relative">
+                                <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
+                                    <SlCalender className="w-6 h-6 text-gray-400" />
+                                </div>
+                                <Select
+                                    value={options}
+                                    onChange={(e) => setOptions(e)}
+                                    options={optionsList}
+                                    isMultiple={true}
+                                    placeholder="انتخاب امکانات اضافی"
+                                    formatGroupLabel={data => (
+                                        <div className={`py-2 text-xs flex items-center justify-between`}>
+                                            <span className="font-bold">{data.label}</span>
+                                            <span className="bg-gray-200 h-5 h-5 p-1.5 flex items-center justify-center rounded-full">
+                                                {data.options.length}
+                                            </span>
+                                        </div>
+                                    )}
+                                />
+
                             </div>
-                            <Select
-                                value={options}
-                                onChange={(e) => setOptions(e)}
-                                options={optionsList}
-                                isMultiple={true}
-                                placeholder="انتخاب امکانات اضافی"
-                                formatGroupLabel={data => (
-                                    <div className={`py-2 text-xs flex items-center justify-between`}>
-                                        <span className="font-bold">{data.label}</span>
-                                        <span className="bg-gray-200 h-5 h-5 p-1.5 flex items-center justify-center rounded-full">
-                                            {data.options.length}
-                                        </span>
-                                    </div>
-                                )}
-                            />
-
+                            <span className='text-red-500 relative text-sm'>{optionsError ? optionsErrorMsg : ""}</span>
                         </div>
-                        <span className='text-red-500 relative text-sm'>{optionsError ? optionsErrorMsg : ""}</span>
-                    </div>
 
-                    {/* heat */}
-                    <div className="flex flex-col mb-6">
-                        <label htmlFor="heat" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600"> سیستم گرمایشی</label>
-                        <div className="relative">
-                            <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
-                                <LuBus className="w-6 h-6 text-gray-400" />
+                        {/* heat */}
+                        <div className="flex flex-col mb-6">
+                            <label htmlFor="heat" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600"> سیستم گرمایشی</label>
+                            <div className="relative">
+                                <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
+                                    <LuBus className="w-6 h-6 text-gray-400" />
+                                </div>
+                                <Select
+                                    value={heat}
+                                    onChange={(e) => setHeat(e)}
+                                    options={heatList}
+                                    placeholder="انتخاب سیستم گرمایشی"
+                                    classNames={`placholder-gray-400`}
+                                />
                             </div>
-                            <Select
-                                value={heat}
-                                onChange={(e) => setHeat(e)}
-                                options={heatList}
-                                placeholder="انتخاب سیستم گرمایشی"
-                                classNames={`placholder-gray-400`}
-                            />
+                            <span className='text-red-500 relative text-sm'>{heatError ? heatErrorMsg : ""}</span>
                         </div>
-                        <span className='text-red-500 relative text-sm'>{heatError ? heatErrorMsg : ""}</span>
-                    </div>
 
-                    {/* coldness */}
-                    <div className="flex flex-col mb-6">
-                        <label htmlFor="coldness" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600"> سیستم سرمایشی</label>
-                        <div className="relative">
-                            <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
-                                <LuBus className="w-6 h-6 text-gray-400" />
+                        {/* coldness */}
+                        <div className="flex flex-col mb-6">
+                            <label htmlFor="coldness" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600"> سیستم سرمایشی</label>
+                            <div className="relative">
+                                <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
+                                    <LuBus className="w-6 h-6 text-gray-400" />
+                                </div>
+                                <Select
+                                    value={coldness}
+                                    onChange={(e) => setColdness(e)}
+                                    options={coldnessList}
+                                    placeholder="انتخاب سیستم سرمایشی"
+                                    classNames={`placholder-gray-400`}
+                                />
                             </div>
-                            <Select
-                                value={coldness}
-                                onChange={(e) => setColdness(e)}
-                                options={coldnessList}
-                                placeholder="انتخاب سیستم سرمایشی"
-                                classNames={`placholder-gray-400`}
-                            />
+                            <span className='text-red-500 relative text-sm'>{coldnessError ? coldnessErrorMsg : ""}</span>
                         </div>
-                        <span className='text-red-500 relative text-sm'>{coldnessError ? coldnessErrorMsg : ""}</span>
-                    </div>
 
 
-                    {/*  bus photo  */}
-                    <div className="flex flex-col mb-6">
-                        <label htmlFor="photo" className="mb-2 text-xs sm:text-sm tracking-wide text-gray-600">تصویر اصلی اتوبوس </label>
+                        {/*  bus photo  */}
+                        <div className="flex flex-col mb-6">
+                            <label htmlFor="photo" className="mb-2 text-xs sm:text-sm tracking-wide text-gray-600">تصویر اصلی اتوبوس </label>
 
-                        {/* <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
+                            {/* <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
                                     <PiImage className="w-6 h-6 text-gray-400" />
                                 </div> */}
-                        {/* <input type="file" onChange={(e) => setPhoto(e.target.files[0])} name="photo" id="photo" className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" /> */}
-                        <div className="grid grid-cols-1 md:grid-cols-3 border border-gray-300 rounded-md py-2 focus:outline-none focus:border-blue-800">
-                            <div className="flex items-center">
+                            {/* <input type="file" onChange={(e) => setPhoto(e.target.files[0])} name="photo" id="photo" className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" /> */}
+                            <div className="grid grid-cols-1 md:grid-cols-3 border border-gray-300 rounded-md py-2 focus:outline-none focus:border-blue-800">
+                                <div className="flex items-center">
 
-                                <button className="app-btn-gray" onClick={handleCustomButtonClick}>
-                                    انتخاب تصویر اصلی
-                                </button>
+                                    <button className="app-btn-gray" onClick={handleCustomButtonClick}>
+                                        انتخاب تصویر اصلی
+                                    </button>
 
-                                <input
-                                    type="file"
-                                    id="photo"
-                                    name="photo"
-                                    accept={acceptedFileTypesString}
-                                    ref={fileInputRef}
-                                    className="hidden"
-                                    onChange={handleFileChange}
-                                    onClick={(event) => {
-                                        event.target.value = null;
-                                    }}
-                                />
-                            </div>
+                                    <input
+                                        type="file"
+                                        id="photo"
+                                        name="photo"
+                                        accept={acceptedFileTypesString}
+                                        ref={fileInputRef}
+                                        className="hidden"
+                                        onChange={handleFileChange}
+                                        onClick={(event) => {
+                                            event.target.value = null;
+                                        }}
+                                    />
+                                </div>
 
-                            <div className="rounded-3xl py-4 max-h-[23rem] overflow-auto">
-                                {selectedFiles.length > 0 ? (
-                                    <ul className="px-4">
-                                        {selectedFiles.map((file, index) => (
+                                <div className="rounded-3xl py-4 max-h-[23rem] overflow-auto">
+                                    {selectedFiles.length > 0 ? (
+                                        <ul className="px-4">
+                                            {selectedFiles.map((file, index) => (
 
-                                            <li
-                                                key={file.name}
-                                                className="flex justify-between items-center border-b py-2"
-                                            >
-                                                <div className="flex items-center">
-
-                                                    <span className="text-base mx-2">{file.name}</span>
-                                                </div>
-                                                <button
-                                                    type="button"
-                                                    onClick={() => handleFileDelete(index)}
-                                                    className="text-red-500 hover:text-red-700 focus:outline-none"
+                                                <li
+                                                    key={file.name}
+                                                    className="flex justify-between items-center border-b py-2"
                                                 >
-                                                    <svg
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                        viewBox="0 0 20 20"
-                                                        fill="none"
-                                                        className="w-6 h-6"
+                                                    <div className="flex items-center">
+
+                                                        <span className="text-base mx-2">{file.name}</span>
+                                                    </div>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => handleFileDelete(index)}
+                                                        className="text-red-500 hover:text-red-700 focus:outline-none"
                                                     >
-                                                        <path
-                                                            stroke="currentColor"
-                                                            strokeWidth="2"
-                                                            d="M6 4l8 8M14 4l-8 8"
-                                                        />
-                                                    </svg>
-                                                </button>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                ) : (
-                                    <div className="h-full flex justify-center items-center">
-                                        <p className="text-center text-gray-500 text-sm">
-                                            هنوز تصویری آپلود نشده است...
-                                        </p>
-                                    </div>
-                                )}
+                                                        <svg
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                            viewBox="0 0 20 20"
+                                                            fill="none"
+                                                            className="w-6 h-6"
+                                                        >
+                                                            <path
+                                                                stroke="currentColor"
+                                                                strokeWidth="2"
+                                                                d="M6 4l8 8M14 4l-8 8"
+                                                            />
+                                                        </svg>
+                                                    </button>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    ) : (
+                                        <div className="h-full flex justify-center items-center">
+                                            <p className="text-center text-gray-500 text-sm">
+                                                هنوز تصویری آپلود نشده است...
+                                            </p>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
+
+                            <span className='text-red-500 relative text-sm'>{photoError ? photoErrorMsg : ""}</span>
                         </div>
 
-                        <span className='text-red-500 relative text-sm'>{photoError ? photoErrorMsg : ""}</span>
-                    </div>
 
+                        {/* bus photos */}
+                        <div className="flex flex-col mb-6">
+                            <label htmlFor="photo" className="mb-2 text-xs sm:text-sm text-gray-600">تصاویر اتوبوس </label>
+                            <div className="grid grid-cols-1 md:grid-cols-3 border border-gray-300 rounded-md py-2 focus:outline-none focus:border-blue-800">
+                                <div className="flex items-center">
+                                    <button
+                                        type="button"
+                                        onClick={handleCustomButtonClick2}
+                                        className="app-btn-gray"
+                                    >
 
-                    {/* bus photos */}
-                    <div className="flex flex-col mb-6">
-                        <label htmlFor="photo" className="mb-2 text-xs sm:text-sm text-gray-600">تصاویر اتوبوس </label>
-                        <div className="grid grid-cols-1 md:grid-cols-3 border border-gray-300 rounded-md py-2 focus:outline-none focus:border-blue-800">
-                            <div className="flex items-center">
-                                <button
-                                    type="button"
-                                    onClick={handleCustomButtonClick2}
-                                    className="app-btn-gray"
-                                >
+                                        انتخاب تصاویر اتوبوس
+                                    </button>
+                                    <input
+                                        type="file"
+                                        id="photos"
+                                        name="photos"
+                                        multiple
+                                        accept={acceptedFileTypesString2}
+                                        ref={fileInputRef2}
+                                        className="hidden"
+                                        onChange={handleFileChange2}
+                                        onClick={(event) => {
+                                            event.target.value = null;
+                                        }}
+                                    />
+                                </div>
 
-                                    انتخاب تصاویر اتوبوس
-                                </button>
-                                <input
-                                    type="file"
-                                    id="photos"
-                                    name="photos"
-                                    multiple
-                                    accept={acceptedFileTypesString2}
-                                    ref={fileInputRef2}
-                                    className="hidden"
-                                    onChange={handleFileChange2}
-                                    onClick={(event) => {
-                                        event.target.value = null;
-                                    }}
-                                />
-                            </div>
+                                <div className="rounded-3xl py-4 max-h-[23rem] overflow-auto">
+                                    {selectedFiles2.length > 0 ? (
+                                        <ul className="px-4">
+                                            {selectedFiles2.map((file, index) => (
 
-                            <div className="rounded-3xl py-4 max-h-[23rem] overflow-auto">
-                                {selectedFiles2.length > 0 ? (
-                                    <ul className="px-4">
-                                        {selectedFiles2.map((file, index) => (
-
-                                            <li
-                                                key={file.name}
-                                                className="flex justify-between items-center border-b py-2"
-                                            >
-                                                <div className="flex items-center">
-                                                    {/* <img
+                                                <li
+                                                    key={file.name}
+                                                    className="flex justify-between items-center border-b py-2"
+                                                >
+                                                    <div className="flex items-center">
+                                                        {/* <img
                                                             src={window.location.origin + file.name}
                                                             alt="File"
                                                             className="w-10 h-10 mr-2"
                                                         /> */}
-                                                    <span className="text-base mx-2">{file.name}</span>
-                                                </div>
-                                                <button
-                                                    type="button"
-                                                    onClick={() => handleFileDelete2(index)}
-                                                    className="text-red-500 hover:text-red-700 focus:outline-none"
-                                                >
-                                                    <svg
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                        viewBox="0 0 20 20"
-                                                        fill="none"
-                                                        className="w-6 h-6"
+                                                        <span className="text-base mx-2">{file.name}</span>
+                                                    </div>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => handleFileDelete2(index)}
+                                                        className="text-red-500 hover:text-red-700 focus:outline-none"
                                                     >
-                                                        <path
-                                                            stroke="currentColor"
-                                                            strokeWidth="2"
-                                                            d="M6 4l8 8M14 4l-8 8"
-                                                        />
-                                                    </svg>
-                                                </button>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                ) : (
-                                    <div className="h-full flex justify-center items-center">
-                                        <p className="text-center text-gray-500 text-sm">
-                                            هنوز تصویری آپلود نشده است...
-                                        </p>
-                                    </div>
-                                )}
+                                                        <svg
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                            viewBox="0 0 20 20"
+                                                            fill="none"
+                                                            className="w-6 h-6"
+                                                        >
+                                                            <path
+                                                                stroke="currentColor"
+                                                                strokeWidth="2"
+                                                                d="M6 4l8 8M14 4l-8 8"
+                                                            />
+                                                        </svg>
+                                                    </button>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    ) : (
+                                        <div className="h-full flex justify-center items-center">
+                                            <p className="text-center text-gray-500 text-sm">
+                                                هنوز تصویری آپلود نشده است...
+                                            </p>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
+                            <span className='text-red-500 relative text-sm'>{photosError ? photosErrorMsg : ""}</span>
                         </div>
-                        <span className='text-red-500 relative text-sm'>{photosError ? photosErrorMsg : ""}</span>
-                    </div>
 
 
-                    {/*  description */}
-                    <div className="flex flex-col mb-2">
-                        <label htmlFor="description" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">توضیحات </label>
-                        <div className="relative">
-                            <div className="inline-flex items-center justify-center absolute left-0 h-full w-10 text-gray-400" style={{ bottom: "52px" }}>
-                                <IoIosInformationCircleOutline className="w-6 h-6 text-gray-400" />
+                        {/*  description */}
+                        <div className="flex flex-col mb-2">
+                            <label htmlFor="description" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">توضیحات </label>
+                            <div className="relative">
+                                <div className="inline-flex items-center justify-center absolute left-0 h-full w-10 text-gray-400" style={{ bottom: "52px" }}>
+                                    <IoIosInformationCircleOutline className="w-6 h-6 text-gray-400" />
+                                </div>
+                                <textarea style={{ borderRadius: '5px', resize: 'none' }} type="text" value={description}
+                                    onChange={(e) => setDescription(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="توضیحات "></textarea>
                             </div>
-                            <textarea style={{ borderRadius: '5px', resize: 'none' }} type="text" value={description}
-                                onChange={(e) => setDescription(e.target.value)} className="text-sm sm:text-base placeholder-gray-400 pl-10 pr-4 rounded-lg border border-gray-300 w-full py-2 focus:outline-none focus:border-blue-800" placeholder="توضیحات "></textarea>
+                            <span className='text-red-500 relative text-sm'>{descriptionError ? descriptionErrorMsg : ""}</span>
                         </div>
-                        <span className='text-red-500 relative text-sm'>{descriptionError ? descriptionErrorMsg : ""}</span>
-                    </div>
+
                 </div>
 
                 <div className="mt-6">
                     {/* <button className="btn bg-blue-800 hover:bg-blue-900 text-white float-right" onClick={() => addBusHandler()}>ثبت اطلاعات اتوبوس</button> */}
-                    <button className="app-btn-blue" onClick={() => addBusHandler()}>
+                    <button className="app-btn-blue" onClick={addBusHandler}>
                         {btnSpinner ? (
                             <div className="px-10 py-1 flex items-center justify-center">
                                 <div className="w-5 h-5 border-2 border-t-transparent border-white rounded-full animate-spin"></div>

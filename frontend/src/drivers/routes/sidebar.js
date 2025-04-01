@@ -1,10 +1,11 @@
 
 import BankIcon from '@iconscout/react-unicons/icons/uil-university'
 import NewsPaperIcon from '@iconscout/react-unicons/icons/uil-newspaper'
-import CalendarIcon from '@iconscout/react-unicons/icons/uil-calender'
+import { HiOutlineCalendar } from "react-icons/hi2";
 import DriverIcon from '@iconscout/react-unicons/icons/uil-bus-school'
 import { BiSupport } from "react-icons/bi";
 import { TbNewSection } from "react-icons/tb";
+import { IoBusOutline } from "react-icons/io5";
 
 
 const iconClasses = `h-8 w-8 text-gray-800`
@@ -13,7 +14,7 @@ const routes = [
 
   {
     path: '/drivers/bookings',
-    icon: <CalendarIcon size="140" className={iconClasses} />,
+    icon: <HiOutlineCalendar size="140" className={iconClasses} />,
     name: 'رزروها',
   },
   {
@@ -21,6 +22,12 @@ const routes = [
     path: '/drivers/add-bus', // url
     icon: <DriverIcon className={iconClasses} />, // icon component
     name: 'ثبت اطلاعات اتوبوس', // name that appear in Sidebar
+  },
+  {
+    // path: '/drivers/calendar', // url
+    path: '/drivers/my-bus', // url
+    icon: <IoBusOutline className={iconClasses} />, // icon component
+    name: 'اتوبوس من', // name that appear in Sidebar
   },
   // {
   //   path: '/drivers/buses',

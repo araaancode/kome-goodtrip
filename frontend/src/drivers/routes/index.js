@@ -17,6 +17,7 @@ import UpdateAds from "../pages/UpdateAds"
 import CreateSupportTicket from "../pages/CreateSupportTicket"
 import SupportTickets from "../pages/SupportTickets"
 import SingleSupportTicket from "../pages/SingleSupportTicket"
+import MyBus from "../pages/MyBus"
 
 const routes = [
   
@@ -98,6 +99,11 @@ const routes = [
   {
     path: '/add-bus',
     component: AddBus,
+  },
+
+  {
+    path: '/my-bus',
+    component: MyBus,
   },
   
 ]

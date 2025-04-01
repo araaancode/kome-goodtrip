@@ -3,26 +3,26 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import axios from "axios"
 
 // landing pages 
-import IndexLayout from "./landing/components/Layout"
-import IndexPage from "./landing/pages/IndexPage"
-import LoginPage from "./landing/pages/LoginPage"
-import RegisterPage from "./landing/pages/RegisterPage"
-import ProfilePage from "./landing/pages/ProfilePage"
-import HousesPage from "./landing/pages/HousesPage"
-import HousesFormPage from "./landing/pages/HousesFormPage"
-import HousePage from "./landing/pages/HousePage"
-import BookingsPage from "./landing/pages/BookingsPage"
-import BookingPage from "./landing/pages/BookingPage"
-import ProtectedRoute from './landing/routing/ProtectedRoute';
-import SearchResultsPage from './landing/pages/SearchResultsPage';
-import FavoritesPage from './landing/pages/FavoritesPage';
-import BankPage from './landing/pages/BankPage';
-import NotificationsPage from './landing/pages/NotificationsPage';
-import SupportPage from './landing/pages/SupportPage';
-import ForgotPasswordPage from './landing/pages/ForgotPasswordPage';
+// import IndexLayout from "./landing/components/Layout"
+// import IndexPage from "./landing/pages/IndexPage"
+// import LoginPage from "./landing/pages/LoginPage"
+// import RegisterPage from "./landing/pages/RegisterPage"
+// import ProfilePage from "./landing/pages/ProfilePage"
+// import HousesPage from "./landing/pages/HousesPage"
+// import HousesFormPage from "./landing/pages/HousesFormPage"
+// import HousePage from "./landing/pages/HousePage"
+// import BookingsPage from "./landing/pages/BookingsPage"
+// import BookingPage from "./landing/pages/BookingPage"
+// import ProtectedRoute from './landing/routing/ProtectedRoute';
+// import SearchResultsPage from './landing/pages/SearchResultsPage';
+// import FavoritesPage from './landing/pages/FavoritesPage';
+// import BankPage from './landing/pages/BankPage';
+// import NotificationsPage from './landing/pages/NotificationsPage';
+// import SupportPage from './landing/pages/SupportPage';
+// import ForgotPasswordPage from './landing/pages/ForgotPasswordPage';
 
-import PublicRoutes from "./landing/routing/publicRoutes"
-import PrivateRoutes from "./landing/routing/privateRoutes"
+// import PublicRoutes from "./landing/routing/publicRoutes"
+// import PrivateRoutes from "./landing/routing/privateRoutes"
 
 // admin private routes
 import AdminPublicRoutes from "./admin/routing/publicRoutes"
@@ -54,10 +54,10 @@ import DriversForgotPassword from "./drivers/pages/ForgotPassword"
 import DriversResetPassword from "./drivers/pages/ResetPassword"
 
 // owners pages
-import OwnersLayout from "./owners/containers/Layout"
-import OwnersLogin from "./owners/pages/Login"
-import OwnersRegister from "./owners/pages/Register"
-import OwnersForgotPassword from "./owners/pages/ForgotPassword"
+// import OwnersLayout from "./owners/containers/Layout"
+// import OwnersLogin from "./owners/pages/Login"
+// import OwnersRegister from "./owners/pages/Register"
+// import OwnersForgotPassword from "./owners/pages/ForgotPassword"
 
 // cooks pages
 import CooksLayout from "./cooks/containers/Layout"
@@ -86,7 +86,7 @@ function App() {
         <Routes>
 
           {/* landing page */}
-          <Route path="/" element={<IndexLayout />}>
+          {/* <Route path="/" element={<IndexLayout />}>
             <Route index element={<IndexPage />} />
             <Route element={<PublicRoutes />}>
               <Route path="/login" element={<LoginPage />} />
@@ -107,7 +107,7 @@ function App() {
               <Route path='/notifications' element={<NotificationsPage />} />
               <Route path='/support' element={<SupportPage />} />
             </Route>
-          </Route>
+          </Route> */}
 
           {/* admins routes*/}
           <Route element={<AdminPublicRoutes />}>
@@ -121,11 +121,11 @@ function App() {
           </Route>
 
           {/* owners pages */}
-          <Route path="/owners" element={<Navigate to={token ? "/owners/welcome" : "/owners/login"} replace />} />
+          {/* <Route path="/owners" element={<Navigate to={token ? "/owners/welcome" : "/owners/login"} replace />} />
           <Route path="/owners/*" element={<OwnersLayout />} />
           <Route path="/owners/login" element={<OwnersLogin />} />
           <Route path="/owners/forgot-password" element={<OwnersForgotPassword />} />
-          <Route path="/owners/register" element={<OwnersRegister />} />
+          <Route path="/owners/register" element={<OwnersRegister />} /> */}
 
           {/* drivers pages */}
           <Route element={<DriverPublicRoutes />}>

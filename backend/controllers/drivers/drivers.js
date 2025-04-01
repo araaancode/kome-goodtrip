@@ -706,8 +706,10 @@ exports.addCommentsToSupportTicket = async (req, res) => {
 // @route = /api/drivers/bus
 exports.getDriverBus = async (req, res) => {
     try {
-        let buses = await Bus.find({})
-        let findBus = buses.find(bus => JSON.stringify(bus.driver) == JSON.stringify(req.driver._id));
+        // let buses = await Bus.find({})
+        // let findBus = buses.find(bus => JSON.stringify(bus.driver) == JSON.stringify(req.driver._id));
+
+        let findBus = await Bus.findOne({ driver: req.driver._id })
 
         if (findBus) {
             res.status(StatusCodes.OK).json({
